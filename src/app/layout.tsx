@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
+import type { ReactElement } from 'react';
 import Link from 'next/link';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import ScrollEffects from '@/app/components/ScrollEffects';
-import SiteFooter from '@/app/components/SiteFooter';
+import ParallaxScrollEffects from '@/app/components/ParallaxScrollEffects';
+import AppFooter from '@/app/components/AppFooter';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -24,12 +25,12 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>): ReactElement {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* Global scroll effects (no UI) */}
-        <ScrollEffects />
+        <ParallaxScrollEffects />
         <header className="sticky top-0 z-50 header-glass border-b border-foreground/10">
           <nav className="container h-14 flex items-center justify-between">
             <Link href="/" className="font-semibold">
@@ -37,8 +38,8 @@ export default function RootLayout({
             </Link>
             <div className="flex items-center gap-5 text-sm">
               <Link href="/services">Services</Link>
-              <Link href="/case-studies">Case studies</Link>
-              <Link href="/process">Process</Link>
+              <Link href="/project-showcase">Case studies</Link>
+              <Link href="/consulting-process">Process</Link>
               <Link href="/about">About</Link>
               <Link href="/blog">Blog</Link>
               <Link href="/contact" className="btn btn-ghost">
@@ -48,7 +49,7 @@ export default function RootLayout({
           </nav>
         </header>
         <main>{children}</main>
-        <SiteFooter />
+        <AppFooter />
       </body>
     </html>
   );

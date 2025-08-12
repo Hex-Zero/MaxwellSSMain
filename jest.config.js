@@ -9,13 +9,16 @@ module.exports = {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '^next/image$': '<rootDir>/src/test/__mocks__/nextImageMock.tsx',
   },
-  transformIgnorePatterns: ['/node_modules/'],
-  globals: {
-    'ts-jest': {
-      tsconfig: {
-        jsx: 'react-jsx',
+  transform: {
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        tsconfig: {
+          jsx: 'react-jsx',
+        },
       },
-    },
+    ],
   },
+  transformIgnorePatterns: ['/node_modules/'],
   testPathIgnorePatterns: ['/node_modules/', '/.next/'],
 };

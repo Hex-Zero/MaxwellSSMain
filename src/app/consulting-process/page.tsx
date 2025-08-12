@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import type { ReactElement } from 'react';
 
 export const metadata: Metadata = {
   title: 'Process — Maxwell Software Solutions',
@@ -13,7 +14,7 @@ const steps = [
   { title: 'Sustain', text: 'Docs, runbooks, metrics tracking, and continuous improvement.' },
 ];
 
-export default function ProcessPage() {
+export default function ProcessPage(): ReactElement {
   return (
     <div className="max-w-6xl mx-auto px-6 sm:px-10 py-12">
       <h1 className="text-3xl sm:text-4xl font-bold">Process</h1>

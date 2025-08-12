@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-export default function ScrollEffects() {
+export default function ScrollEffects(): null {
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -31,7 +31,7 @@ export default function ScrollEffects() {
     const parallaxEls = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
     let rafId = 0;
 
-    const update = () => {
+    const update = (): void => {
       for (const el of parallaxEls) {
         const speedAttr = el.getAttribute('data-parallax');
         const speed = speedAttr ? Number(speedAttr) : 0.15; // 0..1
@@ -47,7 +47,7 @@ export default function ScrollEffects() {
     };
 
     rafId = window.requestAnimationFrame(update);
-    const onResize = () => {
+    const onResize = (): void => {
       cancelAnimationFrame(rafId);
       rafId = window.requestAnimationFrame(update);
     };

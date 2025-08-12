@@ -1,4 +1,6 @@
-export default function LogoStrip() {
+import type { ReactElement } from 'react';
+
+export default function LogoStrip(): ReactElement {
   const logos = ['Acme', 'Nimbus', 'Helios', 'Orbit', 'Vertex', 'Lumina'];
   return (
     <div className="container section" data-reveal>

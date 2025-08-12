@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import type { ReactElement } from 'react';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
@@ -24,7 +25,7 @@ const sample = [
   },
 ];
 
-export default function CaseStudiesIndex() {
+export default function CaseStudiesIndex(): ReactElement {
   return (
     <div className="container section" data-reveal>
       <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Case studies</h1>

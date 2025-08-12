@@ -1,4 +1,6 @@
-export default function SiteFooter() {
+import type { ReactElement } from 'react';
+
+export default function SiteFooter(): ReactElement {
   return (
     <footer className="hairline">
       <div className="container section text-sm muted flex flex-col sm:flex-row items-center justify-between gap-4">

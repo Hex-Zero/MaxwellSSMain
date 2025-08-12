@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import type { ReactElement } from 'react';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -7,7 +8,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+export default async function Page({ params }: { params: Promise<{ slug: string }> }): Promise<ReactElement> {
   const { slug } = await params;
   const title = slug.replace(/-/g, ' ');
   return (

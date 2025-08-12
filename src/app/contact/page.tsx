@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
+import type { ReactElement } from 'react';
 
 export const metadata: Metadata = {
   title: 'Contact — Maxwell Software Solutions',
   description: 'Request a code audit or book a consultation.',
 };
 
-export default function ContactPage() {
+export default function ContactPage(): ReactElement {
   return (
     <div className="max-w-3xl mx-auto px-6 sm:px-10 py-12">
       <h1 className="text-3xl sm:text-4xl font-bold">Contact</h1>

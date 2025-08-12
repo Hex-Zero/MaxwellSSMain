@@ -1,7 +1,8 @@
-import LogoStrip from '@/app/components/LogoStrip';
+import type { ReactElement } from 'react';
+import ClientLogos from '@/app/components/ClientLogos';
 import Image from 'next/image';
 
-export default function Home() {
+export default function Home(): ReactElement {
   return (
     <main className="min-h-screen font-sans">
       <section className="hero-gradient section">
@@ -47,7 +48,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <LogoStrip />
+      <ClientLogos />
       {/* Full-bleed banner */}
       <section>
         <div className="container" data-reveal>

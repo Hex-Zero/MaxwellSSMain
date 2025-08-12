@@ -1,12 +1,13 @@
 import Image from 'next/image';
 import type { Metadata } from 'next';
+import type { ReactElement } from 'react';
 
 export const metadata: Metadata = {
   title: 'Services — Maxwell Software Solutions',
   description: 'Code quality audits, reliability engineering, testing strategy, and CI/CD hardening.',
 };
 
-export default function ServicesPage() {
+export default function ServicesPage(): ReactElement {
   return (
     <div className="container section" data-reveal>
       <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">Services</h1>
