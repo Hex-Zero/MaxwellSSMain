@@ -1,15 +1,15 @@
 import type { Metadata } from 'next';
 
-type Params = { slug: string };
-
-export function generateMetadata({ params }: { params: Params }): Metadata {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
   return {
-    title: `${params.slug.replace(/-/g, ' ')} — Case Study | Maxwell Software Solutions`,
+    title: `${slug.replace(/-/g, ' ')} — Case Study | Maxwell Software Solutions`,
   };
 }
 
-export default function CaseStudyPage({ params }: { params: Params }) {
-  const title = params.slug.replace(/-/g, ' ');
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const title = slug.replace(/-/g, ' ');
   return (
     <div className="max-w-3xl mx-auto px-6 sm:px-10 py-12">
       <p className="text-sm text-foreground/60">Case study</p>

@@ -26,3 +26,13 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Subtle gold-tinted hero background */
+.hero-gradient {
+  background-image: radial-gradient(
+    120% 80% at 50% 0%,
+    rgba(139, 107, 0, 0.12) 0%,
+    rgba(139, 107, 0, 0.06) 30%,
+    transparent 60%
+  );
+}
