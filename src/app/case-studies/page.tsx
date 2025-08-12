@@ -26,19 +26,15 @@ const sample = [
 
 export default function CaseStudiesIndex() {
   return (
-    <div className="max-w-6xl mx-auto px-6 sm:px-10 py-12">
-      <h1 className="text-3xl sm:text-4xl font-bold">Case studies</h1>
-      <p className="mt-3 text-foreground/80 max-w-2xl">
+    <div className="container section" data-reveal>
+      <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Case studies</h1>
+      <p className="mt-3 lead max-w-2xl">
         Selected results across industries. Each study includes context, actions, and measurable outcomes.
       </p>
 
-      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" data-reveal>
         {sample.map((c) => (
-          <Link
-            key={c.slug}
-            href={`/case-studies/${c.slug}`}
-            className="rounded-lg border border-foreground/10 p-5 block hover:bg-foreground/5"
-          >
+          <Link key={c.slug} href={`/case-studies/${c.slug}`} className="card shadow-soft p-5 block hover:opacity-90">
             <h2 className="text-lg font-semibold">{c.title}</h2>
             <p className="mt-2 text-sm text-foreground/80">{c.summary}</p>
           </Link>
