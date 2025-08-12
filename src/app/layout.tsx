@@ -30,7 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* Global scroll effects (no UI) */}
-        <ParallaxScrollEffects />
+        <ParallaxScrollEffects key="scroll-effects" />
         <header className="sticky top-0 z-50 header-glass border-b border-foreground/10">
           <nav className="container h-14 flex items-center justify-between">
             <Link href="/" className="font-semibold">
