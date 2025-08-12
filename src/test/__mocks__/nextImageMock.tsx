@@ -6,7 +6,6 @@ type Props = ImgHTMLAttributes<HTMLImageElement> & { alt?: string; priority?: bo
 
 // Simple mock for next/image in tests
 const NextImage = ({ alt = '', priority, ...props }: Props): ReactElement => {
-  // eslint-disable-line @typescript-eslint/no-unused-vars
   // Remove priority prop as it's not valid for img elements
   return <img alt={alt} {...props} />;
 };
