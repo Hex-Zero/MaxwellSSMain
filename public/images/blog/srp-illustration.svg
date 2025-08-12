@@ -1,0 +1,56 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8f9fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e9ecef;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B6B00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="url(#bgGradient)"/>
+  
+  <!-- Title -->
+  <text x="200" y="30" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="18" font-weight="bold">Single Responsibility Principle</text>
+  
+  <!-- Good Example: Focused Class -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="120" height="80" rx="8" fill="url(#accentGradient)" filter="url(#shadow)"/>
+    <text x="60" y="25" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">UserAuthentication</text>
+    <line x1="10" y1="35" x2="110" y2="35" stroke="white" stroke-width="1" opacity="0.3"/>
+    <text x="60" y="50" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="11">+ login()</text>
+    <text x="60" y="65" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="11">+ logout()</text>
+  </g>
+  
+  <!-- Single Responsibility Icon -->
+  <g transform="translate(200, 100)">
+    <circle cx="0" cy="0" r="25" fill="#8B6B00" opacity="0.1"/>
+    <circle cx="0" cy="0" r="20" fill="#8B6B00" opacity="0.2"/>
+    <circle cx="0" cy="0" r="15" fill="#8B6B00" opacity="0.3"/>
+    <circle cx="0" cy="0" r="10" fill="#8B6B00" opacity="0.4"/>
+    <circle cx="0" cy="0" r="5" fill="#8B6B00" opacity="0.5"/>
+  </g>
+  
+  <!-- Bad Example: Multi-responsibility Class -->
+  <g transform="translate(230, 80)">
+    <rect x="0" y="0" width="120" height="80" rx="8" fill="#dc3545" filter="url(#shadow)"/>
+    <text x="60" y="25" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">UserManager</text>
+    <line x1="10" y1="35" x2="110" y2="35" stroke="white" stroke-width="1" opacity="0.3"/>
+    <text x="60" y="50" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="11">+ login()</text>
+    <text x="60" y="65" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="11">+ sendEmail()</text>
+  </g>
+  
+  <!-- Labels -->
+  <text x="110" y="180" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="14" font-weight="600">✅ Good</text>
+  <text x="290" y="180" text-anchor="middle" fill="#dc3545" font-family="Arial, sans-serif" font-size="14" font-weight="600">❌ Bad</text>
+  
+  <!-- Description -->
+  <text x="200" y="220" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="12" opacity="0.8">One class, one responsibility</text>
+  <text x="200" y="240" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="12" opacity="0.8">Easy to test and maintain</text>
+</svg>
