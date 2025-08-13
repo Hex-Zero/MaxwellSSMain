@@ -10,14 +10,17 @@ export default function ScrollEffects(): null {
   const lastScrollY = useRef<number>(0);
   const ticking = useRef<boolean>(false);
 
-  const updateParallax = useCallback((scrollY: number) => {
-    const parallaxEls = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
+  const updateParallax = useCallback(() => {
+    // Use more efficient querySelector and reduce DOM queries
+    const parallaxEls = document.querySelectorAll<HTMLElement>('[data-parallax]');
+    const viewportH = window.innerHeight || document.documentElement.clientHeight;
 
-    for (const el of parallaxEls) {
+    for (let i = 0; i < parallaxEls.length; i++) {
+      const el = parallaxEls[i];
+      if (!el) continue;
       const speedAttr = el.getAttribute('data-parallax');
       const speed = speedAttr ? Number(speedAttr) : 0.15;
       const rect = el.getBoundingClientRect();
-      const viewportH = window.innerHeight || document.documentElement.clientHeight;
       const center = rect.top + rect.height / 2;
       const delta = center - viewportH / 2;
       const maxShift = 24;
@@ -34,7 +37,7 @@ export default function ScrollEffects(): null {
 
     if (!ticking.current) {
       ticking.current = true;
-      rafIdRef.current = window.requestAnimationFrame(() => updateParallax(scrollY));
+      rafIdRef.current = window.requestAnimationFrame(() => updateParallax());
     }
   }, [updateParallax]);
 

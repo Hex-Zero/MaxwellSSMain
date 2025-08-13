@@ -24,9 +24,5 @@ module.exports = {
   testEnvironmentOptions: {
     customExportConditions: [''],
   },
-  globals: {
-    'ts-jest': {
-      useESM: true,
-    },
-  },
+  // Removed deprecated globals configuration
 };

@@ -1,6 +1,12 @@
 import type { ReactElement } from 'react';
-import ClientLogos from '@/app/components/ClientLogos';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
+
+// Dynamically import non-critical components
+const ClientLogos = dynamic(() => import('@/app/components/ClientLogos'), {
+  loading: () => <div className="h-20 bg-gray-100 animate-pulse rounded" />,
+  ssr: true,
+});
 
 export default function Home(): ReactElement {
   return (
@@ -31,6 +37,8 @@ export default function Home(): ReactElement {
                 priority
                 placeholder="blur"
                 blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYwMCIgaGVpZ2h0PSI5MDAiIHZpZXdCb3g9IjAgMCAxNjAwIDkwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjE2MDAiIGhlaWdodD0iOTAwIiBmaWxsPSIjZjNmNGY2Ii8+Cjwvc3ZnPgo="
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                fetchPriority="high"
               />
             </div>
           </div>

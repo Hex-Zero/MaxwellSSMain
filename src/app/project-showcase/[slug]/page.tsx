@@ -153,7 +153,7 @@ export default async function Page({ params }: { params: Promise<{ slug: Slug }>
       </header>
 
       <div className="relative h-64 sm:h-80 rounded-2xl overflow-hidden mb-10">
-        <Image src={c.hero} alt={c.title} fill unoptimized className="object-cover" priority />
+        <Image src={c.hero} alt={c.title} fill className="object-cover" priority />
       </div>
 
       <section className="grid md:grid-cols-2 gap-8 mb-12">

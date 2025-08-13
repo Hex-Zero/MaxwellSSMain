@@ -14,7 +14,15 @@ const nextConfig: NextConfig = {
   // Performance optimizations
   experimental: {
     optimizePackageImports: ['@next/font'],
+    // Enable streaming
+    serverActions: {
+      bodySizeLimit: '2mb',
+    },
   },
+  // Server external packages
+  serverExternalPackages: [],
+  // Enable static generation for better performance
+  // output: 'standalone', // Disabled due to Windows symlink issues
   // Image optimization
   images: {
     formats: ['image/webp', 'image/avif'],
@@ -118,6 +126,33 @@ const nextConfig: NextConfig = {
 
       // Minimize CSS
       config.optimization.minimize = true;
+
+      // Optimize bundle size
+      config.optimization.minimizer.push(
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              drop_console: !dev,
+              drop_debugger: !dev,
+              pure_funcs: !dev ? ['console.log', 'console.info', 'console.debug', 'console.warn'] : [],
+            },
+            mangle: {
+              safari10: true,
+            },
+            format: {
+              comments: false,
+            },
+          },
+          extractComments: false,
+        })
+      );
+
+      // Increase bundle size limits for better performance
+      config.performance = {
+        hints: 'warning',
+        maxEntrypointSize: 1024000, // 1MB
+        maxAssetSize: 1024000, // 1MB
+      };
     }
 
     // Development optimizations
@@ -162,10 +197,23 @@ const nextConfig: NextConfig = {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
           },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=3600, s-maxage=86400',
+          },
         ],
       },
       {
         source: '/_next/static/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/images/(.*)',
         headers: [
           {
             key: 'Cache-Control',
