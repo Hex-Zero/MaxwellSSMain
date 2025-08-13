@@ -68,6 +68,48 @@ const CASES = {
       'Added distributed tracing and log sampling; removed noisy alerts.',
       'Codified incident runbooks; introduced game days and postmortems.',
     ],
+    process: [
+      {
+        heading: 'Week 1–2: Discovery & SLO Definition',
+        bullets: [
+          'Stakeholder interviews to map critical user journeys and reliability goals.',
+          'Drafted SLIs for availability, latency, and correctness for the top 3 journeys.',
+          'Aligned targets with product and support; published initial SLOs with error budgets.',
+        ],
+      },
+      {
+        heading: 'Week 3–4: Observability Baseline',
+        bullets: [
+          'Implemented tracing across gateway and top services; standardized log fields.',
+          'Set exemplar dashboards for latency distributions and saturation signals.',
+          'Introduced synthetic checks for critical workflows and regions.',
+        ],
+      },
+      {
+        heading: 'Week 5–7: Alert Hygiene & On‑call',
+        bullets: [
+          'Eliminated non-actionable alerts; tied alerts to SLO burn rates.',
+          'Created escalation policies and ownership maps; rotated shadow on‑call.',
+          'Documented runbooks for top 5 recurring incidents with verification steps.',
+        ],
+      },
+      {
+        heading: 'Week 8–10: Resilience & Cost',
+        bullets: [
+          'Introduced circuit breakers and bulkheads on noisy dependencies.',
+          'Right-sized workloads; moved batch jobs off peak to cut spend 18%.',
+          'Established change freeze windows and feature flags for risky deployments.',
+        ],
+      },
+      {
+        heading: 'Week 11–12: Game Day & Handover',
+        bullets: [
+          'Ran failure injection scenarios; measured detection, diagnosis, recovery.',
+          'Closed gaps from postmortems; trained leads on SLO reviews and budget policies.',
+          'Handover checklist and 90‑day reliability roadmap approved by stakeholders.',
+        ],
+      },
+    ],
     results: [
       'MTTR reduced 45% with clearer on-call guidance.',
       'Alert noise down 60%; engineers report higher focus time.',
@@ -111,7 +153,7 @@ export default async function Page({ params }: { params: Promise<{ slug: Slug }>
       </header>
 
       <div className="relative h-64 sm:h-80 rounded-2xl overflow-hidden mb-10">
-        <Image src={c.hero} alt={c.title} fill className="object-cover" priority />
+        <Image src={c.hero} alt={c.title} fill unoptimized className="object-cover" priority />
       </div>
 
       <section className="grid md:grid-cols-2 gap-8 mb-12">
@@ -132,6 +174,24 @@ export default async function Page({ params }: { params: Promise<{ slug: Slug }>
           </ul>
         </div>
       </section>
+
+      {'process' in c ? (
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold mb-4">Process</h2>
+          <div className="space-y-6">
+            {c.process!.map((step) => (
+              <div key={step.heading} className="card p-5">
+                <h3 className="text-lg font-semibold mb-2">{step.heading}</h3>
+                <ul className="list-disc pl-5 space-y-1 text-foreground/80">
+                  {step.bullets.map((b) => (
+                    <li key={b}>{b}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-3">Results</h2>
