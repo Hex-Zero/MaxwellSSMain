@@ -1,27 +1,34 @@
 import type { Metadata } from 'next';
 import type { ReactElement } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Case Studies — Maxwell Software Solutions',
   description: 'Real results from code quality and reliability engagements.',
 };
 
-const sample = [
+const studies = [
   {
     slug: 'retail-platform',
     title: 'Retail platform — escaped defects down 58%',
     summary: 'Stabilized CI, added SLOs, refactored brittle modules.',
+    image: '/images/case-studies/retail-platform.svg',
+    meta: 'E‑commerce · Node/Next · 6 months',
   },
   {
     slug: 'fintech-api',
     title: 'Fintech API — coverage up 32%',
-    summary: 'Contract tests + golden tests; faster incident resolution.',
+    summary: 'Contract + golden tests, faster incident resolution.',
+    image: '/images/case-studies/fintech-api.svg',
+    meta: 'Fintech · Go/TypeScript · 3 months',
   },
   {
     slug: 'saas-migration',
     title: 'SaaS migration — MTTR down 45%',
-    summary: 'Observability and runbooks enabled quick recovery.',
+    summary: 'Observability, SLOs, and automated runbooks.',
+    image: '/images/case-studies/saas-migration.svg',
+    meta: 'B2B SaaS · Kubernetes · 4 months',
   },
 ];
 
@@ -34,10 +41,25 @@ export default function CaseStudiesIndex(): ReactElement {
       </p>
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" data-reveal>
-        {sample.map((c) => (
-          <Link key={c.slug} href={`/case-studies/${c.slug}`} className="card shadow-soft p-5 block hover:opacity-90">
-            <h2 className="text-lg font-semibold">{c.title}</h2>
-            <p className="mt-2 text-sm text-foreground/80">{c.summary}</p>
+        {studies.map((c) => (
+          <Link
+            key={c.slug}
+            href={`/project-showcase/${c.slug}`}
+            className="card shadow-soft block overflow-hidden group"
+          >
+            <div className="relative h-36">
+              <Image
+                src={c.image}
+                alt={c.title}
+                fill
+                className="object-cover group-hover:scale-[1.02] transition-transform"
+              />
+            </div>
+            <div className="p-5">
+              <div className="text-xs text-foreground/60 mb-1">{c.meta}</div>
+              <h2 className="text-lg font-semibold group-hover:text-accent transition-colors">{c.title}</h2>
+              <p className="mt-2 text-sm text-foreground/80">{c.summary}</p>
+            </div>
           </Link>
         ))}
       </div>
