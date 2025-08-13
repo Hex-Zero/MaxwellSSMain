@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import 'jest-axe/extend-expect';
 import * as React from 'react';
 
 // Mock next/navigation for tests
