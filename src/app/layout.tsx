@@ -20,6 +20,35 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Maxwell — Modern Web Experiences',
   description: 'Iterate on your site live with AI-driven edits.',
+  metadataBase: new URL('https://maxwell-software.com'),
+  openGraph: {
+    title: 'Maxwell — Modern Web Experiences',
+    description: 'Iterate on your site live with AI-driven edits.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Maxwell — Modern Web Experiences',
+    description: 'Iterate on your site live with AI-driven edits.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: '/',
+  },
+  manifest: '/manifest.json',
+  icons: {
+    icon: '/logo.svg',
+    apple: '/logo.svg',
+  },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+  },
+  themeColor: '#8B6B00',
 };
 
 export default function RootLayout({

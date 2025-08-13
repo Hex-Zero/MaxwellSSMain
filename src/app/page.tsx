@@ -29,6 +29,8 @@ export default function Home(): ReactElement {
                 width={1600}
                 height={900}
                 priority
+                placeholder="blur"
+                blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYwMCIgaGVpZ2h0PSI5MDAiIHZpZXdCb3g9IjAgMCAxNjAwIDkwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjE2MDAiIGhlaWdodD0iOTAwIiBmaWxsPSIjZjNmNGY2Ii8+Cjwvc3ZnPgo="
               />
             </div>
           </div>
@@ -59,6 +61,7 @@ export default function Home(): ReactElement {
               width={2400}
               height={640}
               sizes="(min-width: 1024px) 1024px, 100vw"
+              loading="lazy"
             />
           </div>
         </div>

@@ -1,12 +1,42 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 
 export default function ScrollEffects(): null {
   const pathname = usePathname();
   const observerRef = useRef<IntersectionObserver | null>(null);
   const rafIdRef = useRef<number>(0);
+  const lastScrollY = useRef<number>(0);
+  const ticking = useRef<boolean>(false);
+
+  const updateParallax = useCallback((scrollY: number) => {
+    const parallaxEls = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
+
+    for (const el of parallaxEls) {
+      const speedAttr = el.getAttribute('data-parallax');
+      const speed = speedAttr ? Number(speedAttr) : 0.15;
+      const rect = el.getBoundingClientRect();
+      const viewportH = window.innerHeight || document.documentElement.clientHeight;
+      const center = rect.top + rect.height / 2;
+      const delta = center - viewportH / 2;
+      const maxShift = 24;
+      const y = Math.max(-maxShift, Math.min(maxShift, ((-delta * speed) / viewportH) * 2 * maxShift));
+      el.style.setProperty('--y', `${y.toFixed(2)}px`);
+    }
+
+    ticking.current = false;
+  }, []);
+
+  const handleScroll = useCallback(() => {
+    const scrollY = window.scrollY;
+    lastScrollY.current = scrollY;
+
+    if (!ticking.current) {
+      ticking.current = true;
+      rafIdRef.current = window.requestAnimationFrame(() => updateParallax(scrollY));
+    }
+  }, [updateParallax]);
 
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -42,31 +72,8 @@ export default function ScrollEffects(): null {
         return;
       }
 
-      // Parallax on scroll
-      const parallaxEls = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
-
-      const update = (): void => {
-        for (const el of parallaxEls) {
-          const speedAttr = el.getAttribute('data-parallax');
-          const speed = speedAttr ? Number(speedAttr) : 0.15; // 0..1
-          const rect = el.getBoundingClientRect();
-          const viewportH = window.innerHeight || document.documentElement.clientHeight;
-          const center = rect.top + rect.height / 2;
-          const delta = center - viewportH / 2; // positive when below center
-          const maxShift = 24; // px, tasteful
-          const y = Math.max(-maxShift, Math.min(maxShift, ((-delta * speed) / viewportH) * 2 * maxShift));
-          el.style.setProperty('--y', `${y.toFixed(2)}px`);
-        }
-        rafIdRef.current = window.requestAnimationFrame(update);
-      };
-
-      rafIdRef.current = window.requestAnimationFrame(update);
-
-      const onResize = (): void => {
-        cancelAnimationFrame(rafIdRef.current);
-        rafIdRef.current = window.requestAnimationFrame(update);
-      };
-      window.addEventListener('resize', onResize);
+      // Use passive scroll listener for better performance
+      window.addEventListener('scroll', handleScroll, { passive: true });
     };
 
     // Small delay to ensure DOM is ready after navigation
@@ -80,8 +87,9 @@ export default function ScrollEffects(): null {
       if (rafIdRef.current) {
         cancelAnimationFrame(rafIdRef.current);
       }
+      window.removeEventListener('scroll', handleScroll);
     };
-  }, [pathname]); // Re-run when pathname changes
+  }, [pathname, handleScroll]); // Re-run when pathname changes
 
   return null;
 }
