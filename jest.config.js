@@ -21,4 +21,12 @@ module.exports = {
   },
   transformIgnorePatterns: ['/node_modules/'],
   testPathIgnorePatterns: ['/node_modules/', '/.next/'],
+  testEnvironmentOptions: {
+    customExportConditions: [''],
+  },
+  globals: {
+    'ts-jest': {
+      useESM: true,
+    },
+  },
 };
