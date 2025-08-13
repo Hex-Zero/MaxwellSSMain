@@ -9,9 +9,9 @@ export default function SiteFooter(): ReactElement {
           <Image
             src="/logo-simple.svg"
             alt="Maxwell Software Solutions"
-            width={120}
-            height={24}
-            className="h-6 w-auto opacity-80"
+            width={240}
+            height={48}
+            className="h-9 w-auto opacity-80"
           />
           <span className="text-foreground/60">© {new Date().getFullYear()}</span>
         </div>
