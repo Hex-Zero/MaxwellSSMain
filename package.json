@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "pnpm run test && next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "pnpm run lint && pnpm run typecheck && jest",
+    "test": "pnpm run typecheck && jest",
     "test:watch": "jest --watch"
   },
   "dependencies": {

@@ -1,10 +1,20 @@
 import type { ReactElement } from 'react';
+import Image from 'next/image';
 
 export default function SiteFooter(): ReactElement {
   return (
     <footer className="hairline">
       <div className="container section text-sm muted flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>© {new Date().getFullYear()} Maxwell Software Solutions</div>
+        <div className="flex items-center gap-3">
+          <Image
+            src="/logo-simple.svg"
+            alt="Maxwell Software Solutions"
+            width={120}
+            height={24}
+            className="h-6 w-auto opacity-80"
+          />
+          <span className="text-foreground/60">© {new Date().getFullYear()}</span>
+        </div>
         <nav className="flex gap-4">
           <a href="/privacy">Privacy</a>
           <a href="/terms">Terms</a>
