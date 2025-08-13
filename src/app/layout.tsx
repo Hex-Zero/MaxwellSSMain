@@ -40,8 +40,12 @@ export const metadata: Metadata = {
   },
   manifest: '/manifest.json',
   icons: {
-    icon: '/logo.svg',
-    apple: '/logo.svg',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/logo-icon.svg', sizes: '64x64', type: 'image/svg+xml' },
+    ],
+    apple: '/logo-icon.svg',
+    shortcut: '/favicon.svg',
   },
   viewport: {
     width: 'device-width',
