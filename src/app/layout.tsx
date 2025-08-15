@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactElement } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import HeaderNav from './components/HeaderNav';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import ParallaxScrollEffects from '@/app/components/ParallaxScrollEffects';
@@ -68,6 +67,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <a href="#main-content" className="skip-link">Skip to main content</a>
         {/* Global scroll effects (no UI) */}
         <ParallaxScrollEffects key="scroll-effects" />
         {/* Preload critical resources */}
@@ -87,33 +87,35 @@ export default function RootLayout({
             .header-glass { background-color: rgba(255, 255, 255, 0.78); backdrop-filter: saturate(180%) blur(12px); }
             .container { max-width: 80rem; margin-inline: auto; padding-inline: 1.5rem; }
             .hero-gradient { background-image: radial-gradient(120% 80% at 50% 0%, rgba(139, 107, 0, 0.12) 0%, rgba(139, 107, 0, 0.06) 30%, transparent 60%); }
+              /* Mobile (<600px): hide nav links, leave only logo */
+              .nav-links { display:none; }
+              .menu-toggle { background:none; border:0; color:#111; display:inline-flex; align-items:center; justify-content:center; }
+              .menu-toggle { width:2.5rem; height:2.5rem; }
+              .mobile-nav { position:fixed; top:0; right:0; bottom:0; width:min(18rem,80%); background:rgba(15,23,42,0.92); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); color:#f1f5f9; padding:5rem 2rem 2rem; display:flex; flex-direction:column; transform:translateX(100%); transition:transform .35s cubic-bezier(.4,0,.2,1); box-shadow:-8px 0 24px -8px rgba(0,0,0,.4); }
+              .mobile-nav.open { transform:translateX(0); }
+              .mobile-nav a { color:#f1f5f9; text-decoration:none; }
+              .mobile-nav a:hover { color:#fff; }
+              .menu-close { background:none; border:0; color:inherit; display:inline-flex; }
+              .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+              .nav-overlay { position:fixed; inset:0; background:rgba(15,23,42,0.55); backdrop-filter:blur(2px); opacity:0; pointer-events:none; transition:opacity .3s; z-index:45; }
+              .nav-overlay.open { opacity:1; pointer-events:auto; }
+              [inert] { pointer-events:none; user-select:none; opacity:0.6; }
+              header { z-index:40; }
+              .mobile-nav { z-index:50; }
+              .site-logo { height:2.5rem; }
+              .skip-link { position:absolute; top:-40px; left:0; background:#111; color:#fff; padding:.5rem 1rem; z-index:100; text-decoration:none; font-size:.875rem; border-radius:0 0 .25rem .25rem; transition:top .2s; }
+              .skip-link:focus { top:0; }
+              @media (min-width:600px){
+                .nav-links { display:flex; align-items:center; gap:1.25rem; font-size:0.875rem; }
+                .menu-toggle, .mobile-nav { display:none; }
+                .site-logo { height:3rem; }
+              }
           `,
           }}
         />
 
         <header className="sticky top-0 z-50 header-glass border-b border-foreground/10">
-          <nav className="container h-14 flex items-center justify-between">
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/logo.svg"
-                alt="Maxwell Software Solutions"
-                width={300}
-                height={60}
-                className="h-12 w-auto"
-                priority
-              />
-            </Link>
-            <div className="flex items-center gap-5 text-sm">
-              <Link href="/services">Services</Link>
-              <Link href="/project-showcase">Case studies</Link>
-              <Link href="/consulting-process">Process</Link>
-              <Link href="/about">About</Link>
-              <Link href="/blog">Blog</Link>
-              <Link href="/contact" className="btn btn-ghost">
-                Contact
-              </Link>
-            </div>
-          </nav>
+          <HeaderNav />
         </header>
         <main>{children}</main>
         <AppFooter />

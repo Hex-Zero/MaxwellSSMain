@@ -8,10 +8,35 @@ const ClientLogos = dynamic(() => import('@/app/components/ClientLogos'), {
   loading: () => <div className="h-20 bg-gray-100 animate-pulse rounded" />,
   ssr: true,
 });
+// Code-split non-critical sections (improves initial bundle & TTI)
+const TestimonialsSection = dynamic(() => import('@/app/components/TestimonialsSection'), {
+  loading: () => (
+    <section className="px-6 sm:px-10 py-20 border-t border-foreground/10">
+      <p className="text-sm text-foreground/50">Loading testimonials…</p>
+    </section>
+  ),
+  ssr: true,
+});
+const DarkShowcaseSection = dynamic(() => import('@/app/components/DarkShowcaseSection'), {
+  loading: () => (
+    <section className="px-6 sm:px-10 py-24 border-t border-foreground/10">
+      <p className="text-sm text-foreground/50">Preparing showcase…</p>
+    </section>
+  ),
+  ssr: true,
+});
+const FinalCtaSection = dynamic(() => import('@/app/components/FinalCtaSection'), {
+  loading: () => (
+    <section className="px-6 sm:px-10 py-24 border-t border-foreground/10">
+      <p className="text-sm text-foreground/50">Loading call to action…</p>
+    </section>
+  ),
+  ssr: true,
+});
 
 export default function Home(): ReactElement {
   return (
-    <main className="min-h-screen font-sans">
+    <main className="min-h-screen font-sans" id="main-content">
       <section className="relative hero-gradient section overflow-hidden">
         {/* Decorative background layers */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0">
@@ -90,7 +115,8 @@ export default function Home(): ReactElement {
               },
             ].map((v) => (
               <div key={v.title} className="card p-5 shadow-soft h-full flex flex-col">
-                <h3 className="font-semibold text-lg tracking-tight">{v.title}</h3>
+                {/* Promote to h2 to establish correct hierarchy before any h3 usage */}
+                <h2 className="font-semibold text-lg tracking-tight">{v.title}</h2>
                 <p className="mt-2 text-sm text-foreground/80 leading-relaxed">{v.body}</p>
               </div>
             ))}
@@ -335,38 +361,7 @@ export default function Home(): ReactElement {
         </div>
       </section>
 
-      {/* Testimonials / social proof placeholder */}
-      <section className="px-6 sm:px-10 py-20 border-t border-foreground/10" aria-labelledby="testimonials-heading">
-        <div className="max-w-6xl mx-auto" data-reveal>
-          <h2 id="testimonials-heading" className="text-3xl sm:text-4xl font-semibold tracking-tight">
-            Client perspective
-          </h2>
-          <div className="mt-10 grid gap-8 md:grid-cols-3">
-            {[
-              {
-                quote:
-                  'They reduced build flakiness and restructured our test pyramid—deployment confidence went up immediately.',
-                author: 'VP Engineering, SaaS Platform',
-              },
-              {
-                quote: 'Our critical path refactor shipped 6 weeks earlier with their architectural guidance.',
-                author: 'Director of Engineering, FinTech',
-              },
-              {
-                quote: 'Actionable audit, crisp patterns, and measurable reliability improvements across services.',
-                author: 'Principal Engineer, Retail',
-              },
-            ].map((t) => (
-              <figure key={t.author} className="card shadow-soft p-6 flex flex-col justify-between">
-                <blockquote className="text-sm leading-relaxed text-foreground/80">“{t.quote}”</blockquote>
-                <figcaption className="mt-4 text-xs font-medium uppercase tracking-wide text-foreground/60">
-                  {t.author}
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
-      </section>
+  <TestimonialsSection />
 
       <section id="contact" className="px-6 sm:px-10 py-16 border-t border-foreground/10">
         <div className="max-w-6xl mx-auto">
@@ -393,64 +388,8 @@ export default function Home(): ReactElement {
           </div>
         </div>
       </section>
-      {/* Dark showcase band */}
-      <section
-        className="relative border-t border-foreground/10 bg-neutral-950 text-neutral-50"
-        aria-labelledby="showcase-heading"
-      >
-        <div
-          className="absolute inset-0 opacity-[0.15] bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.4),transparent_60%)]"
-          aria-hidden="true"
-        />
-        <div className="container py-24 sm:py-32 relative">
-          <div className="max-w-5xl mx-auto text-center" data-reveal>
-            <h2 id="showcase-heading" className="text-3xl sm:text-5xl font-semibold tracking-tight">
-              Engineering leverage, not headcount.
-            </h2>
-            <p className="mt-6 text-neutral-300 text-lg leading-relaxed max-w-3xl mx-auto">
-              We focus on multiplier work—reducing defect surfaces, shrinking lead time to change, and embedding
-              patterns that keep systems adaptable as complexity scales.
-            </p>
-          </div>
-          <div className="mt-16 grid gap-6 md:grid-cols-3" data-reveal>
-            {[
-              { title: 'Architecture clarity', body: 'Surface hidden dependencies & simplify coupling.' },
-              { title: 'Confidence metrics', body: 'Meaningful coverage + mutation + failure trend insight.' },
-              { title: 'Operational readiness', body: 'Proactive SLOs, trace probes & incident rehearsal.' },
-            ].map((f) => (
-              <div
-                key={f.title}
-                className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 flex flex-col"
-              >
-                <h3 className="font-medium tracking-tight text-lg">{f.title}</h3>
-                <p className="mt-2 text-sm text-neutral-300 leading-relaxed">{f.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      {/* Closing CTA */}
-      <section
-        className="px-6 sm:px-10 py-24 border-t border-foreground/10 bg-gradient-to-b from-background to-background/50"
-        aria-labelledby="final-cta-heading"
-      >
-        <div className="max-w-5xl mx-auto text-center" data-reveal>
-          <h2 id="final-cta-heading" className="text-3xl sm:text-5xl font-semibold tracking-tight">
-            Make quality your velocity advantage.
-          </h2>
-          <p className="mt-6 text-lg text-foreground/70 max-w-2xl mx-auto leading-relaxed">
-            Audit first or targeted uplift—either way, we de-risk the roadmap and unlock faster, safer iteration.
-          </p>
-          <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-            <a href="/contact" className="btn btn-accent px-10 py-3 text-base">
-              Begin assessment
-            </a>
-            <a href="/services" className="btn btn-ghost px-10 py-3 text-base">
-              View services overview
-            </a>
-          </div>
-        </div>
-      </section>
+  <DarkShowcaseSection />
+  <FinalCtaSection />
     </main>
   );
 }

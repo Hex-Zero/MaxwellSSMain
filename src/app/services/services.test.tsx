@@ -4,10 +4,10 @@ import ServicesPage from './ServicesPage';
 
 expect.extend(toHaveNoViolations);
 
-describe('Services page', () => {
-  it('renders the main heading', () => {
+describe('Services & Process page', () => {
+  it('renders the combined main heading', () => {
     render(<ServicesPage />);
-    expect(screen.getByRole('heading', { name: /services/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /services & process/i })).toBeInTheDocument();
   });
 
   it('renders the lead description', () => {
@@ -33,9 +33,13 @@ describe('Services page', () => {
     expect(screen.getByText(/Fast, reliable pipelines with quality gates/i)).toBeInTheDocument();
   });
 
-  it('renders the call-to-action button', () => {
+  it('renders the process steps', () => {
     render(<ServicesPage />);
-    expect(screen.getByRole('link', { name: /request a code audit/i })).toBeInTheDocument();
+    expect(screen.getByText('Discover')).toBeInTheDocument();
+    expect(screen.getByText('Audit')).toBeInTheDocument();
+    expect(screen.getByText('Plan')).toBeInTheDocument();
+    expect(screen.getByText('Implement')).toBeInTheDocument();
+    expect(screen.getByText('Sustain')).toBeInTheDocument();
   });
 
   it('renders service icons with proper alt text', () => {
