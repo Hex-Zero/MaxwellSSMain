@@ -40,4 +40,22 @@ describe('About page', () => {
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
+
+  it('renders founders with roles and bios', () => {
+    render(<AboutPage />);
+    expect(screen.getByRole('heading', { name: /Founders/i })).toBeInTheDocument();
+    expect(screen.getByText('Maxwell Archer')).toBeInTheDocument();
+    expect(screen.getByText(/Software Engineer & SEO/i)).toBeInTheDocument();
+    expect(screen.getByText('Petras Rolinskij')).toBeInTheDocument();
+    expect(screen.getByText(/Design Director/i)).toBeInTheDocument();
+    expect(screen.getByText('Marek Wolosewicz')).toBeInTheDocument();
+    expect(screen.getByText(/Managing Director/i)).toBeInTheDocument();
+  });
+
+  it('renders accessible founder portrait images', () => {
+    render(<AboutPage />);
+    expect(screen.getByAltText(/Cartoon illustration of Maxwell Archer/i)).toBeInTheDocument();
+    expect(screen.getByAltText(/Cartoon illustration of Petras Rolinskij/i)).toBeInTheDocument();
+    expect(screen.getByAltText(/Cartoon illustration of Marek Wolosewicz/i)).toBeInTheDocument();
+  });
 });

@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "pnpm run lint && pnpm run typecheck && jest",
+  "test": "pnpm run lint && pnpm run typecheck && cross-env NODE_OPTIONS=--max_old_space_size=3072 jest --maxWorkers=50%",
     "test:full": "pnpm run lint && pnpm run typecheck && jest && pnpm run lighthouse",
     "test:watch": "jest --watch",
     "e2e": "playwright test",
