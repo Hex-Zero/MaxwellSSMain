@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import Home from './page';
+import Home from './HomePage';
 
 expect.extend(toHaveNoViolations);
 

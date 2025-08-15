@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import RefactoringLegacyCodePost from './page';
+import RefactoringLegacyCodePost from './RefactoringLegacyCodePost';
 
 expect.extend(toHaveNoViolations);
 

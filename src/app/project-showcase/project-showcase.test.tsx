@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import CaseStudiesIndex from './page';
+import CaseStudiesIndex from './CaseStudiesIndex';
 
 expect.extend(toHaveNoViolations);
 
@@ -48,7 +48,7 @@ describe('Project Showcase page', () => {
     render(<CaseStudiesIndex />);
     const mainHeading = screen.getByRole('heading', { level: 1 });
     expect(mainHeading).toHaveTextContent('Case studies');
-    
+
     const caseStudyHeadings = screen.getAllByRole('heading', { level: 2 });
     expect(caseStudyHeadings).toHaveLength(3);
   });
@@ -59,4 +59,3 @@ describe('Project Showcase page', () => {
     expect(results).toHaveNoViolations();
   });
 });
-

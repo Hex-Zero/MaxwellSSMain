@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import ServicesPage from './page';
+import ServicesPage from './ServicesPage';
 
 expect.extend(toHaveNoViolations);
 

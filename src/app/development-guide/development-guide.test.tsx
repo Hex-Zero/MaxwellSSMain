@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import PlaybookPage from './page';
+import PlaybookPage from './PlaybookPage';
 
 expect.extend(toHaveNoViolations);
 
@@ -35,4 +35,3 @@ describe('Development Guide page', () => {
     expect(results).toHaveNoViolations();
   });
 });
-

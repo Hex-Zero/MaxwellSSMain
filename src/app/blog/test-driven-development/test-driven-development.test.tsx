@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import TDDPost from './page';
+import TDDPost from './TDDPost';
 
 expect.extend(toHaveNoViolations);
 

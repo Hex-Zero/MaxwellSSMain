@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import AboutPage from './page';
+import AboutPage from './AboutPage';
 
 expect.extend(toHaveNoViolations);
 
@@ -41,4 +41,3 @@ describe('About page', () => {
     expect(results).toHaveNoViolations();
   });
 });
-

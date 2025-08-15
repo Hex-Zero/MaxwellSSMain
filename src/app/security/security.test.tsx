@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import SecurityPage from './page';
+import SecurityPage from './SecurityPage';
 
 expect.extend(toHaveNoViolations);
 
@@ -28,4 +28,3 @@ describe('Security page', () => {
     expect(results).toHaveNoViolations();
   });
 });
-

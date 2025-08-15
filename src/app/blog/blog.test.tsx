@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import BlogIndexPage from './page';
+import BlogIndexPage from './BlogIndexPage';
 
 expect.extend(toHaveNoViolations);
 

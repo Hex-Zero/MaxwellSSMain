@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import ProcessPage from './page';
+import ProcessPage from './ProcessPage';
 
 expect.extend(toHaveNoViolations);
 
@@ -49,7 +49,7 @@ describe('Consulting Process page', () => {
     render(<ProcessPage />);
     const mainHeading = screen.getByRole('heading', { level: 1 });
     expect(mainHeading).toHaveTextContent('Process');
-    
+
     const stepHeadings = screen.getAllByRole('heading', { level: 2 });
     expect(stepHeadings).toHaveLength(5);
   });
@@ -60,4 +60,3 @@ describe('Consulting Process page', () => {
     expect(results).toHaveNoViolations();
   });
 });
-
