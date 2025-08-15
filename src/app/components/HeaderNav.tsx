@@ -19,35 +19,43 @@ export default function HeaderNav(): ReactElement {
   }, []);
 
   // Prevent body scroll when menu open
-  // Handle open side-effects (scroll lock, inert, focus management, persistence)
+  // Handle open side-effects (scroll lock, inert, focus management)
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
     lastFocusedRef.current = document.activeElement as HTMLElement | null;
     document.body.style.overflow = 'hidden';
     // Focus first link
-    requestAnimationFrame(() => firstLinkRef.current?.focus());
+    requestAnimationFrame(() => {
+      if (firstLinkRef.current) {
+        firstLinkRef.current.focus();
+      } else {
+        // Fallback: focus first focusable inside panel
+        const panel = panelRef.current;
+        const candidate = panel?.querySelector<HTMLElement>('a,button');
+        candidate?.focus();
+      }
+      // Secondary fallback if prior attempt async fails
+      setTimeout(() => {
+        if (!panelRef.current) return;
+        if (panelRef.current.contains(document.activeElement)) return;
+        const alt = panelRef.current.querySelector<HTMLElement>('a,button');
+        alt?.focus();
+      }, 50);
+    });
     // Mark rest inert
     const main = document.querySelector('main');
     const footer = document.querySelector('footer');
-    main?.setAttribute('inert', '');
-    footer?.setAttribute('inert', '');
-    sessionStorage.setItem('navOpen', '1');
+  main?.setAttribute('inert', '');
+  footer?.setAttribute('inert', '');
     return () => {
       document.body.style.overflow = prev;
       main?.removeAttribute('inert');
       footer?.removeAttribute('inert');
-      sessionStorage.removeItem('navOpen');
       // Restore focus
       lastFocusedRef.current?.focus?.();
     };
   }, [open]);
-
-  // Initialize from persisted state (only on small screens)
-  useEffect(() => {
-    const stored = typeof window !== 'undefined' ? sessionStorage.getItem('navOpen') : null;
-    if (stored === '1' && window.innerWidth < 600) setOpen(true);
-  }, []);
 
   // Close menu automatically on resize to desktop
   useEffect(() => {
@@ -69,7 +77,9 @@ export default function HeaderNav(): ReactElement {
       if (!panel) return;
       const focusables = Array.from(panel.querySelectorAll<HTMLElement>(
         'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
-      )).filter(el => !el.hasAttribute('aria-hidden'));
+      ))
+        .filter(el => !el.hasAttribute('aria-hidden'))
+        .filter(el => !el.hasAttribute('data-focus-exclude'));
       if (focusables.length === 0) return;
   const first = focusables[0];
   const last = focusables[focusables.length - 1];
@@ -117,6 +127,7 @@ export default function HeaderNav(): ReactElement {
           aria-expanded={open}
           aria-controls="mobile-nav-panel"
           onClick={() => setOpen(o => !o)}
+          data-test="menu-toggle"
         >
           <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
           <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -131,17 +142,26 @@ export default function HeaderNav(): ReactElement {
             )}
           </svg>
         </button>
-        {/* Overlay to allow click outside to close */}
-        <div className={`nav-overlay ${open ? 'open' : ''}`} onClick={() => setOpen(false)} aria-hidden="true" />
+        {/* Overlay to allow click outside to close (render only when open to avoid flash) */}
+        {open && (
+          <div
+            className="nav-overlay open"
+            onClick={() => setOpen(false)}
+            aria-hidden="true"
+            data-test="nav-overlay"
+          />
+        )}
         {/* Mobile panel */}
         <div
           id="mobile-nav-panel"
           ref={panelRef}
           className={`mobile-nav ${open ? 'open' : ''}`}
           aria-hidden={!open}
-          aria-modal={open}
-          role="dialog"
+          role={open ? 'dialog' : undefined}
+          aria-modal={open ? 'true' : undefined}
           data-state={open ? 'open' : 'closed'}
+          data-test="mobile-panel"
+          tabIndex={open ? -1 : undefined}
         >
           <div className="flex justify-between items-center mb-8">
             <span className="text-sm font-medium tracking-wide text-foreground/70">Navigate</span>
@@ -150,6 +170,8 @@ export default function HeaderNav(): ReactElement {
               className="menu-close"
               aria-label="Close menu"
               onClick={() => setOpen(false)}
+              data-focus-exclude
+              data-test="menu-close"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M18 6L6 18M6 6l12 12" />

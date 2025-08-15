@@ -11,6 +11,16 @@ const nextConfig: NextConfig = {
   env: {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   },
+  // Permanent redirects
+  async redirects() {
+    return [
+      {
+        source: '/consulting-process',
+        destination: '/services',
+        permanent: true,
+      },
+    ];
+  },
   // Performance optimizations
   experimental: {
     optimizePackageImports: ['@next/font'],
@@ -39,25 +49,8 @@ const nextConfig: NextConfig = {
       config.optimization.usedExports = true;
       config.optimization.sideEffects = false;
 
-      // Enhanced Terser configuration
-      config.optimization.minimizer = [
-        new TerserPlugin({
-          terserOptions: {
-            compress: {
-              drop_console: true,
-              drop_debugger: true,
-              pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn'],
-            },
-            mangle: {
-              safari10: true,
-            },
-            format: {
-              comments: false,
-            },
-          },
-          extractComments: false,
-        }),
-      ];
+  // Base minimizer list
+  config.optimization.minimizer = [];
 
       // Split chunks for better caching
       config.optimization.splitChunks = {
@@ -127,21 +120,17 @@ const nextConfig: NextConfig = {
       // Minimize CSS
       config.optimization.minimize = true;
 
-      // Optimize bundle size
+      // Single Terser pass (removed duplicate config)
       config.optimization.minimizer.push(
         new TerserPlugin({
           terserOptions: {
             compress: {
-              drop_console: !dev,
-              drop_debugger: !dev,
-              pure_funcs: !dev ? ['console.log', 'console.info', 'console.debug', 'console.warn'] : [],
+              drop_console: true,
+              drop_debugger: true,
+              pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn'],
             },
-            mangle: {
-              safari10: true,
-            },
-            format: {
-              comments: false,
-            },
+            mangle: { safari10: true },
+            format: { comments: false },
           },
           extractComments: false,
         })

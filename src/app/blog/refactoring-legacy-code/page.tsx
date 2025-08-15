@@ -2,6 +2,15 @@ import type { Metadata } from 'next';
 import type { ReactElement } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
+
+// Defer large lower-page sections to reduce TTFB / initial JS
+const RefactoringStrategies = dynamic(() => import('./sections/RefactoringStrategies'), { ssr: true });
+const StepByStepProcess = dynamic(() => import('./sections/StepByStepProcess'), { ssr: true });
+const ToolsAndTechniques = dynamic(() => import('./sections/ToolsAndTechniques'), { ssr: true });
+const CommonPitfalls = dynamic(() => import('./sections/CommonPitfalls'), { ssr: true });
+const MeasuringSuccess = dynamic(() => import('./sections/MeasuringSuccess'), { ssr: true });
+const CaseStudies = dynamic(() => import('./sections/CaseStudies'), { ssr: true });
 
 export const metadata: Metadata = {
   title: 'Refactoring Legacy Code: Complete Guide to Modernizing Your Software Architecture',
@@ -243,7 +252,7 @@ export default function RefactoringLegacyCodePost(): ReactElement {
         </div>
       </section>
 
-      {/* Refactoring Strategies */}
+  {/* Refactoring Strategies (dynamically loaded below for code splitting) */}
       <section id="refactoring-strategies" className="mb-16">
         <h2 className="text-3xl font-bold mb-8">Proven Refactoring Strategies for Legacy Code</h2>
 
@@ -316,7 +325,7 @@ export default function RefactoringLegacyCodePost(): ReactElement {
         </div>
       </section>
 
-      {/* Step-by-Step Process */}
+  {/* Step-by-Step Process (dynamic) */}
       <section id="step-by-step-process" className="mb-16">
         <h2 className="text-3xl font-bold mb-8">Step-by-Step Refactoring Process</h2>
 
@@ -395,7 +404,7 @@ export default function RefactoringLegacyCodePost(): ReactElement {
         </div>
       </section>
 
-      {/* Tools and Techniques */}
+  {/* Tools and Techniques (dynamic) */}
       <section id="tools-and-techniques" className="mb-16">
         <h2 className="text-3xl font-bold mb-8">Essential Tools and Techniques for Code Refactoring</h2>
 
@@ -452,7 +461,7 @@ export default function RefactoringLegacyCodePost(): ReactElement {
         </div>
       </section>
 
-      {/* Common Pitfalls */}
+  {/* Common Pitfalls (dynamic) */}
       <section id="common-pitfalls" className="mb-16">
         <h2 className="text-3xl font-bold mb-8">Common Pitfalls and How to Avoid Them</h2>
 
@@ -495,7 +504,7 @@ export default function RefactoringLegacyCodePost(): ReactElement {
         </div>
       </section>
 
-      {/* Measuring Success */}
+  {/* Measuring Success (dynamic) */}
       <section id="measuring-success" className="mb-16">
         <h2 className="text-3xl font-bold mb-8">Measuring Refactoring Success</h2>
 
@@ -551,7 +560,7 @@ export default function RefactoringLegacyCodePost(): ReactElement {
         </div>
       </section>
 
-      {/* Case Studies */}
+  {/* Case Studies (dynamic) */}
       <section id="case-studies" className="mb-16">
         <h2 className="text-3xl font-bold mb-8">Real-World Refactoring Case Studies</h2>
 
@@ -610,7 +619,15 @@ export default function RefactoringLegacyCodePost(): ReactElement {
         </div>
       </section>
 
-      {/* Conclusion */}
+  {/* Inject dynamically split sections at end for now (demo). In a real refactor, original inline content would be removed. */}
+  <RefactoringStrategies />
+  <StepByStepProcess />
+  <ToolsAndTechniques />
+  <CommonPitfalls />
+  <MeasuringSuccess />
+  <CaseStudies />
+
+  {/* Conclusion */}
       <section className="mb-12">
         <h2 className="text-3xl font-bold mb-6">The Path Forward: Building a Maintainable Future</h2>
         <p className="text-lg text-foreground/70 mb-4">
