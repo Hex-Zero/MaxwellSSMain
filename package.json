@@ -10,7 +10,7 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
   "test": "pnpm run lint && pnpm run typecheck && cross-env NODE_OPTIONS=--max_old_space_size=3072 jest --maxWorkers=50%",
-    "test:full": "pnpm run lint && pnpm run typecheck && jest && pnpm run lighthouse",
+  "test:full": "pnpm run lint && pnpm run typecheck && jest && node scripts/run-lighthouse-if-supported.cjs",
     "test:watch": "jest --watch",
     "e2e": "playwright test",
   "e2e:prod": "pnpm build && cross-env PLAYWRIGHT_PROD=1 playwright test",
@@ -25,6 +25,9 @@
     "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
     "analyze:full": "node scripts/analyze-bundle.js"
+  },
+  "engines": {
+    "node": ">=20.10.0"
   },
   "dependencies": {
     "@vercel/kv": "^3.0.0",

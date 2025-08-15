@@ -42,10 +42,9 @@ describe('Home page', () => {
     expect(screen.getByRole('heading', { name: /contact/i })).toBeInTheDocument();
   });
 
-  it('renders the hero image with proper alt text', () => {
+  it('renders the interactive particle field placeholder text', () => {
     render(<Home />);
-    const heroImage = screen.getByAltText('Modern software consulting illustration');
-    expect(heroImage).toBeInTheDocument();
+    expect(screen.getByText(/Interactive field/i)).toBeInTheDocument();
   });
 
   it('renders the banner image with proper alt text', () => {
