@@ -11,21 +11,31 @@ const ClientLogos = dynamic(() => import('@/app/components/ClientLogos'), {
 export default function Home(): ReactElement {
   return (
     <main className="min-h-screen font-sans">
-      <section className="hero-gradient section">
-        <div className="container">
-          <div className="text-center max-w-3xl mx-auto" data-reveal>
-            <h1 className="text-5xl sm:text-7xl font-bold tracking-tight">Build with confidence.</h1>
-            <p className="lead mt-4">
+      <section className="relative hero-gradient section overflow-hidden">
+        {/* Decorative background layers */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          <div className="absolute -top-1/3 left-1/2 -translate-x-1/2 w-[120rem] h-[120rem] bg-accent/5 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 -left-1/4 w-[60rem] h-[60rem] bg-accent/10 rounded-full blur-2xl" />
+        </div>
+        <div className="container relative">
+          <div className="text-center max-w-4xl mx-auto" data-reveal>
+            <h1 className="text-5xl sm:text-7xl font-bold tracking-tight leading-[1.05]">
+              Build with confidence.
+            </h1>
+            <p className="mt-6 text-xl sm:text-2xl text-foreground/70 leading-snug">
               Ship reliable software through code quality audits, testing strategy, refactoring, and observability.
             </p>
-            <div className="mt-8 flex flex-col sm:flex-row justify-center gap-3">
-              <a href="/contact" className="btn btn-accent">
+            <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+              <a href="/contact" className="btn btn-accent px-8 py-3 text-base sm:text-lg shadow-soft">
                 Request a code audit
               </a>
-              <a href="/services" className="btn btn-ghost">
+              <a href="/services" className="btn btn-ghost px-8 py-3 text-base sm:text-lg">
                 Explore services
               </a>
             </div>
+            <p className="mt-6 text-xs uppercase tracking-[0.25em] text-foreground/50 font-medium">
+              QUALITY • RELIABILITY • VELOCITY
+            </p>
           </div>
           <div className="mt-12" data-parallax="0.15" data-reveal>
             <div className="full-image">
@@ -299,6 +309,52 @@ export default function Home(): ReactElement {
                 </a>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+      {/* Dark showcase band */}
+      <section className="relative border-t border-foreground/10 bg-neutral-950 text-neutral-50" aria-labelledby="showcase-heading">
+        <div className="absolute inset-0 opacity-[0.15] bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.4),transparent_60%)]" aria-hidden="true" />
+        <div className="container py-24 sm:py-32 relative">
+          <div className="max-w-5xl mx-auto text-center" data-reveal>
+            <h2 id="showcase-heading" className="text-3xl sm:text-5xl font-semibold tracking-tight">
+              Engineering leverage, not headcount.
+            </h2>
+            <p className="mt-6 text-neutral-300 text-lg leading-relaxed max-w-3xl mx-auto">
+              We focus on multiplier work—reducing defect surfaces, shrinking lead time to change, and embedding
+              patterns that keep systems adaptable as complexity scales.
+            </p>
+          </div>
+          <div className="mt-16 grid gap-6 md:grid-cols-3" data-reveal>
+            {[
+              { title: 'Architecture clarity', body: 'Surface hidden dependencies & simplify coupling.' },
+              { title: 'Confidence metrics', body: 'Meaningful coverage + mutation + failure trend insight.' },
+              { title: 'Operational readiness', body: 'Proactive SLOs, trace probes & incident rehearsal.' },
+            ].map((f) => (
+              <div key={f.title} className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 flex flex-col">
+                <h3 className="font-medium tracking-tight text-lg">{f.title}</h3>
+                <p className="mt-2 text-sm text-neutral-300 leading-relaxed">{f.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* Closing CTA */}
+      <section className="px-6 sm:px-10 py-24 border-t border-foreground/10 bg-gradient-to-b from-background to-background/50" aria-labelledby="final-cta-heading">
+        <div className="max-w-5xl mx-auto text-center" data-reveal>
+          <h2 id="final-cta-heading" className="text-3xl sm:text-5xl font-semibold tracking-tight">
+            Make quality your velocity advantage.
+          </h2>
+          <p className="mt-6 text-lg text-foreground/70 max-w-2xl mx-auto leading-relaxed">
+            Audit first or targeted uplift—either way, we de-risk the roadmap and unlock faster, safer iteration.
+          </p>
+          <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+            <a href="/contact" className="btn btn-accent px-10 py-3 text-base">
+              Begin assessment
+            </a>
+            <a href="/services" className="btn btn-ghost px-10 py-3 text-base">
+              View services overview
+            </a>
           </div>
         </div>
       </section>

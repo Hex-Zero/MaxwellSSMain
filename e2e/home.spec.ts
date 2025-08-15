@@ -7,7 +7,7 @@ test.describe('Home Page', () => {
   test('loads hero and primary elements', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByRole('heading', { name: /Build with confidence/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /Get in touch/i })).toBeVisible();
+  await expect(page.getByRole('link', { name: /Request a code audit/i })).toBeVisible();
     await expect(page.getByRole('heading', { name: /Case studies/i })).toBeVisible();
   });
 
@@ -15,8 +15,15 @@ test.describe('Home Page', () => {
     await page.goto('/');
     // Scope to top navigation (first navigation landmark) to avoid matching CTA duplicates.
     const topNav = page.getByRole('navigation').first();
-    await topNav.getByRole('link', { name: /^Services$/ }).click();
-    await expect(page.getByRole('heading', { name: /Services/i })).toBeVisible();
+    await Promise.all([
+      page.waitForURL('**/services'),
+      (async () => {
+        await topNav.getByRole('link', { name: /^Services$/ }).click();
+      })(),
+    ]);
+    // Allow first-load route compilation in dev
+    await page.waitForLoadState('domcontentloaded');
+    await expect(page.getByRole('heading', { name: /Services/i })).toBeVisible({ timeout: 15000 });
   });
 
   test('captures full-page screenshot', async ({ page }) => {
