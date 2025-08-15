@@ -19,9 +19,7 @@ export default function Home(): ReactElement {
         </div>
         <div className="container relative">
           <div className="text-center max-w-4xl mx-auto" data-reveal>
-            <h1 className="text-5xl sm:text-7xl font-bold tracking-tight leading-[1.05]">
-              Build with confidence.
-            </h1>
+            <h1 className="text-5xl sm:text-7xl font-bold tracking-tight leading-[1.05]">Build with confidence.</h1>
             <p className="mt-6 text-xl sm:text-2xl text-foreground/70 leading-snug">
               Ship reliable software through code quality audits, testing strategy, refactoring, and observability.
             </p>
@@ -313,8 +311,14 @@ export default function Home(): ReactElement {
         </div>
       </section>
       {/* Dark showcase band */}
-      <section className="relative border-t border-foreground/10 bg-neutral-950 text-neutral-50" aria-labelledby="showcase-heading">
-        <div className="absolute inset-0 opacity-[0.15] bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.4),transparent_60%)]" aria-hidden="true" />
+      <section
+        className="relative border-t border-foreground/10 bg-neutral-950 text-neutral-50"
+        aria-labelledby="showcase-heading"
+      >
+        <div
+          className="absolute inset-0 opacity-[0.15] bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.4),transparent_60%)]"
+          aria-hidden="true"
+        />
         <div className="container py-24 sm:py-32 relative">
           <div className="max-w-5xl mx-auto text-center" data-reveal>
             <h2 id="showcase-heading" className="text-3xl sm:text-5xl font-semibold tracking-tight">
@@ -331,7 +335,10 @@ export default function Home(): ReactElement {
               { title: 'Confidence metrics', body: 'Meaningful coverage + mutation + failure trend insight.' },
               { title: 'Operational readiness', body: 'Proactive SLOs, trace probes & incident rehearsal.' },
             ].map((f) => (
-              <div key={f.title} className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 flex flex-col">
+              <div
+                key={f.title}
+                className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 flex flex-col"
+              >
                 <h3 className="font-medium tracking-tight text-lg">{f.title}</h3>
                 <p className="mt-2 text-sm text-neutral-300 leading-relaxed">{f.body}</p>
               </div>
@@ -340,7 +347,10 @@ export default function Home(): ReactElement {
         </div>
       </section>
       {/* Closing CTA */}
-      <section className="px-6 sm:px-10 py-24 border-t border-foreground/10 bg-gradient-to-b from-background to-background/50" aria-labelledby="final-cta-heading">
+      <section
+        className="px-6 sm:px-10 py-24 border-t border-foreground/10 bg-gradient-to-b from-background to-background/50"
+        aria-labelledby="final-cta-heading"
+      >
         <div className="max-w-5xl mx-auto text-center" data-reveal>
           <h2 id="final-cta-heading" className="text-3xl sm:text-5xl font-semibold tracking-tight">
             Make quality your velocity advantage.

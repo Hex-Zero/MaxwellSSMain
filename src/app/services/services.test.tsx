@@ -24,13 +24,13 @@ describe('Services page', () => {
     expect(screen.getByText(/CI\/CD Hardening/i)).toBeInTheDocument();
   });
 
-  it('renders service descriptions', () => {
+  it('renders abbreviated service descriptions', () => {
     render(<ServicesPage />);
-    expect(screen.getByText(/Linters, static analysis, architecture review/i)).toBeInTheDocument();
-    expect(screen.getByText(/SLOs, error budgets, observability/i)).toBeInTheDocument();
-    expect(screen.getByText(/Pay down technical debt/i)).toBeInTheDocument();
-    expect(screen.getByText(/Pragmatic test pyramid/i)).toBeInTheDocument();
-    expect(screen.getByText(/Fast, reliable pipelines/i)).toBeInTheDocument();
+    expect(screen.getByText(/architecture review & coverage mapping/i)).toBeInTheDocument();
+    expect(screen.getByText(/error budgets, observability & incident rehearsal/i)).toBeInTheDocument();
+    expect(screen.getByText(/Pay down debt safely/i)).toBeInTheDocument();
+    expect(screen.getByText(/Pragmatic pyramid, flaky test control/i)).toBeInTheDocument();
+    expect(screen.getByText(/Fast, reliable pipelines with quality gates/i)).toBeInTheDocument();
   });
 
   it('renders the call-to-action button', () => {

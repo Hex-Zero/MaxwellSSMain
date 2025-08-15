@@ -7,7 +7,7 @@ test.describe('Home Page', () => {
   test('loads hero and primary elements', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByRole('heading', { name: /Build with confidence/i })).toBeVisible();
-  await expect(page.getByRole('link', { name: /Request a code audit/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Request a code audit/i })).toBeVisible();
     await expect(page.getByRole('heading', { name: /Case studies/i })).toBeVisible();
   });
 

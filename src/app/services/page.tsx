@@ -15,72 +15,81 @@ export default function ServicesPage(): ReactElement {
         We help teams ship correct, maintainable, and observable software with measurable improvements.
       </p>
 
-      <div className="mt-8 grid gap-6 sm:grid-cols-2" data-reveal>
-        <section className="card shadow-soft p-5">
-          <div className="flex items-center gap-3">
-            <Image src="/images/icon-audit.svg" alt="Audit icon" width={32} height={32} />
-            <h2 className="text-xl font-semibold">Code Quality Audit</h2>
-          </div>
-          <p className="mt-2 text-sm text-foreground/80">
-            Linters, static analysis, architecture review, and coverage mapping with a prioritized remediation plan.
-          </p>
-          <ul className="mt-3 list-disc list-inside text-sm text-foreground/80">
-            <li>Find correctness risks and anti-patterns</li>
-            <li>Coverage heatmap and test plan</li>
-            <li>Report with quick wins and roadmap</li>
-          </ul>
-        </section>
+      <div className="mt-10 grid gap-6 md:grid-cols-3" data-reveal>
+        {/* Column 1 */}
+        <div className="flex flex-col gap-6">
+          <section className="card shadow-soft p-5 group hover:shadow-lg transition-shadow">
+            <div className="flex items-center gap-3">
+              <Image src="/images/icon-audit.svg" alt="Audit icon" width={32} height={32} />
+              <h2 className="text-lg font-semibold tracking-tight">Code Quality Audit</h2>
+            </div>
+            <p className="mt-2 text-sm text-foreground/75 leading-relaxed">
+              Linters, static analysis, architecture review & coverage mapping with a prioritized remediation plan.
+            </p>
+            <p className="mt-2 text-xs uppercase tracking-wide text-foreground/50">Fast insight → actionable roadmap</p>
+          </section>
+          <section className="card shadow-soft p-5 group hover:shadow-lg transition-shadow">
+            <div className="flex items-center gap-3">
+              <Image src="/images/icon-refactor.svg" alt="Refactoring icon" width={32} height={32} />
+              <h2 className="text-lg font-semibold tracking-tight">Refactoring & Modernization</h2>
+            </div>
+            <p className="mt-2 text-sm text-foreground/75 leading-relaxed">
+              Pay down debt safely, simplify coupling, and unlock faster iteration with incremental patterns.
+            </p>
+            <p className="mt-2 text-xs uppercase tracking-wide text-foreground/50">Less drag, more flow</p>
+          </section>
+        </div>
 
-        <section className="card shadow-soft p-5">
-          <div className="flex items-center gap-3">
-            <Image src="/images/icon-reliability.svg" alt="Reliability icon" width={32} height={32} />
-            <h2 className="text-xl font-semibold">Reliability Engineering</h2>
-          </div>
-          <p className="mt-2 text-sm text-foreground/80">
-            SLOs, error budgets, observability, and incident response to reduce MTTR and defect escape rate.
-          </p>
-          <ul className="mt-3 list-disc list-inside text-sm text-foreground/80">
-            <li>Define SLOs and alert strategy</li>
-            <li>Tracing, logs, and metrics with dashboards</li>
-            <li>Runbooks and postmortem templates</li>
-          </ul>
-        </section>
+        {/* Column 2 */}
+        <div className="flex flex-col gap-6">
+          <section className="card shadow-soft p-5 group hover:shadow-lg transition-shadow">
+            <div className="flex items-center gap-3">
+              <Image src="/images/icon-reliability.svg" alt="Reliability icon" width={32} height={32} />
+              <h2 className="text-lg font-semibold tracking-tight">Reliability Engineering</h2>
+            </div>
+            <p className="mt-2 text-sm text-foreground/75 leading-relaxed">
+              SLOs, error budgets, observability & incident rehearsal to reduce MTTR and defect escape rate.
+            </p>
+            <p className="mt-2 text-xs uppercase tracking-wide text-foreground/50">Stability you can prove</p>
+          </section>
+          <section className="card shadow-soft p-5 group hover:shadow-lg transition-shadow">
+            <div className="flex items-center gap-3">
+              <Image src="/images/icon-testing.svg" alt="Testing icon" width={32} height={32} />
+              <h2 className="text-lg font-semibold tracking-tight">Testing Strategy</h2>
+            </div>
+            <p className="mt-2 text-sm text-foreground/75 leading-relaxed">
+              Pragmatic pyramid, flaky test control & mutation insight for confidence without drag.
+            </p>
+            <p className="mt-2 text-xs uppercase tracking-wide text-foreground/50">Confidence metrics &gt; guesswork</p>
+          </section>
+        </div>
 
-        <section className="card shadow-soft p-5">
-          <div className="flex items-center gap-3">
-            <Image src="/images/icon-refactor.svg" alt="Refactoring icon" width={32} height={32} />
-            <h2 className="text-xl font-semibold">Refactoring & Modernization</h2>
-          </div>
-          <p className="mt-2 text-sm text-foreground/80">
-            Pay down technical debt and simplify systems to improve performance and developer velocity.
-          </p>
-        </section>
-
-        <section className="card shadow-soft p-5">
-          <div className="flex items-center gap-3">
-            <Image src="/images/icon-testing.svg" alt="Testing icon" width={32} height={32} />
-            <h2 className="text-xl font-semibold">Testing Strategy</h2>
-          </div>
-          <p className="mt-2 text-sm text-foreground/80">
-            Pragmatic test pyramid: unit, integration, e2e, contract tests with CI gating and flaky test control.
-          </p>
-        </section>
-
-        <section className="card shadow-soft p-5">
-          <div className="flex items-center gap-3">
-            <Image src="/images/icon-cicd.svg" alt="CI/CD icon" width={32} height={32} />
-            <h2 className="text-xl font-semibold">CI/CD Hardening</h2>
-          </div>
-          <p className="mt-2 text-sm text-foreground/80">
-            Fast, reliable pipelines with quality gates, preview environments, and DORA metrics visibility.
-          </p>
-        </section>
-      </div>
-
-      <div className="mt-10">
-        <a href="/contact" className="btn btn-accent">
-          Request a code audit
-        </a>
+        {/* Column 3 */}
+        <div className="flex flex-col gap-6">
+          <section className="card bg-gradient-to-br from-accent/10 to-transparent border border-accent/30 shadow-soft p-5 group hover:shadow-lg transition-shadow relative overflow-hidden">
+            <div
+              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_70%_30%,rgba(255,255,255,0.25),transparent_60%)]"
+              aria-hidden="true"
+            />
+            <div className="flex items-center gap-3 relative">
+              <Image src="/images/icon-cicd.svg" alt="CI/CD icon" width={32} height={32} />
+              <h2 className="text-lg font-semibold tracking-tight">CI/CD Hardening</h2>
+            </div>
+            <p className="mt-2 text-sm text-foreground/75 leading-relaxed relative">
+              Fast, reliable pipelines with quality gates, preview envs & DORA metrics visibility.
+            </p>
+            <p className="mt-2 text-xs uppercase tracking-wide text-foreground/50 relative">Ship faster, safer</p>
+          </section>
+          <section className="card shadow-soft p-5 flex flex-col justify-center items-start gap-4">
+            <p className="text-sm text-foreground/75 leading-relaxed">
+              Not sure where to begin? Start with a targeted audit and we’ll map the fastest, lowest-risk leverage
+              points.
+            </p>
+            <a href="/contact" className="btn btn-accent">
+              Request a code audit
+            </a>
+          </section>
+        </div>
       </div>
     </div>
   );
