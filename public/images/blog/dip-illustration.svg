@@ -1,76 +1,40 @@
-<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg>
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Dependency Inversion Principle</title>
+  <desc>High level OrderService depends on abstraction IPayment implemented by Stripe and PayPal.</desc>
   <defs>
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#f8f9fa;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#e9ecef;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#8B6B00;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
-    </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.1"/>
-    </filter>
+    <linearGradient id="bgDip" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#1e293b"/></linearGradient>
+    <pattern id="gridDip" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" stroke="#334155" stroke-opacity="0.25" stroke-width="1"/></pattern>
   </defs>
-  
-  <!-- Background -->
-  <rect width="400" height="300" fill="url(#bgGradient)"/>
-  
-  <!-- Title -->
-  <text x="200" y="30" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="18" font-weight="bold">Dependency Inversion Principle</text>
-  
-  <!-- High-Level Module -->
-  <g transform="translate(150, 60)">
-    <rect x="0" y="0" width="100" height="60" rx="8" fill="url(#accentGradient)" filter="url(#shadow)"/>
-    <text x="50" y="25" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">UserService</text>
-    <line x1="10" y1="35" x2="90" y2="35" stroke="white" stroke-width="1" opacity="0.3"/>
-    <text x="50" y="50" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10">+ createUser()</text>
+  <rect width="400" height="300" fill="url(#bgDip)"/>
+  <rect width="400" height="300" fill="url(#gridDip)"/>
+  <text x="200" y="28" text-anchor="middle" font-family="'Segoe UI',Arial" font-size="16" font-weight="600" fill="#f1f5f9">Dependency Inversion</text>
+  <g font-family="'Segoe UI',Arial" font-size="10" font-weight="500" text-anchor="middle">
+    <g transform="translate(110 96)">
+      <rect x="-60" y="-30" width="120" height="60" rx="14" fill="#1e293b" stroke="#6366f1"/>
+      <text y="-4" fill="#6366f1" font-weight="600">OrderService</text>
+      <text y="16" fill="#94a3b8">+ placeOrder()</text>
+    </g>
+    <g transform="translate(290 96)">
+      <rect x="-60" y="-30" width="120" height="60" rx="14" fill="#1e293b" stroke="#ec4899"/>
+      <text y="-4" fill="#ec4899" font-weight="600">IPayment</text>
+      <text y="16" fill="#94a3b8">+ pay()</text>
+    </g>
+    <path d="M170 96H230" stroke="#475569" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowDip)"/>
+    <g transform="translate(240 210)">
+      <rect x="-50" y="-28" width="100" height="56" rx="14" fill="#1e293b" stroke="#10b981"/>
+      <text y="-4" fill="#10b981" font-weight="600">StripePay</text>
+    </g>
+    <g transform="translate(340 210)">
+      <rect x="-50" y="-28" width="100" height="56" rx="14" fill="#1e293b" stroke="#f59e0b"/>
+      <text y="-4" fill="#f59e0b" font-weight="600">PayPalPay</text>
+    </g>
+    <path d="M290 126l-30 60" stroke="#ec4899" stroke-width="3" stroke-linecap="round"/>
+    <path d="M290 126l50 60" stroke="#ec4899" stroke-width="3" stroke-linecap="round"/>
   </g>
-  
-  <!-- Abstraction Layer -->
-  <g transform="translate(150, 140)">
-    <rect x="0" y="0" width="100" height="50" rx="8" fill="#6c757d" filter="url(#shadow)"/>
-    <text x="50" y="20" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="11" font-weight="bold">IUserRepository</text>
-    <text x="50" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="9">+ save()</text>
-  </g>
-  
-  <!-- Dependency Arrows -->
-  <g stroke="#8B6B00" stroke-width="2" stroke-linecap="round" opacity="0.6">
-    <path d="M 200 120 L 200 140"/>
-    <path d="M 200 190 L 200 210"/>
-  </g>
-  
-  <!-- Low-Level Implementations -->
-  <g transform="translate(50, 210)">
-    <rect x="0" y="0" width="80" height="50" rx="6" fill="#28a745" filter="url(#shadow)"/>
-    <text x="40" y="20" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="11" font-weight="bold">SQLRepository</text>
-    <text x="40" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="9">+ save()</text>
-  </g>
-  
-  <g transform="translate(150, 210)">
-    <rect x="0" y="0" width="80" height="50" rx="6" fill="#17a2b8" filter="url(#shadow)"/>
-    <text x="40" y="20" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="11" font-weight="bold">MongoRepository</text>
-    <text x="40" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="9">+ save()</text>
-  </g>
-  
-  <g transform="translate(250, 210)">
-    <rect x="0" y="0" width="80" height="50" rx="6" fill="#ffc107" filter="url(#shadow)"/>
-    <text x="40" y="20" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="11" font-weight="bold">RedisRepository</text>
-    <text x="40" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="9">+ save()</text>
-  </g>
-  
-  <!-- Connection Lines -->
-  <g stroke="#8B6B00" stroke-width="2" stroke-linecap="round" opacity="0.4">
-    <line x1="190" y1="210" x2="130" y2="210"/>
-    <line x1="190" y1="210" x2="230" y2="210"/>
-    <line x1="190" y1="210" x2="330" y2="210"/>
-  </g>
-  
-  <!-- Labels -->
-  <text x="200" y="280" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="12" opacity="0.8">High-level depends on abstraction</text>
-  <text x="200" y="295" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="12" opacity="0.8">Low-level implements abstraction</text>
-  
-  <!-- Decorative Elements -->
-  <circle cx="80" cy="180" r="3" fill="#8B6B00" opacity="0.2"/>
-  <circle cx="320" cy="180" r="3" fill="#8B6B00" opacity="0.2"/>
+  <text x="200" y="268" text-anchor="middle" font-family="'Segoe UI',Arial" font-size="11" fill="#94a3b8">High level depends on abstraction</text>
+  <defs>
+    <marker id="arrowDip" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z" fill="#475569"/></marker>
+  </defs>
+</svg>
 </svg>

@@ -1,36 +1,68 @@
-<svg width="1200" height="400" viewBox="0 0 1200 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="400" fill="#F8FAFC"/>
+<svg width="1200" height="400" viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">SaaS migration case study — MTTR down 45%</title>
+  <desc id="desc">Visualization of reliability improvements: MTTR, alert noise, SLOs met, and cost reduction.</desc>
   <defs>
-    <linearGradient id="g3" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#8B6B00" stop-opacity="0.12"/>
-      <stop offset="1" stop-color="#8B6B00" stop-opacity="0.04"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1e3a8a"/>
+      <stop offset="1" stop-color="#0f172a"/>
     </linearGradient>
-    <pattern id="grid3" width="32" height="32" patternUnits="userSpaceOnUse">
-      <path d="M32 0H0V32" stroke="#E2E8F0" stroke-width="1"/>
+
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0V24" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
     </pattern>
+
+    <radialGradient id="glowAmber" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(150 40) rotate(45) scale(520 300)">
+      <stop offset="0" stop-color="#f59e0b" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowIndigo" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1050 360) rotate(225) scale(480 300)">
+      <stop offset="0" stop-color="#6366f1" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#6366f1" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="cardStroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1f2937"/>
+      <stop offset="1" stop-color="#334155"/>
+    </linearGradient>
   </defs>
-  <rect width="1200" height="400" fill="url(#grid3)"/>
-  <rect x="80" y="60" width="1040" height="280" rx="20" fill="white" stroke="#E5E7EB"/>
-  <rect x="80" y="60" width="1040" height="80" rx="20" fill="url(#g3)"/>
-  <text x="100" y="105" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#8B6B00">SaaS Migration & Observability</text>
-  <text x="100" y="132" font-family="Arial, sans-serif" font-size="14" fill="#64748B">MTTR down 45% · Alert noise down 60%</text>
 
-  <rect x="120" y="170" width="220" height="140" rx="12" fill="#ECFDF5" stroke="#A7F3D0"/>
-  <text x="230" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#065F46">MTTR</text>
-  <text x="230" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#10B981">-45%</text>
+  <!-- Background -->
+  <rect width="1200" height="400" fill="url(#bg)"/>
+  <rect width="1200" height="400" fill="url(#grid)"/>
+  <rect width="1200" height="400" fill="url(#glowAmber)"/>
+  <rect width="1200" height="400" fill="url(#glowIndigo)"/>
 
-  <rect x="380" y="170" width="220" height="140" rx="12" fill="#F1F5F9" stroke="#CBD5E1"/>
-  <text x="490" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#334155">Alerts</text>
-  <rect x="420" y="230" width="30" height="60" rx="4" fill="#CBD5E1"/>
-  <rect x="460" y="240" width="30" height="50" rx="4" fill="#94A3B8"/>
-  <rect x="500" y="250" width="30" height="40" rx="4" fill="#64748B"/>
-  <text x="490" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#334155">-60%</text>
+  <!-- Heading -->
+  <text x="108" y="104" font-family="'Segoe UI', Arial, sans-serif" font-weight="600" font-size="28" fill="#f1f5f9">SaaS migration &amp; observability uplift</text>
+  <text x="108" y="132" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#cbd5e1">MTTR down 45% • Alert noise down 60%</text>
 
-  <rect x="640" y="170" width="220" height="140" rx="12" fill="#EEF2FF" stroke="#C7D2FE"/>
-  <text x="750" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#3730A3">SLOs</text>
-  <text x="750" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#6366F1">Met 4/4</text>
+  <!-- MTTR ring -->
+  <g transform="translate(210 240)">
+    <circle r="78" fill="#0f172a" stroke="url(#cardStroke)" stroke-width="2"/>
+    <circle r="62" fill="none" stroke="#1e293b" stroke-width="12"/>
+    <circle r="62" fill="none" stroke="#10b981" stroke-width="12" stroke-dasharray="175.30 389.56" stroke-dashoffset="149.98" stroke-linecap="round" transform="rotate(-90)"/>
+    <text text-anchor="middle" y="6" font-family="'Segoe UI', Arial, sans-serif" font-size="34" font-weight="600" fill="#10b981">-45%</text>
+    <text text-anchor="middle" y="34" font-family="'Segoe UI', Arial, sans-serif" font-size="13" fill="#94a3b8">MTTR</text>
+  </g>
 
-  <rect x="900" y="170" width="220" height="140" rx="12" fill="#FEF7ED" stroke="#FED7AA"/>
-  <text x="1010" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#9A3412">Cost</text>
-  <text x="1010" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#F97316">-18%</text>
+  <!-- Alert noise card -->
+  <g transform="translate(520 192)">
+    <rect x="-78" y="0" width="156" height="156" rx="22" fill="#0f172a" stroke="url(#cardStroke)"/>
+    <text x="0" y="60" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="16" fill="#cbd5e1">Alert noise</text>
+    <text x="0" y="94" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="38" font-weight="600" fill="#10b981">-60%</text>
+  </g>
+
+  <!-- SLOs card -->
+  <g transform="translate(800 192)">
+    <rect x="-78" y="0" width="156" height="156" rx="22" fill="#0f172a" stroke="url(#cardStroke)"/>
+    <text x="0" y="60" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="16" fill="#cbd5e1">SLOs met</text>
+    <text x="0" y="94" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="38" font-weight="600" fill="#6366f1">4/4</text>
+  </g>
+
+  <!-- Cost card -->
+  <g transform="translate(1090 192)">
+    <rect x="-78" y="0" width="156" height="156" rx="22" fill="#0f172a" stroke="url(#cardStroke)"/>
+    <text x="0" y="60" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="16" fill="#cbd5e1">Cost</text>
+    <text x="0" y="94" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="38" font-weight="600" fill="#f59e0b">-18%</text>
+  </g>
 </svg>

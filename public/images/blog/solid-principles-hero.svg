@@ -1,77 +1,60 @@
-<svg width="800" height="400" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="800" height="400" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>SOLID Principles overview</title>
+  <desc>Five glowing blocks representing the SOLID principles with connecting flow on a dark gradient background.</desc>
   <defs>
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#f8f9fa;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#e9ecef;stop-opacity:1" />
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#1e293b"/>
     </linearGradient>
-    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#8B6B00;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    <radialGradient id="glowCenter" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(400 200) scale(420 240)">
+      <stop stop-color="#6366f1" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#6366f1" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" stroke="#94a3b8" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="block" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#334155"/>
+      <stop offset="1" stop-color="#1e293b"/>
     </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.1"/>
-    </filter>
   </defs>
-  
-  <!-- Background -->
-  <rect width="800" height="400" fill="url(#bgGradient)"/>
-  
-  <!-- SOLID Building Blocks -->
-  <!-- S - Single Responsibility -->
-  <g transform="translate(100, 150)">
-    <rect x="0" y="0" width="80" height="80" rx="12" fill="url(#accentGradient)" filter="url(#shadow)"/>
-    <text x="40" y="50" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="24" font-weight="bold">S</text>
-    <text x="40" y="110" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="12" font-weight="500">Single</text>
-    <text x="40" y="125" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="12" font-weight="500">Responsibility</text>
+  <rect width="800" height="400" fill="url(#bg)"/>
+  <rect width="800" height="400" fill="url(#grid)"/>
+  <rect width="800" height="400" fill="url(#glowCenter)"/>
+  <text x="400" y="72" text-anchor="middle" font-family="'Segoe UI',Arial" font-size="30" font-weight="600" fill="#f1f5f9">SOLID Principles</text>
+  <text x="400" y="98" text-anchor="middle" font-family="'Segoe UI',Arial" font-size="14" fill="#94a3b8">Foundations of maintainable OO design</text>
+  <path d="M120 210H680" stroke="#475569" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 10"/>
+  <g font-family="'Segoe UI',Arial" font-weight="600" font-size="22" text-anchor="middle">
+    <g transform="translate(160 200)">
+      <rect x="-48" y="-48" width="96" height="96" rx="18" fill="url(#block)" stroke="#6366f1" stroke-width="2"/>
+      <text y="8" fill="#6366f1">S</text>
+      <text y="32" font-size="10" fill="#94a3b8" font-weight="400">Single Responsibility</text>
+    </g>
+    <g transform="translate(280 200)">
+      <rect x="-48" y="-48" width="96" height="96" rx="18" fill="url(#block)" stroke="#10b981" stroke-width="2"/>
+      <text y="8" fill="#10b981">O</text>
+      <text y="32" font-size="10" fill="#94a3b8" font-weight="400">Open / Closed</text>
+    </g>
+    <g transform="translate(400 200)">
+      <rect x="-48" y="-48" width="96" height="96" rx="18" fill="url(#block)" stroke="#f59e0b" stroke-width="2"/>
+      <text y="8" fill="#f59e0b">L</text>
+      <text y="32" font-size="10" fill="#94a3b8" font-weight="400">Liskov Substitution</text>
+    </g>
+    <g transform="translate(520 200)">
+      <rect x="-48" y="-48" width="96" height="96" rx="18" fill="url(#block)" stroke="#ec4899" stroke-width="2"/>
+      <text y="8" fill="#ec4899">I</text>
+      <text y="32" font-size="10" fill="#94a3b8" font-weight="400">Interface Segregation</text>
+    </g>
+    <g transform="translate(640 200)">
+      <rect x="-48" y="-48" width="96" height="96" rx="18" fill="url(#block)" stroke="#0ea5e9" stroke-width="2"/>
+      <text y="8" fill="#0ea5e9">D</text>
+      <text y="32" font-size="10" fill="#94a3b8" font-weight="400">Dependency Inversion</text>
+    </g>
   </g>
-  
-  <!-- O - Open/Closed -->
-  <g transform="translate(220, 150)">
-    <rect x="0" y="0" width="80" height="80" rx="12" fill="url(#accentGradient)" filter="url(#shadow)"/>
-    <text x="40" y="50" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="24" font-weight="bold">O</text>
-    <text x="40" y="110" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="12" font-weight="500">Open/Closed</text>
+  <g fill="#6366f1" fill-opacity="0.25">
+    <circle cx="120" cy="60" r="3"/>
+    <circle cx="700" cy="340" r="3"/>
+    <circle cx="500" cy="80" r="2"/>
+    <circle cx="300" cy="340" r="2"/>
   </g>
-  
-  <!-- L - Liskov Substitution -->
-  <g transform="translate(340, 150)">
-    <rect x="0" y="0" width="80" height="80" rx="12" fill="url(#accentGradient)" filter="url(#shadow)"/>
-    <text x="40" y="50" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="24" font-weight="bold">L</text>
-    <text x="40" y="110" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="12" font-weight="500">Liskov</text>
-    <text x="40" y="125" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="12" font-weight="500">Substitution</text>
-  </g>
-  
-  <!-- I - Interface Segregation -->
-  <g transform="translate(460, 150)">
-    <rect x="0" y="0" width="80" height="80" rx="12" fill="url(#accentGradient)" filter="url(#shadow)"/>
-    <text x="40" y="50" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="24" font-weight="bold">I</text>
-    <text x="40" y="110" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="12" font-weight="500">Interface</text>
-    <text x="40" y="125" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="12" font-weight="500">Segregation</text>
-  </g>
-  
-  <!-- D - Dependency Inversion -->
-  <g transform="translate(580, 150)">
-    <rect x="0" y="0" width="80" height="80" rx="12" fill="url(#accentGradient)" filter="url(#shadow)"/>
-    <text x="40" y="50" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="24" font-weight="bold">D</text>
-    <text x="40" y="110" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="12" font-weight="500">Dependency</text>
-    <text x="40" y="125" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="12" font-weight="500">Inversion</text>
-  </g>
-  
-  <!-- Connecting Lines -->
-  <g stroke="#8B6B00" stroke-width="3" stroke-linecap="round" opacity="0.3">
-    <line x1="180" y1="190" x2="220" y2="190"/>
-    <line x1="300" y1="190" x2="340" y2="190"/>
-    <line x1="420" y1="190" x2="460" y2="190"/>
-    <line x1="540" y1="190" x2="580" y2="190"/>
-  </g>
-  
-  <!-- Decorative Elements -->
-  <circle cx="200" cy="80" r="4" fill="#8B6B00" opacity="0.2"/>
-  <circle cx="400" cy="60" r="6" fill="#8B6B00" opacity="0.15"/>
-  <circle cx="600" cy="90" r="5" fill="#8B6B00" opacity="0.2"/>
-  <circle cx="150" cy="320" r="3" fill="#8B6B00" opacity="0.1"/>
-  <circle cx="650" cy="310" r="4" fill="#8B6B00" opacity="0.15"/>
-  
-  <!-- Title Text -->
-  <text x="400" y="50" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="28" font-weight="bold">SOLID Principles</text>
-  <text x="400" y="75" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="16" opacity="0.7">Foundation of Clean Code</text>
 </svg>

@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import Link from 'next/link';
 
 // Dynamically import non-critical components
 const ClientLogos = dynamic(() => import('@/app/components/ClientLogos'), {
@@ -239,15 +240,97 @@ export default function Home(): ReactElement {
         <div className="container section">
           <div className="eyebrow">Selected work</div>
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight">Case studies</h2>
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3].map((n) => (
-              <div key={n} className="card shadow-soft p-5">
-                <h3 className="font-medium">Project {n}</h3>
-                <p className="mt-2 text-sm text-foreground/80">
-                  Replace this with real work. I can scaffold sections or data fetching on request.
-                </p>
-              </div>
+          <p className="mt-3 text-foreground/70 max-w-2xl text-sm">
+            Real engagements with measurable outcomes. Each links to a concise deep‑dive.
+          </p>
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" data-reveal>
+            {[
+              {
+                slug: 'retail-platform',
+                title: 'Retail platform',
+                meta: 'E‑commerce · 6 mo',
+                outcome: 'Escaped defects down 58%',
+                metrics: ['-58% defects', '+28% deploys', '+12 CSAT'],
+                image: '/images/case-studies/retail-platform.svg',
+              },
+              {
+                slug: 'fintech-api',
+                title: 'Fintech API',
+                meta: 'Fintech · 3 mo',
+                outcome: 'Coverage up 32%',
+                metrics: ['+32% coverage', '-24% incidents', '-18% p99'],
+                image: '/images/case-studies/fintech-api.svg',
+              },
+              {
+                slug: 'saas-migration',
+                title: 'SaaS migration',
+                meta: 'B2B SaaS · 4 mo',
+                outcome: 'MTTR down 45%',
+                metrics: ['-45% MTTR', '-60% noise', '4/4 SLOs'],
+                image: '/images/case-studies/saas-migration.svg',
+              },
+            ].map((c) => (
+              <Link
+                key={c.slug}
+                href={`/project-showcase/${c.slug}`}
+                className="group card shadow-soft overflow-hidden flex flex-col"
+                aria-label={`${c.title} case study`}
+              >
+                <div className="relative h-32 overflow-hidden">
+                  <Image
+                    src={c.image}
+                    alt={c.title}
+                    fill
+                    unoptimized
+                    sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+                    className="object-cover group-hover:scale-[1.03] transition-transform"
+                  />
+                </div>
+                <div className="p-5 flex flex-col grow">
+                  <div className="text-xs text-foreground/50 mb-1 flex items-center gap-2">
+                    <span>{c.meta}</span>
+                    <span className="h-1 w-1 rounded-full bg-foreground/30" />
+                    <span className="text-accent font-medium">{c.outcome}</span>
+                  </div>
+                  <h3 className="font-semibold tracking-tight group-hover:text-accent transition-colors">
+                    {c.title}
+                  </h3>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {c.metrics.map((m) => (
+                      <span
+                        key={m}
+                        className="text-[11px] font-medium px-2 py-1 rounded-md bg-foreground/5 border border-foreground/10 text-foreground/60"
+                      >
+                        {m}
+                      </span>
+                    ))}
+                  </div>
+                  <span className="mt-auto pt-4 text-xs text-accent/80 inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                    View study
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                      className="opacity-70"
+                    >
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </svg>
+                  </span>
+                </div>
+              </Link>
             ))}
+          </div>
+          <div className="mt-8">
+            <Link href="/project-showcase" className="btn btn-ghost">
+              Browse all case studies
+            </Link>
           </div>
         </div>
       </section>

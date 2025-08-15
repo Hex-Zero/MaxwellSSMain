@@ -1,88 +1,33 @@
-<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background -->
-  <rect width="800" height="600" fill="#F8FAFC"/>
-  
-  <!-- Grid Pattern -->
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>TDD Business Value</title>
+  <desc>Red green refactor cycle highlighting quality feedback and risk reduction.</desc>
   <defs>
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E2E8F0" stroke-width="1"/>
-    </pattern>
+    <linearGradient id="bgTdd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#1e293b"/></linearGradient>
+    <pattern id="gridTdd" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" stroke="#334155" stroke-opacity="0.25" stroke-width="1"/></pattern>
   </defs>
-  <rect width="800" height="600" fill="url(#grid)"/>
-  
-  <!-- Main Container -->
-  <rect x="100" y="80" width="600" height="440" rx="20" fill="white" stroke="#E2E8F0" stroke-width="2"/>
-  
-  <!-- Header -->
-  <rect x="100" y="80" width="600" height="80" rx="20" fill="#8B6B00" fill-opacity="0.1"/>
-  <text x="400" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#8B6B00">Test-Driven Development</text>
-  <text x="400" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#64748B">Building Business Confidence Through Code Quality</text>
-  
-  <!-- Left Panel: Code Quality -->
-  <rect x="120" y="180" width="280" height="320" rx="12" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="260" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#334155">Code Quality Metrics</text>
-  
-  <!-- Test Coverage Chart -->
-  <circle cx="180" cy="280" r="40" fill="none" stroke="#E2E8F0" stroke-width="8"/>
-  <circle cx="180" cy="280" r="40" fill="none" stroke="#8B6B00" stroke-width="8" stroke-dasharray="251.2 314" stroke-dashoffset="62.8"/>
-  <text x="180" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#8B6B00">80%</text>
-  <text x="180" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748B">Coverage</text>
-  
-  <!-- Bug Reduction -->
-  <rect x="240" y="250" width="60" height="60" rx="8" fill="#FEF2F2" stroke="#FECACA" stroke-width="2"/>
-  <text x="270" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#DC2626">-80%</text>
-  <text x="270" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7F1D1D">Bugs</text>
-  
-  <!-- Development Speed -->
-  <rect x="240" y="320" width="60" height="60" rx="8" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="2"/>
-  <text x="270" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#16A34A">+50%</text>
-  <text x="270" y="365" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#15803D">Speed</text>
-  
-  <!-- Right Panel: Business Impact -->
-  <rect x="420" y="180" width="280" height="320" rx="12" fill="#FEF7ED" stroke="#FED7AA" stroke-width="1"/>
-  <text x="560" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#C2410C">Business Impact</text>
-  
-  <!-- ROI Chart -->
-  <rect x="440" y="240" width="240" height="120" rx="8" fill="white" stroke="#FED7AA" stroke-width="2"/>
-  
-  <!-- ROI Bars -->
-  <rect x="460" y="320" width="30" height="30" fill="#F97316" rx="4"/>
-  <rect x="500" y="310" width="30" height="40" fill="#F97316" rx="4"/>
-  <rect x="540" y="300" width="30" height="50" fill="#F97316" rx="4"/>
-  <rect x="580" y="290" width="30" height="60" fill="#F97316" rx="4"/>
-  <rect x="620" y="280" width="30" height="70" fill="#F97316" rx="4"/>
-  
-  <text x="475" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#C2410C">Y1</text>
-  <text x="515" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#C2410C">Y2</text>
-  <text x="555" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#C2410C">Y3</text>
-  <text x="595" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#C2410C">Y4</text>
-  <text x="635" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#C2410C">Y5</text>
-  
-  <text x="560" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#C2410C">ROI Over Time</text>
-  
-  <!-- Business Metrics -->
-  <rect x="440" y="380" width="110" height="80" rx="8" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="2"/>
-  <text x="495" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#16A34A">$125K</text>
-  <text x="495" y="425" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#15803D">Annual</text>
-  <text x="495" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#15803D">Return</text>
-  
-  <rect x="570" y="380" width="110" height="80" rx="8" fill="#FEF2F2" stroke="#FECACA" stroke-width="2"/>
-  <text x="625" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#DC2626">$40K</text>
-  <text x="625" y="425" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#7F1D1D">Initial</text>
-  <text x="625" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#7F1D1D">Investment</text>
-  
-  <!-- Center: TDD Process -->
-  <rect x="320" y="520" width="160" height="60" rx="30" fill="#8B6B00" fill-opacity="0.1" stroke="#8B6B00" stroke-width="2"/>
-  <text x="400" y="545" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#8B6B00">Red → Green → Refactor</text>
-  <text x="400" y="565" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#8B6B00">TDD Cycle</text>
-  
-  <!-- Decorative Elements -->
-  <circle cx="150" cy="150" r="8" fill="#8B6B00" fill-opacity="0.3"/>
-  <circle cx="650" cy="150" r="8" fill="#8B6B00" fill-opacity="0.3"/>
-  <circle cx="150" cy="450" r="8" fill="#8B6B00" fill-opacity="0.3"/>
-  <circle cx="650" cy="450" r="8" fill="#8B6B00" fill-opacity="0.3"/>
-  
-  <!-- Connection Lines -->
-  <path d="M 400 520 L 400 500" stroke="#8B6B00" stroke-width="2" stroke-dasharray="5,5"/>
-  <path d="M 400 180 L 400 160" stroke="#8B6B00" stroke-width="2" stroke-dasharray="5,5"/>
+  <rect width="400" height="300" fill="url(#bgTdd)"/>
+  <rect width="400" height="300" fill="url(#gridTdd)"/>
+  <text x="200" y="26" text-anchor="middle" font-family="'Segoe UI',Arial" font-size="15" font-weight="600" fill="#f1f5f9">TDD Business Value</text>
+  <g font-family="'Segoe UI',Arial" font-size="11" font-weight="600" text-anchor="middle">
+    <g transform="translate(120 150)">
+      <circle r="46" fill="#1e293b" stroke="#dc2626" stroke-width="4"/>
+      <text y="4" fill="#dc2626">RED</text>
+    </g>
+    <g transform="translate(200 150)">
+      <circle r="46" fill="#1e293b" stroke="#10b981" stroke-width="4"/>
+      <text y="4" fill="#10b981">GREEN</text>
+    </g>
+    <g transform="translate(280 150)">
+      <circle r="46" fill="#1e293b" stroke="#f59e0b" stroke-width="4"/>
+      <text y="4" fill="#f59e0b">REFACTOR</text>
+    </g>
+  </g>
+  <g stroke="#6366f1" stroke-width="3" stroke-linecap="round" fill="none">
+    <path d="M166 150c4-20 16-30 34-30" marker-end="url(#arrTdd)"/>
+    <path d="M246 150c-4 20-16 30-34 30" marker-end="url(#arrTdd)"/>
+  </g>
+  <text x="200" y="268" text-anchor="middle" font-family="'Segoe UI',Arial" font-size="11" fill="#94a3b8">Quality • Feedback • Lower Risk</text>
+  <defs>
+    <marker id="arrTdd" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z" fill="#6366f1"/></marker>
+  </defs>
 </svg>

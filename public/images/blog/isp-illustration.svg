@@ -1,68 +1,33 @@
-<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Interface Segregation Principle illustration</title>
+  <desc>Shows a fat interface contrasted with three fine grained interfaces following ISP.</desc>
   <defs>
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#f8f9fa;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#e9ecef;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#8B6B00;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
-    </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.1"/>
-    </filter>
+    <linearGradient id="bgIsp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#1e293b"/></linearGradient>
+    <pattern id="gridIsp" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" stroke="#334155" stroke-opacity="0.25" stroke-width="1"/></pattern>
+    <linearGradient id="fat" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7f1d1d"/><stop offset="1" stop-color="#991b1b"/></linearGradient>
   </defs>
-  
-  <!-- Background -->
-  <rect width="400" height="300" fill="url(#bgGradient)"/>
-  
-  <!-- Title -->
-  <text x="200" y="30" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="18" font-weight="bold">Interface Segregation Principle</text>
-  
-  <!-- Bad Example: Fat Interface -->
-  <g transform="translate(50, 60)">
-    <rect x="0" y="0" width="140" height="80" rx="8" fill="#dc3545" filter="url(#shadow)"/>
-    <text x="70" y="20" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">IMachine</text>
-    <line x1="10" y1="30" x2="130" y2="30" stroke="white" stroke-width="1" opacity="0.3"/>
-    <text x="70" y="45" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="9">+ print()</text>
-    <text x="70" y="60" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="9">+ scan()</text>
-    <text x="70" y="75" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="9">+ fax()</text>
+  <rect width="400" height="300" fill="url(#bgIsp)"/>
+  <rect width="400" height="300" fill="url(#gridIsp)"/>
+  <text x="200" y="28" text-anchor="middle" font-family="'Segoe UI',Arial" font-size="16" font-weight="600" fill="#f1f5f9">Interface Segregation</text>
+  <g font-family="'Segoe UI',Arial" font-size="10" font-weight="500" text-anchor="middle">
+    <g transform="translate(90 120)">
+      <rect x="-70" y="-50" width="140" height="100" rx="18" fill="url(#fat)" stroke="#ef4444"/>
+      <text y="-18" fill="#fee2e2" font-weight="600">IMachine</text>
+      <text y="2" fill="#fee2e2">print()</text>
+      <text y="20" fill="#fee2e2">scan()</text>
+      <text y="38" fill="#fee2e2">fax()</text>
+      <text y="58" fill="#ef4444" font-weight="600">Bad ❌</text>
+    </g>
+    <g transform="translate(290 120)" fill="#f1f5f9">
+      <rect x="-60" y="-50" width="120" height="36" rx="12" fill="#1e293b" stroke="#6366f1"/>
+      <text y="-30" fill="#6366f1" font-weight="600">IPrinter</text>
+      <rect x="-60" y="-10" width="120" height="36" rx="12" fill="#1e293b" stroke="#10b981"/>
+      <text y="8" fill="#10b981" font-weight="600">IScanner</text>
+      <rect x="-60" y="30" width="120" height="36" rx="12" fill="#1e293b" stroke="#f59e0b"/>
+      <text y="48" fill="#f59e0b" font-weight="600">IFax</text>
+      <text y="68" fill="#10b981" font-weight="600">Good ✅</text>
+    </g>
   </g>
-  
-  <!-- Bad Label -->
-  <text x="120" y="155" text-anchor="middle" fill="#dc3545" font-family="Arial, sans-serif" font-size="12" font-weight="600">❌ Bad</text>
-  
-  <!-- Good Example: Segregated Interfaces -->
-  <g transform="translate(220, 60)">
-    <rect x="0" y="0" width="120" height="50" rx="6" fill="#28a745" filter="url(#shadow)"/>
-    <text x="60" y="20" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="11" font-weight="bold">IPrinter</text>
-    <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="9">+ print()</text>
-  </g>
-  
-  <g transform="translate(220, 120)">
-    <rect x="0" y="0" width="120" height="50" rx="6" fill="#17a2b8" filter="url(#shadow)"/>
-    <text x="60" y="20" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="11" font-weight="bold">IScanner</text>
-    <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="9">+ scan()</text>
-  </g>
-  
-  <g transform="translate(220, 180)">
-    <rect x="0" y="0" width="120" height="50" rx="6" fill="#ffc107" filter="url(#shadow)"/>
-    <text x="60" y="20" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="11" font-weight="bold">IFax</text>
-    <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="9">+ fax()</text>
-  </g>
-  
-  <!-- Good Label -->
-  <text x="280" y="245" text-anchor="middle" fill="#28a745" font-family="Arial, sans-serif" font-size="12" font-weight="600">✅ Good</text>
-  
-  <!-- Client Usage Example -->
-  <g transform="translate(50, 200)">
-    <rect x="0" y="0" width="300" height="60" rx="6" fill="#f8f9fa" stroke="#8B6B00" stroke-width="1"/>
-    <text x="150" y="20" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="11" font-weight="600">Client Classes</text>
-    <text x="150" y="35" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="9">SimplePrinter implements IPrinter (only print method)</text>
-    <text x="150" y="50" text-anchor="middle" fill="#8B6B00" font-family="Arial, sans-serif" font-size="9">AllInOne implements IPrinter, IScanner, IFax (all methods)</text>
-  </g>
-  
-  <!-- Decorative Elements -->
-  <circle cx="80" cy="180" r="3" fill="#8B6B00" opacity="0.2"/>
-  <circle cx="320" cy="180" r="3" fill="#8B6B00" opacity="0.2"/>
+  <text x="200" y="230" text-anchor="middle" font-family="'Segoe UI',Arial" font-size="11" fill="#94a3b8">Clients depend only</text>
+  <text x="200" y="246" text-anchor="middle" font-family="'Segoe UI',Arial" font-size="11" fill="#94a3b8">on what they use</text>
 </svg>
