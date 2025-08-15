@@ -68,7 +68,6 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* Preload & preconnect resources (moved from body for WebKit stability) */}
-        <link rel="preload" href="/images/hero-consulting.svg" as="image" type="image/svg+xml" />
         <link rel="preload" href="/_next/static/css/app/layout.css" as="style" />
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="preconnect" href="//fonts.googleapis.com" crossOrigin="anonymous" />

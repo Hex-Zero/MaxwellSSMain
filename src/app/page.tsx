@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import ParticleField from './components/ParticleField';
 import Link from 'next/link';
 
 // Dynamically import non-critical components
@@ -61,20 +62,8 @@ export default function Home(): ReactElement {
               QUALITY • RELIABILITY • VELOCITY
             </p>
           </div>
-          <div className="mt-12" data-parallax="0.15" data-reveal>
-            <div className="full-image">
-              <Image
-                src="/images/hero-consulting.svg"
-                alt="Modern software consulting illustration"
-                width={1600}
-                height={900}
-                priority
-                placeholder="blur"
-                blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYwMCIgaGVpZ2h0PSI5MDAiIHZpZXdCb3g9IjAgMCAxNjAwIDkwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjE2MDAiIGhlaWdodD0iOTAwIiBmaWxsPSIjZjNmNGY2Ii8+Cjwvc3ZnPgo="
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-                fetchPriority="high"
-              />
-            </div>
+          <div className="mt-12" data-parallax="0.1" data-reveal>
+            <ParticleField />
           </div>
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-3" data-reveal>
             <div className="card shadow-soft p-5 text-center">

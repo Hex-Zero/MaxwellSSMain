@@ -6,6 +6,6 @@ export const metadata: Metadata = {
   description: 'Our mission: correctness, simplicity, observability, automation.',
 };
 
-export default function Page() {
+export default function Page(): React.ReactElement {
   return <AboutPageComponent />;
 }
