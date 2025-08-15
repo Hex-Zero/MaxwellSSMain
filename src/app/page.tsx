@@ -18,11 +18,6 @@ export default function Home(): ReactElement {
             <p className="lead mt-4">
               Ship reliable software through code quality audits, testing strategy, refactoring, and observability.
             </p>
-            <div className="mt-8 flex justify-center">
-              <a href="/contact" className="btn btn-accent text-lg px-8 py-3 shadow-soft">
-                Get in touch
-              </a>
-            </div>
             <div className="mt-8 flex flex-col sm:flex-row justify-center gap-3">
               <a href="/contact" className="btn btn-accent">
                 Request a code audit
