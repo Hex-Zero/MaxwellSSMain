@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
 import 'jest-axe/extend-expect';
-import * as React from 'react';
 
 // Mock next/navigation for tests
 jest.mock('next/navigation', () => ({
@@ -22,11 +21,18 @@ jest.mock('next/navigation', () => ({
   },
 }));
 
-// Mock next/image
-jest.mock('next/image', () => {
-  return function MockImage(props: React.ImgHTMLAttributes<HTMLImageElement>) {
-    return React.createElement('img', props);
-  };
+// next/image is mapped via moduleNameMapper to a custom mock that strips Next-specific props.
+// The previous inline mock leaked Next-specific boolean props (priority, fill, etc.) to the DOM,
+// causing React console warnings in tests. Removed to avoid duplicate/less capable mock.
+
+// Mock next/dynamic to return the inner component immediately, avoiding async state updates that
+// trigger act() warnings in tests.
+jest.mock('next/dynamic', () => {
+  // Return a factory that ignores import function and yields a stub component.
+  return () =>
+    function DynamicStub() {
+      return null;
+    };
 });
 
 // Global test environment setup
