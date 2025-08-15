@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import Image from 'next/image';
 import type { ReactElement } from 'react';
 import type { FounderInfo } from './founders-data';
@@ -7,9 +7,7 @@ import { founderImage } from './founders-data';
 export function FounderCard({ f, index }: { f: FounderInfo; index: number }): ReactElement {
   const imgSrc = founderImage[f.name] || '/images/founders/maxwell.svg';
   return (
-    <figure
-      className="relative rounded-2xl border border-foreground/10 bg-gradient-to-br p-8 shadow-soft overflow-hidden group min-h-[22rem] flex flex-col"
-    >
+    <figure className="relative rounded-2xl border border-foreground/10 bg-gradient-to-br p-8 shadow-soft overflow-hidden group min-h-[22rem] flex flex-col">
       <div
         className={`absolute inset-0 pointer-events-none rounded-2xl bg-gradient-to-br ${f.gradient} opacity-10 group-hover:opacity-20 transition-opacity`}
         aria-hidden="true"

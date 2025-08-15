@@ -76,7 +76,9 @@ export default function RootLayout({
         <link rel="modulepreload" href="/_next/static/chunks/main-app.js" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <a href="#main-content" className="skip-link">Skip to main content</a>
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
         {/* Global scroll effects (no UI) */}
         <ParallaxScrollEffects key="scroll-effects" />
 

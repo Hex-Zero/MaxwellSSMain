@@ -307,9 +307,7 @@ export default function Home(): ReactElement {
                     <span className="h-1 w-1 rounded-full bg-foreground/30" />
                     <span className="text-accent font-medium">{c.outcome}</span>
                   </div>
-                  <h3 className="font-semibold tracking-tight group-hover:text-accent transition-colors">
-                    {c.title}
-                  </h3>
+                  <h3 className="font-semibold tracking-tight group-hover:text-accent transition-colors">{c.title}</h3>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {c.metrics.map((m) => (
                       <span
@@ -350,7 +348,7 @@ export default function Home(): ReactElement {
         </div>
       </section>
 
-  <TestimonialsSection />
+      <TestimonialsSection />
 
       <section id="contact" className="px-6 sm:px-10 py-16 border-t border-foreground/10">
         <div className="max-w-6xl mx-auto">
@@ -377,8 +375,8 @@ export default function Home(): ReactElement {
           </div>
         </div>
       </section>
-  <DarkShowcaseSection />
-  <FinalCtaSection />
+      <DarkShowcaseSection />
+      <FinalCtaSection />
     </main>
   );
 }

@@ -4,7 +4,9 @@ import type { ServiceItem } from './services-data';
 
 export default function ServiceCard({ s }: { s: ServiceItem }): ReactElement {
   const base = 'card shadow-soft p-5 group hover:shadow-lg transition-shadow';
-  const featured = s.featured ? ' bg-gradient-to-br from-accent/10 to-transparent border border-accent/30 relative overflow-hidden' : '';
+  const featured = s.featured
+    ? ' bg-gradient-to-br from-accent/10 to-transparent border border-accent/30 relative overflow-hidden'
+    : '';
   return (
     <section className={base + featured} data-service={s.key}>
       {s.featured && (

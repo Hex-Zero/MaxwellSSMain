@@ -11,5 +11,7 @@ if (major > 20 || (major === 20 && minor >= 10)) {
   const child = spawn(cmd, ['run', 'lighthouse'], { stdio: 'inherit' });
   child.on('exit', (code) => process.exit(code));
 } else {
-  console.log(`Skipping Lighthouse: Node ${process.versions.node} < 20.10.0 (upgrade to enable Lighthouse in test:full).`);
+  console.log(
+    `Skipping Lighthouse: Node ${process.versions.node} < 20.10.0 (upgrade to enable Lighthouse in test:full).`
+  );
 }

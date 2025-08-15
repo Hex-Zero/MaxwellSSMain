@@ -1,5 +1,9 @@
 export interface FounderInfo {
-  name: string; role: string; bio: string; alt: string; gradient: string;
+  name: string;
+  role: string;
+  bio: string;
+  alt: string;
+  gradient: string;
 }
 
 export const founders: FounderInfo[] = [
