@@ -24,31 +24,51 @@ export default function HeaderNav(): ReactElement {
     if (!open) return;
     const prev = document.body.style.overflow;
     lastFocusedRef.current = document.activeElement as HTMLElement | null;
-    document.body.style.overflow = 'hidden';
+    // In WebKit rapid style/layout right after navigation can crash when immediately locking scroll.
+    // Defer applying overflow hidden very slightly for WebKit-based engines.
+    const isWebKit = /AppleWebKit/i.test(navigator.userAgent) && !/Chrome/i.test(navigator.userAgent);
+    if (isWebKit) {
+      setTimeout(() => { if (!cancelled) document.body.style.overflow = 'hidden'; }, 30);
+    } else {
+      document.body.style.overflow = 'hidden';
+    }
+    let cancelled = false;
     // Focus first link
     requestAnimationFrame(() => {
-      if (firstLinkRef.current) {
-        firstLinkRef.current.focus();
-      } else {
-        // Fallback: focus first focusable inside panel
-        const panel = panelRef.current;
-        const candidate = panel?.querySelector<HTMLElement>('a,button');
-        candidate?.focus();
-      }
+      if (cancelled) return;
+      try {
+        if (firstLinkRef.current) {
+          firstLinkRef.current.focus();
+        } else {
+          // Fallback: focus first focusable inside panel
+          const panel = panelRef.current;
+          const candidate = panel?.querySelector<HTMLElement>('a,button');
+          candidate?.focus();
+        }
+      } catch { /* swallow */ }
       // Secondary fallback if prior attempt async fails
       setTimeout(() => {
+        if (cancelled) return;
         if (!panelRef.current) return;
         if (panelRef.current.contains(document.activeElement)) return;
-        const alt = panelRef.current.querySelector<HTMLElement>('a,button');
-        alt?.focus();
+        try {
+          const alt = panelRef.current.querySelector<HTMLElement>('a,button');
+          alt?.focus();
+        } catch { /* swallow */ }
       }, 50);
     });
     // Mark rest inert
     const main = document.querySelector('main');
     const footer = document.querySelector('footer');
-  main?.setAttribute('inert', '');
-  footer?.setAttribute('inert', '');
+    // Delay inert until after next paint to reduce race risk
+  const inertTimeout = setTimeout(() => {
+      if (cancelled) return;
+      main?.setAttribute('inert', '');
+      footer?.setAttribute('inert', '');
+  }, isWebKit ? 60 : 0);
     return () => {
+      cancelled = true;
+      clearTimeout(inertTimeout);
       document.body.style.overflow = prev;
       main?.removeAttribute('inert');
       footer?.removeAttribute('inert');

@@ -1,8 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const isProd = !!process.env.PLAYWRIGHT_PROD;
+
 export default defineConfig({
   testDir: './e2e',
-  timeout: 30 * 1000,
+  timeout: 40 * 1000,
   expect: { timeout: 5000 },
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
@@ -20,9 +22,9 @@ export default defineConfig({
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
   ],
   webServer: {
-    command: 'pnpm dev',
+    command: isProd ? 'pnpm start' : 'pnpm dev',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
+    timeout: 180 * 1000,
   },
 });

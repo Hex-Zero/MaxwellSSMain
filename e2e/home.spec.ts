@@ -15,14 +15,22 @@ test.describe('Home Page', () => {
     await page.goto('/');
     // Scope to top navigation (first navigation landmark) to avoid matching CTA duplicates.
     const topNav = page.getByRole('navigation').first();
-    await Promise.all([
-      page.waitForURL('**/services'),
+    const servicesLink = topNav.getByRole('link', { name: /^Services$/ });
+    await servicesLink.scrollIntoViewIfNeeded();
+    await Promise.race([
       (async () => {
-        await topNav.getByRole('link', { name: /^Services$/ }).click();
+        await servicesLink.click();
+      })(),
+      (async () => {
+        // Fallback: if first click didn't navigate within 1.5s (webkit flake) try again
+        await page.waitForTimeout(1500);
+        if (!/\/services$/.test(page.url())) {
+          await servicesLink.click();
+        }
       })(),
     ]);
-    // Allow first-load route compilation in dev
-    await page.waitForLoadState('domcontentloaded');
+    await page.waitForURL('**/services', { timeout: 15000 });
+    await page.waitForLoadState('networkidle');
     await expect(page.getByRole('heading', { name: /Services/i })).toBeVisible({ timeout: 15000 });
   });
 

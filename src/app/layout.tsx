@@ -66,11 +66,8 @@ export default function RootLayout({
 }>): ReactElement {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <a href="#main-content" className="skip-link">Skip to main content</a>
-        {/* Global scroll effects (no UI) */}
-        <ParallaxScrollEffects key="scroll-effects" />
-        {/* Preload critical resources */}
+      <head>
+        {/* Preload & preconnect resources (moved from body for WebKit stability) */}
         <link rel="preload" href="/images/hero-consulting.svg" as="image" type="image/svg+xml" />
         <link rel="preload" href="/_next/static/css/app/layout.css" as="style" />
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
@@ -78,6 +75,11 @@ export default function RootLayout({
         <link rel="preconnect" href="//fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="modulepreload" href="/_next/static/chunks/webpack.js" />
         <link rel="modulepreload" href="/_next/static/chunks/main-app.js" />
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <a href="#main-content" className="skip-link">Skip to main content</a>
+        {/* Global scroll effects (no UI) */}
+        <ParallaxScrollEffects key="scroll-effects" />
 
         {/* Critical CSS for above-the-fold content */}
         <style
@@ -92,6 +94,10 @@ export default function RootLayout({
               .menu-toggle { background:none; border:0; color:#111; display:inline-flex; align-items:center; justify-content:center; position:relative; z-index:60; }
               .menu-toggle { width:2.5rem; height:2.5rem; }
               .mobile-nav { position:fixed; top:0; right:0; bottom:0; width:min(18rem,80%); background:rgba(15,23,42,0.92); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); color:#f1f5f9; padding:5rem 2rem 2rem; display:flex; flex-direction:column; transform:translateX(100%); transition:transform .35s cubic-bezier(.4,0,.2,1); box-shadow:-8px 0 24px -8px rgba(0,0,0,.4); }
+              @supports (-webkit-touch-callout: none) {
+                /* Simplify effects for WebKit to avoid rare crash on backdrop + transform combo */
+                .mobile-nav { -webkit-backdrop-filter:none; backdrop-filter:none; background:rgba(15,23,42,0.96); }
+              }
               .mobile-nav.open { transform:translateX(0); }
               .mobile-nav a { color:#f1f5f9; text-decoration:none; }
               .mobile-nav a:hover { color:#fff; }
