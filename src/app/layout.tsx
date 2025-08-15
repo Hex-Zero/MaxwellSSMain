@@ -91,9 +91,9 @@ export default function RootLayout({
             .hero-gradient { background-image: radial-gradient(120% 80% at 50% 0%, rgba(139, 107, 0, 0.12) 0%, rgba(139, 107, 0, 0.06) 30%, transparent 60%); }
               /* Mobile (<600px): hide nav links, leave only logo */
               .nav-links { display:none; }
-              .menu-toggle { background:none; border:0; color:#111; display:inline-flex; align-items:center; justify-content:center; position:relative; z-index:60; }
-              .menu-toggle { width:2.5rem; height:2.5rem; }
-              .mobile-nav { position:fixed; top:0; right:0; bottom:0; width:min(18rem,80%); background:rgba(15,23,42,0.92); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); color:#f1f5f9; padding:5rem 2rem 2rem; display:flex; flex-direction:column; transform:translateX(100%); transition:transform .35s cubic-bezier(.4,0,.2,1); box-shadow:-8px 0 24px -8px rgba(0,0,0,.4); }
+              .menu-toggle { background:none; border:0; color:#111; display:inline-flex; align-items:center; justify-content:center; position:relative; z-index:70; width:2.5rem; height:2.5rem; transition:opacity .2s; }
+              .menu-toggle[aria-expanded="true"] { opacity:0; pointer-events:none; }
+              .mobile-nav { position:fixed; top:0; right:0; height:340px; width:min(19rem,82%); background:linear-gradient(180deg, rgba(15,23,42,0.94), rgba(15,23,42,0.90)); -webkit-backdrop-filter:blur(18px) saturate(150%); backdrop-filter:blur(18px) saturate(150%); color:#f1f5f9; padding:4.25rem 2rem 2rem; display:flex; flex-direction:column; gap:1.25rem; transform:translateX(100%); transition:transform .35s cubic-bezier(.4,0,.2,1); box-shadow:-12px 0 36px -8px rgba(0,0,0,.55); border-left:1px solid rgba(255,255,255,0.06); z-index:80; overflow-y:auto; }
               @supports (-webkit-touch-callout: none) {
                 /* Simplify effects for WebKit to avoid rare crash on backdrop + transform combo */
                 .mobile-nav { -webkit-backdrop-filter:none; backdrop-filter:none; background:rgba(15,23,42,0.96); }
@@ -103,11 +103,11 @@ export default function RootLayout({
               .mobile-nav a:hover { color:#fff; }
               .menu-close { background:none; border:0; color:inherit; display:inline-flex; }
               .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
-              .nav-overlay { position:fixed; inset:0; background:rgba(15,23,42,0.55); backdrop-filter:blur(2px); opacity:0; pointer-events:none; transition:opacity .3s; z-index:45; }
+              .nav-overlay { position:fixed; inset:0; background:rgba(15,23,42,0.55); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); opacity:0; pointer-events:none; transition:opacity .3s; z-index:60; }
               .nav-overlay.open { opacity:1; pointer-events:auto; }
               [inert] { pointer-events:none; user-select:none; opacity:0.6; }
-              header { z-index:40; }
-              .mobile-nav { z-index:50; }
+              header { z-index:50; }
+              .mobile-nav { z-index:80; }
               .site-logo { height:2.5rem; }
               .skip-link { position:absolute; top:-40px; left:0; background:#111; color:#fff; padding:.5rem 1rem; z-index:100; text-decoration:none; font-size:.875rem; border-radius:0 0 .25rem .25rem; transition:top .2s; }
               .skip-link:focus { top:0; }
