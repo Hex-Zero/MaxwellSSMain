@@ -25,7 +25,8 @@
     "analyze": "ANALYZE=true next build",
     "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
-    "analyze:full": "node scripts/analyze-bundle.js"
+  "analyze:full": "node scripts/analyze-bundle.js",
+  "avatars:generate": "ts-node scripts/generate-founder-avatars.ts"
   },
   "engines": {
     "node": ">=20.10.0"
