@@ -42,14 +42,7 @@ describe('Services & Process page', () => {
     expect(screen.getByText('Sustain')).toBeInTheDocument();
   });
 
-  it('renders service icons with accessible labels', () => {
-    render(<ServicesPage />);
-    expect(screen.getByRole('img', { name: 'Audit icon' })).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: 'Reliability icon' })).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: 'Refactoring icon' })).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: 'Testing icon' })).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: 'CI/CD icon' })).toBeInTheDocument();
-  });
+  // Icons removed intentionally; accessibility now rests on clear headings and text.
 
   it('checks accessibility and reports violations', async () => {
     const { container } = render(<ServicesPage />);

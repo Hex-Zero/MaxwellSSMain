@@ -12,7 +12,6 @@ export default function ServicesPage(): ReactElement {
     key: s.key,
     title: s.title,
     summary: s.body,
-    iconKey: s.icon, // symbolic key
     imageAlt: s.alt,
     meta: s.tagline,
     tone: s.featured ? 'accent' : 'default',
@@ -57,7 +56,6 @@ export default function ServicesPage(): ReactElement {
                 key={svc.key}
                 title={svc.title}
                 summary={svc.summary}
-                iconKey={svc.iconKey}
                 imageAlt={svc.imageAlt}
                 meta={svc.meta}
                 tone={svc.tone as 'default' | 'accent'}
