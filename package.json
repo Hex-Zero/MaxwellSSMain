@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
   "build": "next build && pnpm postbuild:autocommit",
-  "postbuild:autocommit": "git add . && git diff --cached --quiet && echo No changes to commit || (git commit -m \"chore: auto commit after successful build\" && git push origin HEAD)",
+  "postbuild:autocommit": "node scripts/postbuild-autocommit.cjs",
     "build:test": "pnpm run test && next build",
     "start": "next start",
     "lint": "next lint",
