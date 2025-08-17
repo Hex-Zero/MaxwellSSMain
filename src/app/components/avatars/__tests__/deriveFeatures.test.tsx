@@ -21,7 +21,7 @@ describe('deriveFeatures', () => {
     const custom = deriveFeatures('Override Test', {
       hair: { style: 'buzz', color: '#123456' },
       mood: 'grin',
-      background: { from: '#000', to: '#fff' }
+      background: { from: '#000', to: '#fff' },
     });
     expect(custom.hair.style).toBe('buzz');
     expect(custom.hair.color).toBe('#123456');

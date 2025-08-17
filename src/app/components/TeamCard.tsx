@@ -10,14 +10,16 @@ export interface TeamCardProps {
   className?: string;
 }
 
-const TeamCard: React.FC<TeamCardProps> = ({ name, title, bio, presetKey, className='' }) => {
+const TeamCard: React.FC<TeamCardProps> = ({ name, title, bio, presetKey, className = '' }) => {
   const preset = presets[presetKey];
-  if(!preset) {
+  if (!preset) {
     throw new Error(`Unknown presetKey: ${presetKey}`);
   }
   const hair: HairConfig | undefined = preset.hair ? { style: preset.hair.style } : undefined;
   return (
-    <div className={`rounded-3xl border border-foreground/10 shadow-soft bg-gradient-to-br from-background/60 to-background/30 p-6 flex gap-6 items-start ${className}`}>      
+    <div
+      className={`rounded-3xl border border-foreground/10 shadow-soft bg-gradient-to-br from-background/60 to-background/30 p-6 flex gap-6 items-start ${className}`}
+    >
       <div className="flex-shrink-0">
         <Avatar
           name={name}

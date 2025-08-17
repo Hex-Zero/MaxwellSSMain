@@ -1,11 +1,19 @@
-'use client';
-import Image from 'next/image';
+"use client";
 import type { ReactElement } from 'react';
 import type { FounderInfo } from './founders-data';
-import { founderImage } from './founders-data';
+import Avatar from '../components/avatars/Avatar';
+import { presets } from '../components/avatars/presets';
 
-export function FounderCard({ f, index }: { f: FounderInfo; index: number }): ReactElement {
-  const imgSrc = founderImage[f.name] || '/images/founders/maxwell.svg';
+export function FounderCard({ f }: { f: FounderInfo }): ReactElement {
+  // Map founder name to preset key when available
+  const presetKey = f.name.toLowerCase().startsWith('maxwell')
+    ? 'maxwell'
+    : f.name.toLowerCase().startsWith('petras')
+      ? 'petras'
+      : f.name.toLowerCase().startsWith('marek')
+        ? 'marek'
+        : undefined;
+  const preset = presetKey ? presets[presetKey] : undefined;
   return (
     <figure className="relative rounded-2xl border border-foreground/10 bg-gradient-to-br p-8 shadow-soft overflow-hidden group min-h-[22rem] flex flex-col">
       <div
@@ -14,16 +22,17 @@ export function FounderCard({ f, index }: { f: FounderInfo; index: number }): Re
       />
       <div className="relative flex flex-col gap-5 grow">
         <div className="flex items-center gap-5">
-          <Image
-            src={imgSrc}
-            alt={f.alt}
-            width={120}
-            height={120}
-            className="w-28 h-28 rounded-xl shadow-xl ring-2 ring-white/40 object-cover"
-            priority={index === 0}
+          <Avatar
+            name={f.name}
+            {...(preset?.background ? { background: preset.background } : {})}
+            {...(preset?.hair ? { hair: { style: preset.hair.style } } : {})}
+            size={120}
+            className="w-28 h-28 rounded-xl shadow-xl ring-2 ring-white/40"
+            aria-label={f.alt}
+            shadow={true}
           />
           <figcaption className="flex flex-col">
-            <div className="font-semibold text-lg leading-tight tracking-tight">{f.name}</div>
+            <h3 className="font-semibold text-lg leading-tight tracking-tight">{f.name}</h3>
             <div className="text-xs uppercase tracking-wide text-foreground/60 mt-1">{f.role}</div>
           </figcaption>
         </div>

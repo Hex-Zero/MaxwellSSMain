@@ -25,8 +25,8 @@ export default function AboutPage(): ReactElement {
           A compact senior core blending deep engineering rigor, product design clarity, and outcome-focused strategy.
         </p>
         <div className="mt-10 grid gap-8 md:grid-cols-3">
-          {founders.map((f, idx) => (
-            <FounderCard key={f.name} f={f} index={idx} />
+          {founders.map((f) => (
+            <FounderCard key={f.name} f={f} />
           ))}
         </div>
       </section>

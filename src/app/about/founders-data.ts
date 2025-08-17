@@ -30,8 +30,4 @@ export const founders: FounderInfo[] = [
   },
 ];
 
-export const founderImage: Record<string, string> = {
-  'Maxwell Archer': '/images/founders/maxwell.svg',
-  'Petras Rolinskij': '/images/founders/petras.svg',
-  'Marek Wolosewicz': '/images/founders/marek.svg',
-};
+// Static image mapping removed in favor of generated Avatar components.
