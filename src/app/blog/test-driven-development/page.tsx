@@ -89,14 +89,14 @@ export default function TDDPost(): ReactElement {
             <h3 className="text-xl font-semibold mb-4 text-accent">Cost Reduction</h3>
             <div className="space-y-4">
               <div className="bg-foreground/5 rounded-lg p-4">
-                <h4 className="font-semibold mb-2">Bug Prevention</h4>
+                <h3 className="font-semibold mb-2">Bug Prevention</h3>
                 <p className="text-foreground/70 text-sm">
                   Catching bugs during development costs 10x less than fixing them in production. TDD prevents most bugs
                   from ever reaching your users.
                 </p>
               </div>
               <div className="bg-foreground/5 rounded-lg p-4">
-                <h4 className="font-semibold mb-2">Maintenance Savings</h4>
+                <h3 className="font-semibold mb-2">Maintenance Savings</h3>
                 <p className="text-foreground/70 text-sm">
                   Well-tested code is easier to modify and extend, reducing the cost of future development and
                   maintenance.
@@ -108,14 +108,14 @@ export default function TDDPost(): ReactElement {
             <h3 className="text-xl font-semibold mb-4 text-accent">Revenue Protection</h3>
             <div className="space-y-4">
               <div className="bg-foreground/5 rounded-lg p-4">
-                <h4 className="font-semibold mb-2">Customer Satisfaction</h4>
+                <h3 className="font-semibold mb-2">Customer Satisfaction</h3>
                 <p className="text-foreground/70 text-sm">
                   Reliable software builds trust and reduces customer churn. Happy customers are more likely to renew
                   and recommend your product.
                 </p>
               </div>
               <div className="bg-foreground/5 rounded-lg p-4">
-                <h4 className="font-semibold mb-2">Faster Time-to-Market</h4>
+                <h3 className="font-semibold mb-2">Faster Time-to-Market</h3>
                 <p className="text-foreground/70 text-sm">
                   TDD reduces debugging time, allowing teams to deliver features faster and capture market opportunities
                   before competitors.
@@ -174,7 +174,7 @@ export default function TDDPost(): ReactElement {
           <h3 className="text-xl font-semibold mb-4">TDD Approach</h3>
           <div className="grid lg:grid-cols-2 gap-8">
             <div>
-              <h4 className="font-semibold mb-2 text-accent">Test First</h4>
+              <h3 className="font-semibold mb-2 text-accent">Test First</h3>
               <div className="bg-foreground/10 rounded-lg p-4 font-mono text-sm">
                 <div className="text-blue-600">describe</div>
                 <div className="text-blue-600"> &apos;PaymentProcessor&apos;</div>
@@ -186,7 +186,7 @@ export default function TDDPost(): ReactElement {
               </div>
             </div>
             <div>
-              <h4 className="font-semibold mb-2 text-accent">Implementation</h4>
+              <h3 className="font-semibold mb-2 text-accent">Implementation</h3>
               <div className="bg-foreground/10 rounded-lg p-4 font-mono text-sm">
                 <div className="text-green-600">class PaymentProcessor</div>
                 <div className="text-green-600"> def process(payment)</div>
@@ -202,7 +202,7 @@ export default function TDDPost(): ReactElement {
           <h3 className="text-xl font-semibold mb-4 mt-6">Business Results</h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <h4 className="font-semibold text-green-800 mb-2">✅ What Went Well</h4>
+              <h3 className="font-semibold text-green-800 mb-2">✅ What Went Well</h3>
               <ul className="text-green-700 text-sm space-y-1">
                 <li>• Zero payment-related bugs in production</li>
                 <li>• 30% faster development cycle</li>
@@ -211,7 +211,7 @@ export default function TDDPost(): ReactElement {
               </ul>
             </div>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h4 className="font-semibold text-blue-800 mb-2">📊 Measurable Impact</h4>
+              <h3 className="font-semibold text-blue-800 mb-2">📊 Measurable Impact</h3>
               <ul className="text-blue-700 text-sm space-y-1">
                 <li>• $50K saved in bug prevention</li>
                 <li>• 2 weeks faster to market</li>
@@ -230,7 +230,7 @@ export default function TDDPost(): ReactElement {
           <h3 className="text-xl font-semibold mb-6">Investment vs. Return</h3>
           <div className="grid lg:grid-cols-2 gap-8">
             <div>
-              <h4 className="font-semibold mb-4 text-red-600">Initial Investment</h4>
+              <h3 className="font-semibold mb-4 text-red-600">Initial Investment</h3>
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span>Developer Training (2 weeks)</span>
@@ -253,7 +253,7 @@ export default function TDDPost(): ReactElement {
               </div>
             </div>
             <div>
-              <h4 className="font-semibold mb-4 text-green-600">Annual Returns</h4>
+              <h3 className="font-semibold mb-4 text-green-600">Annual Returns</h3>
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span>Bug Prevention Savings</span>

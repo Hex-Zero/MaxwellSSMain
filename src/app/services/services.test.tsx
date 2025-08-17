@@ -42,13 +42,13 @@ describe('Services & Process page', () => {
     expect(screen.getByText('Sustain')).toBeInTheDocument();
   });
 
-  it('renders service icons with proper alt text', () => {
+  it('renders service icons with accessible labels', () => {
     render(<ServicesPage />);
-    expect(screen.getByAltText('Audit icon')).toBeInTheDocument();
-    expect(screen.getByAltText('Reliability icon')).toBeInTheDocument();
-    expect(screen.getByAltText('Refactoring icon')).toBeInTheDocument();
-    expect(screen.getByAltText('Testing icon')).toBeInTheDocument();
-    expect(screen.getByAltText('CI/CD icon')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Audit icon' })).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Reliability icon' })).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Refactoring icon' })).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Testing icon' })).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'CI/CD icon' })).toBeInTheDocument();
   });
 
   it('checks accessibility and reports violations', async () => {

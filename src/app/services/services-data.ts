@@ -1,8 +1,8 @@
 export interface ServiceItem {
   key: string;
   title: string;
-  icon: string;
-  alt: string;
+  icon: string; // symbolic key referencing internal SVG component
+  alt: string; // accessible label
   body: string;
   tagline: string;
   featured?: boolean;
@@ -12,7 +12,7 @@ export const services: ServiceItem[] = [
   {
     key: 'audit',
     title: 'Code Quality Audit',
-    icon: '/images/icon-audit.svg',
+    icon: 'audit',
     alt: 'Audit icon',
     body: 'Linters, static analysis, architecture review & coverage mapping with a prioritized remediation plan.',
     tagline: 'Fast insight → actionable roadmap',
@@ -20,7 +20,7 @@ export const services: ServiceItem[] = [
   {
     key: 'refactor',
     title: 'Refactoring & Modernization',
-    icon: '/images/icon-refactor.svg',
+    icon: 'refactor',
     alt: 'Refactoring icon',
     body: 'Pay down debt safely, simplify coupling, and unlock faster iteration with incremental patterns.',
     tagline: 'Less drag, more flow',
@@ -28,7 +28,7 @@ export const services: ServiceItem[] = [
   {
     key: 'reliability',
     title: 'Reliability Engineering',
-    icon: '/images/icon-reliability.svg',
+    icon: 'reliability',
     alt: 'Reliability icon',
     body: 'SLOs, error budgets, observability & incident rehearsal to reduce MTTR and defect escape rate.',
     tagline: 'Stability you can prove',
@@ -36,7 +36,7 @@ export const services: ServiceItem[] = [
   {
     key: 'testing',
     title: 'Testing Strategy',
-    icon: '/images/icon-testing.svg',
+    icon: 'testing',
     alt: 'Testing icon',
     body: 'Pragmatic pyramid, flaky test control & mutation insight for confidence without drag.',
     tagline: 'Confidence metrics > guesswork',
@@ -44,7 +44,7 @@ export const services: ServiceItem[] = [
   {
     key: 'cicd',
     title: 'CI/CD Hardening',
-    icon: '/images/icon-cicd.svg',
+    icon: 'cicd',
     alt: 'CI/CD icon',
     body: 'Fast, reliable pipelines with quality gates, preview envs & DORA metrics visibility.',
     tagline: 'Ship faster, safer',

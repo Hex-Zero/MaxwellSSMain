@@ -154,7 +154,7 @@ export default function RefactoringLegacyCodePost(): ReactElement {
             <h3 className="text-xl font-semibold mb-4">Signs You Have Legacy Code</h3>
             <div className="space-y-4">
               <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <h4 className="font-semibold text-red-800 mb-2">🚨 Red Flags</h4>
+                <h3 className="font-semibold text-red-800 mb-2">🚨 Red Flags</h3>
                 <ul className="text-red-700 text-sm space-y-1">
                   <li>• Developers afraid to make changes</li>
                   <li>• Simple features take weeks to implement</li>
@@ -252,7 +252,7 @@ export default function RefactoringLegacyCodePost(): ReactElement {
         </div>
       </section>
 
-  {/* Refactoring Strategies (dynamically loaded below for code splitting) */}
+      {/* Refactoring Strategies (dynamically loaded below for code splitting) */}
       <section id="refactoring-strategies" className="mb-16">
         <h2 className="text-3xl font-bold mb-8">Proven Refactoring Strategies for Legacy Code</h2>
 
@@ -325,7 +325,7 @@ export default function RefactoringLegacyCodePost(): ReactElement {
         </div>
       </section>
 
-  {/* Step-by-Step Process (dynamic) */}
+      {/* Step-by-Step Process (dynamic) */}
       <section id="step-by-step-process" className="mb-16">
         <h2 className="text-3xl font-bold mb-8">Step-by-Step Refactoring Process</h2>
 
@@ -404,7 +404,7 @@ export default function RefactoringLegacyCodePost(): ReactElement {
         </div>
       </section>
 
-  {/* Tools and Techniques (dynamic) */}
+      {/* Tools and Techniques (dynamic) */}
       <section id="tools-and-techniques" className="mb-16">
         <h2 className="text-3xl font-bold mb-8">Essential Tools and Techniques for Code Refactoring</h2>
 
@@ -461,7 +461,7 @@ export default function RefactoringLegacyCodePost(): ReactElement {
         </div>
       </section>
 
-  {/* Common Pitfalls (dynamic) */}
+      {/* Common Pitfalls (dynamic) */}
       <section id="common-pitfalls" className="mb-16">
         <h2 className="text-3xl font-bold mb-8">Common Pitfalls and How to Avoid Them</h2>
 
@@ -504,7 +504,7 @@ export default function RefactoringLegacyCodePost(): ReactElement {
         </div>
       </section>
 
-  {/* Measuring Success (dynamic) */}
+      {/* Measuring Success (dynamic) */}
       <section id="measuring-success" className="mb-16">
         <h2 className="text-3xl font-bold mb-8">Measuring Refactoring Success</h2>
 
@@ -560,7 +560,7 @@ export default function RefactoringLegacyCodePost(): ReactElement {
         </div>
       </section>
 
-  {/* Case Studies (dynamic) */}
+      {/* Case Studies (dynamic) */}
       <section id="case-studies" className="mb-16">
         <h2 className="text-3xl font-bold mb-8">Real-World Refactoring Case Studies</h2>
 
@@ -619,15 +619,15 @@ export default function RefactoringLegacyCodePost(): ReactElement {
         </div>
       </section>
 
-  {/* Inject dynamically split sections at end for now (demo). In a real refactor, original inline content would be removed. */}
-  <RefactoringStrategies />
-  <StepByStepProcess />
-  <ToolsAndTechniques />
-  <CommonPitfalls />
-  <MeasuringSuccess />
-  <CaseStudies />
+      {/* Inject dynamically split sections at end for now (demo). In a real refactor, original inline content would be removed. */}
+      <RefactoringStrategies />
+      <StepByStepProcess />
+      <ToolsAndTechniques />
+      <CommonPitfalls />
+      <MeasuringSuccess />
+      <CaseStudies />
 
-  {/* Conclusion */}
+      {/* Conclusion */}
       <section className="mb-12">
         <h2 className="text-3xl font-bold mb-6">The Path Forward: Building a Maintainable Future</h2>
         <p className="text-lg text-foreground/70 mb-4">

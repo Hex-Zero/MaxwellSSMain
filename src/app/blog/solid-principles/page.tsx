@@ -128,13 +128,13 @@ export default function SOLIDPrinciplesPost(): ReactElement {
                 words, a class should have only one responsibility or job.
               </p>
               <div className="bg-foreground/5 rounded-lg p-4 mb-4">
-                <h4 className="font-semibold mb-2">❌ Bad Example:</h4>
+                <h3 className="font-semibold mb-2">❌ Bad Example:</h3>
                 <p className="text-foreground/60 text-sm">
                   A class that handles user authentication, sends emails, and manages database connections.
                 </p>
               </div>
               <div className="bg-foreground/5 rounded-lg p-4">
-                <h4 className="font-semibold mb-2">✅ Good Example:</h4>
+                <h3 className="font-semibold mb-2">✅ Good Example:</h3>
                 <p className="text-foreground/60 text-sm">
                   Separate classes for UserAuthentication, EmailService, and DatabaseConnection.
                 </p>
@@ -169,11 +169,11 @@ export default function SOLIDPrinciplesPost(): ReactElement {
                 modification. This means you should be able to add new functionality without changing existing code.
               </p>
               <div className="bg-foreground/5 rounded-lg p-4 mb-4">
-                <h4 className="font-semibold mb-2">❌ Bad Example:</h4>
+                <h3 className="font-semibold mb-2">❌ Bad Example:</h3>
                 <p className="text-foreground/60 text-sm">Modifying existing classes to add new payment methods.</p>
               </div>
               <div className="bg-foreground/5 rounded-lg p-4">
-                <h4 className="font-semibold mb-2">✅ Good Example:</h4>
+                <h3 className="font-semibold mb-2">✅ Good Example:</h3>
                 <p className="text-foreground/60 text-sm">
                   Creating new payment method classes that implement a common interface.
                 </p>
@@ -192,13 +192,13 @@ export default function SOLIDPrinciplesPost(): ReactElement {
                 program. This ensures that inheritance is used correctly.
               </p>
               <div className="bg-foreground/5 rounded-lg p-4 mb-4">
-                <h4 className="font-semibold mb-2">❌ Bad Example:</h4>
+                <h3 className="font-semibold mb-2">❌ Bad Example:</h3>
                 <p className="text-foreground/60 text-sm">
                   A Square class that inherits from Rectangle but changes the behavior of width/height setters.
                 </p>
               </div>
               <div className="bg-foreground/5 rounded-lg p-4">
-                <h4 className="font-semibold mb-2">✅ Good Example:</h4>
+                <h3 className="font-semibold mb-2">✅ Good Example:</h3>
                 <p className="text-foreground/60 text-sm">
                   Ensuring that derived classes maintain the contract of their base classes.
                 </p>
@@ -233,13 +233,13 @@ export default function SOLIDPrinciplesPost(): ReactElement {
                 specific interfaces than one general-purpose interface.
               </p>
               <div className="bg-foreground/5 rounded-lg p-4 mb-4">
-                <h4 className="font-semibold mb-2">❌ Bad Example:</h4>
+                <h3 className="font-semibold mb-2">❌ Bad Example:</h3>
                 <p className="text-foreground/60 text-sm">
                   A large interface with methods for printing, scanning, and faxing that not all clients need.
                 </p>
               </div>
               <div className="bg-foreground/5 rounded-lg p-4">
-                <h4 className="font-semibold mb-2">✅ Good Example:</h4>
+                <h3 className="font-semibold mb-2">✅ Good Example:</h3>
                 <p className="text-foreground/60 text-sm">
                   Separate interfaces: IPrinter, IScanner, IFax, allowing clients to implement only what they need.
                 </p>
@@ -258,13 +258,13 @@ export default function SOLIDPrinciplesPost(): ReactElement {
                 Abstractions should not depend on details. Details should depend on abstractions.
               </p>
               <div className="bg-foreground/5 rounded-lg p-4 mb-4">
-                <h4 className="font-semibold mb-2">❌ Bad Example:</h4>
+                <h3 className="font-semibold mb-2">❌ Bad Example:</h3>
                 <p className="text-foreground/60 text-sm">
                   A business logic class directly instantiating a specific database implementation.
                 </p>
               </div>
               <div className="bg-foreground/5 rounded-lg p-4">
-                <h4 className="font-semibold mb-2">✅ Good Example:</h4>
+                <h3 className="font-semibold mb-2">✅ Good Example:</h3>
                 <p className="text-foreground/60 text-sm">
                   Business logic depending on a database interface, with implementations injected via dependency
                   injection.
