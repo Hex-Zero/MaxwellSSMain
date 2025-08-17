@@ -1,8 +1,26 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import Home from './HomePage';
 
 expect.extend(toHaveNoViolations);
+
+// Basic IntersectionObserver mock to immediately invoke visibility
+beforeAll(() => {
+  class IO implements IntersectionObserver {
+    readonly root: Element | Document | null = null;
+    readonly rootMargin = '';
+    readonly thresholds: ReadonlyArray<number> = [];
+    private _cb: IntersectionObserverCallback;
+    constructor(cb: IntersectionObserverCallback) { this._cb = cb; }
+    observe(target: Element): void {
+      this._cb([{ isIntersecting: true, target } as IntersectionObserverEntry], this);
+    }
+    unobserve(): void {}
+    disconnect(): void {}
+    takeRecords(): IntersectionObserverEntry[] { return []; }
+  }
+  global.IntersectionObserver = IO as unknown as typeof IntersectionObserver;
+});
 
 describe('Home page', () => {
   it('renders the primary headline', () => {
@@ -42,9 +60,11 @@ describe('Home page', () => {
     expect(screen.getByRole('heading', { name: /contact/i })).toBeInTheDocument();
   });
 
-  it('renders the interactive particle field placeholder text', () => {
-    render(<Home />);
-    expect(screen.getByText(/Interactive field/i)).toBeInTheDocument();
+  it('renders the interactive particle field placeholder (loaded or fallback)', async () => {
+    await act(async () => { render(<Home />); });
+    // Accept either the final placeholder or the loading fallback
+    const el = await screen.findByText(/Interactive field|Loading field/i);
+    expect(el).toBeInTheDocument();
   });
 
   it('renders the banner image with proper alt text', () => {

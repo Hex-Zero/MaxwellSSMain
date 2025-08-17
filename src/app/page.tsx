@@ -1,8 +1,10 @@
 import type { ReactElement } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import ParticleField from './components/ParticleField';
+import DeferredClient from './components/DeferredClient';
 import Link from 'next/link';
+// Use client wrapper for ParticleField (avoids ssr:false dynamic inside server component)
+import HeroFieldWrapper from './components/HeroFieldWrapper';
 
 // Dynamically import non-critical components
 const ClientLogos = dynamic(() => import('@/app/components/ClientLogos'), {
@@ -62,9 +64,7 @@ export default function Home(): ReactElement {
               QUALITY • RELIABILITY • VELOCITY
             </p>
           </div>
-          <div className="mt-12" data-parallax="0.1" data-reveal>
-            <ParticleField />
-          </div>
+          <HeroFieldWrapper />
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-3" data-reveal>
             <div className="card shadow-soft p-5 text-center">
               <div className="text-2xl font-semibold">-60%</div>
@@ -112,7 +112,9 @@ export default function Home(): ReactElement {
           </div>
         </div>
       </section>
-      <ClientLogos />
+      <DeferredClient fallback={<div className="h-20 bg-gray-100 animate-pulse rounded" aria-hidden="true" />} minHeight="5rem">
+        <ClientLogos />
+      </DeferredClient>
       {/* Full-bleed banner */}
       <section>
         <div className="container" data-reveal>

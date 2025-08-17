@@ -29,6 +29,10 @@ export default function ParticleField(): ReactElement {
     lastSpawn: number;
     initialized: boolean;
   }>({ x: 0, y: 0, vx: 0, vy: 0, nextDirAt: 0, lastSpawn: 0, initialized: false });
+  // trail for autonomous cursor (last positions)
+  const autoTrailRef = useRef<Array<{x:number;y:number;ts:number}>>([]);
+  // pulse effect scheduler
+  const pulseRef = useRef<{ nextAt:number }>({ nextAt: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -43,6 +47,12 @@ export default function ParticleField(): ReactElement {
     if (!context || typeof context.setTransform !== 'function' || typeof context.createLinearGradient !== 'function') {
       return; // Provide a static placeholder only; keeps tests deterministic
     }
+
+    const prefersReducedMotion = (() => {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; }
+    })();
+
+    const MAX_PARTICLES = prefersReducedMotion ? 600 : 1400;
 
     function resize(): void {
       if (!context) return;
@@ -90,8 +100,9 @@ export default function ParticleField(): ReactElement {
     }
 
     // initialize ambient schedule now that performance.now is available
-    ambientRef.current.nextAt = performance.now() + 1200;
-    function spawnAmbient(): void {
+  ambientRef.current.nextAt = performance.now() + 1200;
+  pulseRef.current.nextAt = performance.now() + 3000 + Math.random()*4000; // first pulse 3s - 7s
+  function spawnAmbient(): void {
       const logicalW = canvas.width / window.devicePixelRatio;
       const logicalH = canvas.height / window.devicePixelRatio;
       const count = 1 + Math.floor(Math.random() * 2); // 1-2 subtle particles
@@ -114,6 +125,26 @@ export default function ParticleField(): ReactElement {
       ambientRef.current.nextAt = performance.now() + 1000 + Math.random() * 2500; // 1s - 3.5s
     }
 
+    function spawnPulse(cx:number, cy:number): void {
+      const rings = 2 + Math.floor(Math.random()*2); // 2-3 rings
+      for(let r=0;r<rings;r++){
+        const radius = 14 + r*10;
+        const particles = 28 + r*6;
+        for(let i=0;i<particles;i++){
+          const angle = (i/particles)*Math.PI*2;
+          const speed = 0.8 + r*0.15;
+          particlesRef.current.push({
+            x: cx + Math.cos(angle)*radius*0.4,
+            y: cy + Math.sin(angle)*radius*0.4,
+            vx: Math.cos(angle)*speed,
+            vy: Math.sin(angle)*speed,
+            life: 110 + Math.random()*40,
+            color: [255,255,255]
+          });
+        }
+      }
+    }
+
     function tick(ts: number): void {
       rafRef.current = requestAnimationFrame(tick);
       if (!context) return; // safety
@@ -128,24 +159,34 @@ export default function ParticleField(): ReactElement {
       context.fillStyle = grad;
       context.fillRect(0, 0, logicalW, logicalH);
 
-      if (pointerRef.current.active && ts - lastSpawnRef.current > 22) {
+  if (pointerRef.current.active && ts - lastSpawnRef.current > (prefersReducedMotion ? 60 : 22)) {
         spawnBurst(pointerRef.current.x, pointerRef.current.y);
         lastSpawnRef.current = ts;
       }
 
       // ambient spawn check
-      if (ts >= ambientRef.current.nextAt) {
+      if (ts >= ambientRef.current.nextAt && !prefersReducedMotion) {
         spawnAmbient();
       }
 
+      // pulses
+      if(ts >= pulseRef.current.nextAt && !prefersReducedMotion){
+        const logicalW2 = canvas.width / window.devicePixelRatio;
+        const logicalH2 = canvas.height / window.devicePixelRatio;
+        const px = pointerRef.current.active ? pointerRef.current.x : logicalW2*0.5 + (Math.random()*0.4-0.2)*logicalW2*0.6;
+        const py = pointerRef.current.active ? pointerRef.current.y : logicalH2*0.5 + (Math.random()*0.4-0.2)*logicalH2*0.6;
+        spawnPulse(px, py);
+        pulseRef.current.nextAt = ts + 4000 + Math.random()*6000; // 4s - 10s
+      }
+
       // autonomous cursor logic (only when initialized)
-      if (autoRef.current.initialized) {
+    if (autoRef.current.initialized && !prefersReducedMotion) {
         const logicalW = canvas.width / window.devicePixelRatio;
         const logicalH = canvas.height / window.devicePixelRatio;
         // direction change schedule
         if (ts >= autoRef.current.nextDirAt) {
           const ang = Math.random() * Math.PI * 2;
-          const spd = 5.35 + Math.random() * 0.65;
+      const spd = 0.55 + Math.random() * 0.85; // reduce speed (previous accidental high value)
           autoRef.current.vx = Math.cos(ang) * spd;
           autoRef.current.vy = Math.sin(ang) * spd;
           autoRef.current.nextDirAt = ts + 2000 + Math.random() * 4500; // 2s - 6.5s
@@ -169,9 +210,35 @@ export default function ParticleField(): ReactElement {
           autoRef.current.vy *= -1;
         }
         // spawn bursts at a moderate cadence (every ~140ms)
-        if (ts - autoRef.current.lastSpawn > 140) {
+        if (ts - autoRef.current.lastSpawn > (prefersReducedMotion ? 420 : 140)) {
           spawnBurst(autoRef.current.x, autoRef.current.y);
           autoRef.current.lastSpawn = ts;
+        }
+        // add to trail
+        autoTrailRef.current.push({ x: autoRef.current.x, y: autoRef.current.y, ts });
+        const trailMaxAge = 1800; // ms
+        // prune old
+        while(autoTrailRef.current.length && ts - (autoTrailRef.current[0]?.ts ?? 0) > trailMaxAge){
+          autoTrailRef.current.shift();
+        }
+        // draw trail
+        if(autoTrailRef.current.length > 3){
+          context.lineWidth = 1.2;
+          context.lineCap = 'round';
+          context.lineJoin = 'round';
+          for(let i=1;i<autoTrailRef.current.length;i++){
+            const a = autoTrailRef.current[i-1];
+            const b = autoTrailRef.current[i];
+            if(!a || !b) continue;
+            const age = ts - b.ts;
+            const alpha = Math.max(0, 1 - age / trailMaxAge);
+            if(alpha <= 0) continue;
+            context.strokeStyle = `rgba(255,255,255,${alpha*0.25})`;
+            context.beginPath();
+            context.moveTo(a.x, a.y);
+            context.lineTo(b.x, b.y);
+            context.stroke();
+          }
         }
       }
 
@@ -181,6 +248,17 @@ export default function ParticleField(): ReactElement {
         p.y += p.vy;
         p.life -= 1;
         p.vy += 0.004; // gentle drift
+        // slight attraction toward pointer when active
+        if(pointerRef.current.active){
+          const dx = pointerRef.current.x - p.x;
+          const dy = pointerRef.current.y - p.y;
+          const dist2 = dx*dx + dy*dy;
+          if(dist2 < 40000){ // within ~200px
+            const f = 0.0006 * (1 - dist2/40000);
+            p.vx += dx * f;
+            p.vy += dy * f;
+          }
+        }
         if (p.life <= 0) continue;
         // wrap softly
         if (p.x < -10 || p.x > logicalW + 10 || p.y < -10 || p.y > logicalH + 10) continue;
@@ -209,6 +287,10 @@ export default function ParticleField(): ReactElement {
           }
         }
         next.push(p);
+      }
+      // cap particle count to avoid runaway growth
+      if(next.length > MAX_PARTICLES){
+        next.splice(0, next.length - MAX_PARTICLES);
       }
       particlesRef.current = next;
     }
