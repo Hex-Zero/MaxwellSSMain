@@ -20,14 +20,19 @@ export default function ServicesPage(): ReactElement {
     <div className="[--bg:#f8fafc] dark:[--bg:#0a0f19] [--card:#ffffff] dark:[--card:#0f172a] [--muted:#6b7280] dark:[--muted:#94a3b8] [--border:rgba(2,6,23,0.08)] dark:[--border:rgba(255,255,255,0.08)] font-sans bg-[--bg] text-neutral-900 dark:text-neutral-50">
       <div className="max-w-7xl mx-auto px-6 md:px-8 pt-14 pb-6">
         <p className="text-sm font-medium tracking-widest text-[--muted] uppercase mb-4">Expert partnership</p>
-        <h1 className="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.1] max-w-3xl">Services & Process</h1>
-  <p className="mt-6 text-lg leading-relaxed max-w-3xl text-[--muted]">
+        <h1 className="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.1] max-w-3xl">
+          Services & Process
+        </h1>
+        <p className="mt-6 text-lg leading-relaxed max-w-3xl text-[--muted]">
           We help teams ship correct, maintainable, and observable software with measurable improvements.
         </p>
         <p className="mt-4 text-lg leading-relaxed max-w-3xl text-[--muted]">
-          Focused engagements amplify engineering effectiveness: faster iteration, observable systems, and measurable reliability gains.
+          Focused engagements amplify engineering effectiveness: faster iteration, observable systems, and measurable
+          reliability gains.
         </p>
-        <p className="mt-3 text-sm text-[--muted] max-w-2xl">Start lightweight—prove value quickly, expand impact deliberately.</p>
+        <p className="mt-3 text-sm text-[--muted] max-w-2xl">
+          Start lightweight—prove value quickly, expand impact deliberately.
+        </p>
       </div>
       {/* Services Grid */}
       <section className="max-w-7xl mx-auto px-6 md:px-8 mt-4">
@@ -57,10 +62,10 @@ export default function ServicesPage(): ReactElement {
       <div className="max-w-7xl mx-auto px-6 md:px-8">
         <CTA
           title="Book a discovery call"
-            body="Explore fit, clarify goals, and identify the fastest path to measurable impact. No obligation, high signal."
-            primary={{ href: '/contact', label: 'Book now' }}
-            secondary={{ href: '/services', label: 'Explore services' }}
-          />
+          body="Explore fit, clarify goals, and identify the fastest path to measurable impact. No obligation, high signal."
+          primary={{ href: '/contact', label: 'Book now' }}
+          secondary={{ href: '/services', label: 'Explore services' }}
+        />
       </div>
     </div>
   );

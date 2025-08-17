@@ -7,13 +7,19 @@ function cn(...classes: Array<string | undefined | false | null>): string {
 interface IconChipProps {
   icon: ReactNode;
   from?: string; // tailwind color e.g. 'from-amber-300'
-  to?: string;   // tailwind color e.g. 'to-amber-500'
+  to?: string; // tailwind color e.g. 'to-amber-500'
   className?: string;
   label?: string; // accessible label if icon is decorative text
 }
 
 // Gradient square icon container with subtle inner highlight
-export function IconChip({ icon, from = 'from-amber-300', to = 'to-amber-500', className, label }: IconChipProps): ReactElement {
+export function IconChip({
+  icon,
+  from = 'from-amber-300',
+  to = 'to-amber-500',
+  className,
+  label,
+}: IconChipProps): ReactElement {
   return (
     <div
       className={cn(
@@ -28,7 +34,9 @@ export function IconChip({ icon, from = 'from-amber-300', to = 'to-amber-500', c
       role={label ? 'img' : undefined}
       aria-label={label}
     >
-      <span className="text-xl" aria-hidden={label ? 'true' : undefined}>{icon}</span>
+      <span className="text-xl" aria-hidden={label ? 'true' : undefined}>
+        {icon}
+      </span>
     </div>
   );
 }

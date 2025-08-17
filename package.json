@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-  "build": "next build && pnpm postbuild:autocommit",
+  "build": "next build",
+  "build:local": "next build && pnpm postbuild:autocommit",
   "postbuild:autocommit": "git add . && git diff --cached --quiet && echo No changes to commit || (git commit -m \"chore: auto commit after successful build\" && git push origin HEAD)",
     "build:test": "pnpm run test && next build",
     "start": "next start",
@@ -36,8 +37,7 @@
     "next": "15.4.6",
     "openai": "^5.12.2",
     "react": "19.1.0",
-  "react-dom": "19.1.0",
-  "framer-motion": "^11.2.6"
+    "react-dom": "19.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
