@@ -25,23 +25,23 @@ export function ServiceCard({
   return (
     <article
       className={[
-        'group rounded-2xl border border-[--border] bg-[--card] p-6 md:p-7 shadow-sm transition',
-        'hover:shadow-lg hover:-translate-y-0.5 focus-within:shadow-lg focus-within:-translate-y-0.5',
-        'motion-safe:will-change-transform relative',
-        'focus-within:outline-none focus-visible:ring-2 focus-visible:ring-accent/60',
-        accent ? 'bg-gradient-to-br from-accent/5 to-transparent' : '',
+        'group rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-900',
+        'p-6 md:p-7 shadow-[0_1px_1px_rgba(0,0,0,.06),0_8px_24px_rgba(0,0,0,.08)] transition h-full',
+        'motion-safe:hover:-translate-y-0.5 motion-safe:hover:shadow-lg motion-safe:focus-within:-translate-y-0.5 motion-safe:focus-within:shadow-lg',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 relative',
+        accent ? 'bg-gradient-to-br from-amber-50/80 to-transparent dark:from-amber-400/10' : '',
       ].join(' ')}
     >
       <div className="flex items-start gap-4">
         <IconChip
           icon={imageSrc ? <Image src={imageSrc} alt={imageAlt || title} width={28} height={28} /> : icon || '🛠️'}
-          from={accent ? 'from-amber-300' : 'from-neutral-200'}
-          to={accent ? 'to-amber-500' : 'to-neutral-300'}
+          from={accent ? 'from-amber-400' : 'from-slate-200 dark:from-slate-700'}
+          to={accent ? 'to-amber-600' : 'to-slate-300 dark:to-slate-600'}
         />
         <div className="flex flex-col">
           <h3 className="text-lg font-semibold tracking-tight leading-tight">{title}</h3>
-          <p className="mt-2 text-[15px] leading-relaxed text-[--muted] max-w-prose">{summary}</p>
-          {meta && <p className="mt-3 text-[11px] uppercase tracking-wide text-[--muted]">{meta}</p>}
+          <p className="mt-2 text-[15px] leading-relaxed text-[--muted] max-w-prose line-clamp-4">{summary}</p>
+          {meta && <p className="mt-3 text-[12px] tracking-wide text-slate-500 dark:text-slate-400">{meta}</p>}
         </div>
       </div>
     </article>
