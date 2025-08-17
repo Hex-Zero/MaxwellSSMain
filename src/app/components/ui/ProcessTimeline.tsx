@@ -1,16 +1,24 @@
-"use client";
+'use client';
 import type { ReactElement } from 'react';
 import { motion } from 'framer-motion';
 
-export interface ProcessStep { title: string; desc: string; }
-interface ProcessTimelineProps { steps: ProcessStep[]; }
+export interface ProcessStep {
+  title: string;
+  desc: string;
+}
+interface ProcessTimelineProps {
+  steps: ProcessStep[];
+}
 
 // Responsive process timeline: horizontal on lg+, vertical otherwise.
 export function ProcessTimeline({ steps }: ProcessTimelineProps): ReactElement {
   return (
     <div className="relative mt-10">
       {/* Horizontal connector (desktop) */}
-      <div className="hidden lg:block absolute top-14 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[--border] to-transparent" aria-hidden="true" />
+      <div
+        className="hidden lg:block absolute top-14 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[--border] to-transparent"
+        aria-hidden="true"
+      />
       <ol className="flex flex-col gap-8 lg:grid lg:grid-cols-[repeat(auto-fit,minmax(0,1fr))] lg:gap-10">
         {steps.map((s, i) => (
           <li key={s.title} className="relative">
