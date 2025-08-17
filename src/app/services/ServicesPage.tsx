@@ -1,52 +1,66 @@
 import type { ReactElement } from 'react';
 import { services } from './services-data';
 import { processSteps } from './process-data';
-import ServiceCard from './ServiceCard';
+import ServiceCard from '@/app/components/ui/ServiceCard';
+import ProcessTimeline from '@/app/components/ui/ProcessTimeline';
+import CTA from '@/app/components/ui/CTA';
 
 export default function ServicesPage(): ReactElement {
+  const mappedServices = services.map((s) => ({
+    key: s.key,
+    title: s.title,
+    summary: s.body,
+    imageSrc: s.icon,
+    imageAlt: s.alt,
+    meta: s.tagline,
+    tone: s.featured ? 'accent' : 'default',
+  }));
+  const steps = processSteps.map((p) => ({ title: p.title, desc: p.text }));
   return (
-    <div className="container section" data-reveal>
-      <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">Services &amp; Process</h1>
-      <p className="mt-4 lead max-w-2xl">
-        We help teams ship correct, maintainable, and observable software with measurable improvements. Below is how we
-        engage and the core capabilities we bring.
-      </p>
-      <div className="mt-10 grid gap-6 md:grid-cols-3" data-reveal>
-        <div className="flex flex-col gap-6">
-          {services.slice(0, 2).map((s) => (
-            <ServiceCard key={s.key} s={s} />
-          ))}
-        </div>
-        <div className="flex flex-col gap-6">
-          {services.slice(2, 4).map((s) => (
-            <ServiceCard key={s.key} s={s} />
-          ))}
-        </div>
-        <div className="flex flex-col gap-6">
-          {services[4] && <ServiceCard s={services[4]} />}
-          <section className="card shadow-soft p-5 flex flex-col justify-center items-start gap-4">
-            <p className="text-sm text-foreground/75 leading-relaxed">
-              Not sure where to begin? Start with a targeted audit and we’ll map the fastest leverage points. Engagement
-              starts lightweight, de-risks change, and proves value early.
-            </p>
-            <span className="text-xs uppercase tracking-wide text-foreground/50">Contact CTA removed</span>
-          </section>
-        </div>
-      </div>
-      <div className="mt-20" data-reveal>
-        <h2 className="text-3xl font-bold tracking-tight">Consulting Process</h2>
-        <p className="mt-3 text-sm max-w-2xl text-foreground/70">
-          A lightweight, outcome-focused sequence that surfaces risk early and compounds engineering throughput.
+    <div className="[--bg:#f8fafc] dark:[--bg:#0a0f19] [--card:#ffffff] dark:[--card:#0f172a] [--muted:#6b7280] dark:[--muted:#94a3b8] [--border:rgba(2,6,23,0.08)] dark:[--border:rgba(255,255,255,0.08)] font-sans bg-[--bg] text-neutral-900 dark:text-neutral-50">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 pt-14 pb-6">
+        <p className="text-sm font-medium tracking-widest text-[--muted] uppercase mb-4">Expert partnership</p>
+        <h1 className="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.1] max-w-3xl">Services & Process</h1>
+  <p className="mt-6 text-lg leading-relaxed max-w-3xl text-[--muted]">
+          We help teams ship correct, maintainable, and observable software with measurable improvements.
         </p>
-        <ol className="mt-8 grid gap-6 sm:grid-cols-2">
-          {processSteps.map((s, i) => (
-            <li key={s.title} className="rounded-lg border border-foreground/10 p-5">
-              <div className="text-xs text-foreground/60">Step {i + 1}</div>
-              <h3 className="text-lg font-semibold">{s.title}</h3>
-              <p className="mt-2 text-sm text-foreground/80">{s.text}</p>
-            </li>
+        <p className="mt-4 text-lg leading-relaxed max-w-3xl text-[--muted]">
+          Focused engagements amplify engineering effectiveness: faster iteration, observable systems, and measurable reliability gains.
+        </p>
+        <p className="mt-3 text-sm text-[--muted] max-w-2xl">Start lightweight—prove value quickly, expand impact deliberately.</p>
+      </div>
+      {/* Services Grid */}
+      <section className="max-w-7xl mx-auto px-6 md:px-8 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
+          {mappedServices.map((svc) => (
+            <ServiceCard
+              key={svc.key}
+              title={svc.title}
+              summary={svc.summary}
+              imageSrc={svc.imageSrc}
+              imageAlt={svc.imageAlt}
+              meta={svc.meta}
+              tone={svc.tone as 'default' | 'accent'}
+            />
           ))}
-        </ol>
+        </div>
+      </section>
+      {/* Process */}
+      <section className="max-w-7xl mx-auto px-6 md:px-8 mt-24">
+        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">Consulting Process</h2>
+        <p className="mt-4 text-base leading-relaxed max-w-3xl text-[--muted]">
+          A guided, outcome-focused sequence—surface risk early, create leverage, institutionalize improvements.
+        </p>
+        <ProcessTimeline steps={steps} />
+      </section>
+      {/* CTA Band */}
+      <div className="max-w-7xl mx-auto px-6 md:px-8">
+        <CTA
+          title="Book a discovery call"
+            body="Explore fit, clarify goals, and identify the fastest path to measurable impact. No obligation, high signal."
+            primary={{ href: '/contact', label: 'Book now' }}
+            secondary={{ href: '/services', label: 'Explore services' }}
+          />
       </div>
     </div>
   );
