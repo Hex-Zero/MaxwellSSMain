@@ -1,6 +1,6 @@
+"use client";
 import type { ReactElement } from 'react';
-// Lightweight motion shim; replace with framer-motion if added to deps.
-const MotionDiv = (props: React.HTMLAttributes<HTMLDivElement>): ReactElement => <div {...props} />;
+import { motion } from 'framer-motion';
 
 export interface ProcessStep { title: string; desc: string; }
 interface ProcessTimelineProps { steps: ProcessStep[]; }
@@ -20,7 +20,12 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps): ReactElement {
                 {i + 1}
               </div>
             </div>
-            <MotionDiv className="group rounded-2xl border border-[--border] bg-[--card] p-5 shadow-sm hover:shadow-lg focus-within:shadow-lg focus-visible:ring-2 focus-visible:ring-accent/50 transition relative hover:-translate-y-0.5">
+            <motion.div
+              whileHover={{ y: -6, boxShadow: '0 4px 16px -4px rgba(0,0,0,0.15),0 12px 32px -6px rgba(0,0,0,0.18)' }}
+              whileFocus={{ y: -6 }}
+              transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+              className="group rounded-2xl border border-[--border] bg-[--card] p-5 shadow-sm focus-within:shadow-lg focus-visible:ring-2 focus-visible:ring-accent/50 transition relative hover:-translate-y-1"
+            >
               <div className="flex items-start gap-3 mb-1">
                 <div className="w-8 h-8 rounded-full bg-[--card] border border-[--border] flex items-center justify-center text-[12px] font-medium text-neutral-700 dark:text-neutral-200">
                   {i + 1}
@@ -28,7 +33,7 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps): ReactElement {
                 <h3 className="text-base font-semibold tracking-tight leading-tight">{s.title}</h3>
               </div>
               <p className="mt-1 text-sm leading-relaxed text-[--muted] max-w-prose">{s.desc}</p>
-            </MotionDiv>
+            </motion.div>
           </li>
         ))}
       </ol>
