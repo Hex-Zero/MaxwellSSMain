@@ -44,11 +44,11 @@ describe('About page', () => {
   it('renders founders with roles and bios', () => {
     render(<AboutPage />);
     expect(screen.getByRole('heading', { name: /Founders/i })).toBeInTheDocument();
-  expect(screen.getAllByText('Maxwell Archer')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('Maxwell Archer')[0]).toBeInTheDocument();
     expect(screen.getByText(/Software Engineer & SEO/i)).toBeInTheDocument();
-  expect(screen.getAllByText('Petras Rolinskij')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('Petras Rolinskij')[0]).toBeInTheDocument();
     expect(screen.getByText(/Design Director/i)).toBeInTheDocument();
-  expect(screen.getAllByText('Marek Wolosewicz')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('Marek Wolosewicz')[0]).toBeInTheDocument();
     expect(screen.getByText(/Managing Director/i)).toBeInTheDocument();
   });
 

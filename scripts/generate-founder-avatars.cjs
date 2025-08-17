@@ -76,7 +76,20 @@ if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
 
 for (const f of founders) {
   const feat = derive(f.name);
-  const svg = `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Cartoon illustration of ${f.name}">\n<title>${f.name}</title>\n<defs><linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%" gradientTransform="rotate(220)">\n<stop offset="0%" stop-color="${f.preset.background.from}"/>\n<stop offset="100%" stop-color="${f.preset.background.to}"/>\n</linearGradient><radialGradient id="cheek" cx="50%" cy="60%" r="55%">\n<stop offset="0%" stop-color="${SKIN_HIGHLIGHT}"/>\n<stop offset="60%" stop-color="rgba(255,255,255,0)"/>\n</radialGradient></defs>\n<rect x="0" y="0" width="128" height="128" rx="16" fill="url(#bg)"/>\n<path d="M28 118c4-24 20-38 36-38s32 14 36 38H28z" fill="#ffffff" fill-opacity="0.85"/>\n<path d="M28 118c4-24 20-38 36-38s32 14 36 38" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="2"/>\n<g><circle cx="64" cy="64" r="34" fill="${SKIN_TONES[feat.skinTone]}"/>\n<circle cx="54" cy="70" r="12" fill="url(#cheek)" opacity="0.5"/>\n<circle cx="74" cy="70" r="12" fill="url(#cheek)" opacity="0.5"/></g>\n${hairPath(f.preset.hair.style, feat.hairColor)}\n<g fill="#222"><circle cx="52" cy="64" r="3"/><circle cx="76" cy="64" r="3"/></g>\n${mouth(feat.mood)}\n</svg>`;
+  const svg = `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Cartoon illustration of ${
+    f.name
+  }">\n<title>${
+    f.name
+  }</title>\n<defs><linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%" gradientTransform="rotate(220)">\n<stop offset="0%" stop-color="${
+    f.preset.background.from
+  }"/>\n<stop offset="100%" stop-color="${
+    f.preset.background.to
+  }"/>\n</linearGradient><radialGradient id="cheek" cx="50%" cy="60%" r="55%">\n<stop offset="0%" stop-color="${SKIN_HIGHLIGHT}"/>\n<stop offset="60%" stop-color="rgba(255,255,255,0)"/>\n</radialGradient></defs>\n<rect x="0" y="0" width="128" height="128" rx="16" fill="url(#bg)"/>\n<path d="M28 118c4-24 20-38 36-38s32 14 36 38H28z" fill="#ffffff" fill-opacity="0.85"/>\n<path d="M28 118c4-24 20-38 36-38s32 14 36 38" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="2"/>\n<g><circle cx="64" cy="64" r="34" fill="${
+    SKIN_TONES[feat.skinTone]
+  }"/>\n<circle cx="54" cy="70" r="12" fill="url(#cheek)" opacity="0.5"/>\n<circle cx="74" cy="70" r="12" fill="url(#cheek)" opacity="0.5"/></g>\n${hairPath(
+    f.preset.hair.style,
+    feat.hairColor
+  )}\n<g fill="#222"><circle cx="52" cy="64" r="3"/><circle cx="76" cy="64" r="3"/></g>\n${mouth(feat.mood)}\n</svg>`;
   const fileName = f.name.split(' ')[0].toLowerCase() + '.svg';
   fs.writeFileSync(path.join(outDir, fileName), svg, 'utf8');
   console.log('Generated', fileName);

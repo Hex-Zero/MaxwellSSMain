@@ -1,4 +1,4 @@
-import { render, screen, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import Home from './HomePage';
 
@@ -64,13 +64,10 @@ describe('Home page', () => {
     expect(screen.getByRole('heading', { name: /contact/i })).toBeInTheDocument();
   });
 
-  it('renders the interactive particle field placeholder (loaded or fallback)', async () => {
-    await act(async () => {
-      render(<Home />);
-    });
-    // Accept either the final placeholder or the loading fallback
-    const el = await screen.findByText(/Interactive field|Loading field/i);
-    expect(el).toBeInTheDocument();
+  it('renders the hero field wrapper (particle field deferred)', async () => {
+    render(<Home />);
+    const wrapper = await screen.findByTestId('hero-field-wrapper');
+    expect(wrapper).toBeInTheDocument();
   });
 
   it('renders the banner image with proper alt text', () => {

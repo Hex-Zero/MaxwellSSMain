@@ -20,23 +20,22 @@ export default function ParticleField(): ReactElement {
   const lastSpawnRef = useRef(0);
   // schedule for ambient particle spawning (initialized after mount for SSR safety)
   const ambientRef = useRef<{ nextAt: number }>({ nextAt: 0 });
-  // autonomous artificial cursor that roams and creates bursts
-  const autoRef = useRef<{
+  // multiple autonomous agents replacing prior single artificial cursor
+  interface Agent {
     x: number;
     y: number;
     vx: number;
     vy: number;
     nextDirAt: number;
     lastSpawn: number;
-    initialized: boolean;
-  }>({ x: 0, y: 0, vx: 0, vy: 0, nextDirAt: 0, lastSpawn: 0, initialized: false });
-  // trail for autonomous cursor (last positions)
-  const autoTrailRef = useRef<Array<{ x: number; y: number; ts: number }>>([]);
+  }
+  const agentsRef = useRef<Agent[]>([]);
+  const trailRef = useRef<Array<{ x: number; y: number; ts: number }>>([]);
   // pulse effect scheduler
   const pulseRef = useRef<{ nextAt: number }>({ nextAt: 0 });
   // gating & timing refs
   const startRef = useRef<number>(performance.now());
-  const featuresEnabledRef = useRef<{ pulses: boolean; auto: boolean }>({ pulses: false, auto: false });
+  const featuresEnabledRef = useRef<{ pulses: boolean; agents: boolean }>({ pulses: false, agents: false });
   const lastFrameRef = useRef<number>(startRef.current);
   const frameSkipToggleRef = useRef<boolean>(false);
 
@@ -93,17 +92,23 @@ export default function ParticleField(): ReactElement {
         bufferCanvas.height = canvas.height;
         context.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
         bctx?.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
-        // initialize autonomous cursor after first real dimensions known
-        if (!autoRef.current.initialized) {
-          autoRef.current.x = (canvas.width / window.devicePixelRatio) * (0.2 + Math.random() * 0.6);
-          autoRef.current.y = (canvas.height / window.devicePixelRatio) * (0.2 + Math.random() * 0.6);
-          const ang = Math.random() * Math.PI * 2;
-          const spd = 0.35 + Math.random() * 0.55; // px per frame (@60fps ~ per tick)
-          autoRef.current.vx = Math.cos(ang) * spd;
-          autoRef.current.vy = Math.sin(ang) * spd;
-          autoRef.current.nextDirAt = performance.now() + 2200 + Math.random() * 3800; // 2.2s - 6s
-          autoRef.current.lastSpawn = 0;
-          autoRef.current.initialized = true;
+        // initialize autonomous agents after first real dimensions known
+        if (agentsRef.current.length === 0) {
+          const logicalW = canvas.width / window.devicePixelRatio;
+          const logicalH = canvas.height / window.devicePixelRatio;
+          const count = 3; // three agents
+          for (let i = 0; i < count; i++) {
+            const ang = Math.random() * Math.PI * 2;
+            const spd = 0.35 + Math.random() * 0.5;
+            agentsRef.current.push({
+              x: logicalW * (0.2 + Math.random() * 0.6),
+              y: logicalH * (0.2 + Math.random() * 0.6),
+              vx: Math.cos(ang) * spd,
+              vy: Math.sin(ang) * spd,
+              nextDirAt: performance.now() + 1800 + Math.random() * 3000,
+              lastSpawn: 0,
+            });
+          }
         }
       }
       resize();
@@ -217,8 +222,8 @@ export default function ParticleField(): ReactElement {
         if (!featuresEnabledRef.current.pulses && ts - rampStart > 2200) {
           featuresEnabledRef.current.pulses = true;
         }
-        if (!featuresEnabledRef.current.auto && ts - rampStart > 1600) {
-          featuresEnabledRef.current.auto = true;
+        if (!featuresEnabledRef.current.agents && ts - rampStart > 1600) {
+          featuresEnabledRef.current.agents = true;
         }
 
         if (featuresEnabledRef.current.pulses && ts >= pulseRef.current.nextAt && !prefersReducedMotion && !skipHeavy) {
@@ -234,61 +239,58 @@ export default function ParticleField(): ReactElement {
           pulseRef.current.nextAt = ts + 4000 + Math.random() * 6000; // 4s - 10s
         }
 
-        // autonomous cursor logic (only when initialized)
-        if (featuresEnabledRef.current.auto && autoRef.current.initialized && !prefersReducedMotion) {
+        // autonomous agents logic
+        if (featuresEnabledRef.current.agents && !prefersReducedMotion) {
           const logicalW = canvas.width / window.devicePixelRatio;
           const logicalH = canvas.height / window.devicePixelRatio;
-          // direction change schedule
-          if (ts >= autoRef.current.nextDirAt) {
-            const ang = Math.random() * Math.PI * 2;
-            const spd = 0.55 + Math.random() * 0.85; // reduce speed (previous accidental high value)
-            autoRef.current.vx = Math.cos(ang) * spd;
-            autoRef.current.vy = Math.sin(ang) * spd;
-            autoRef.current.nextDirAt = ts + 2000 + Math.random() * 4500; // 2s - 6.5s
+          const trailMaxAge = 1600;
+          for (const agent of agentsRef.current) {
+            if (ts >= agent.nextDirAt) {
+              const ang = Math.random() * Math.PI * 2;
+              const spd = 0.45 + Math.random() * 0.65;
+              agent.vx = Math.cos(ang) * spd;
+              agent.vy = Math.sin(ang) * spd;
+              agent.nextDirAt = ts + 1800 + Math.random() * 3800;
+            }
+            agent.x += agent.vx;
+            agent.y += agent.vy;
+            if (agent.x < 16) {
+              agent.x = 16;
+              agent.vx *= -1;
+            } else if (agent.x > logicalW - 16) {
+              agent.x = logicalW - 16;
+              agent.vx *= -1;
+            }
+            if (agent.y < 16) {
+              agent.y = 16;
+              agent.vy *= -1;
+            } else if (agent.y > logicalH - 16) {
+              agent.y = logicalH - 16;
+              agent.vy *= -1;
+            }
+            if (ts - agent.lastSpawn > (prefersReducedMotion ? 520 : 160 + Math.random() * 120)) {
+              spawnBurst(agent.x, agent.y);
+              agent.lastSpawn = ts;
+            }
+            trailRef.current.push({ x: agent.x, y: agent.y, ts });
           }
-          // move
-          autoRef.current.x += autoRef.current.vx;
-          autoRef.current.y += autoRef.current.vy;
-          // soft bounce at edges
-          if (autoRef.current.x < 20) {
-            autoRef.current.x = 20;
-            autoRef.current.vx *= -1;
-          } else if (autoRef.current.x > logicalW - 20) {
-            autoRef.current.x = logicalW - 20;
-            autoRef.current.vx *= -1;
+          // prune old trail entries
+          while (trailRef.current.length && ts - (trailRef.current[0]?.ts ?? 0) > trailMaxAge) {
+            trailRef.current.shift();
           }
-          if (autoRef.current.y < 20) {
-            autoRef.current.y = 20;
-            autoRef.current.vy *= -1;
-          } else if (autoRef.current.y > logicalH - 20) {
-            autoRef.current.y = logicalH - 20;
-            autoRef.current.vy *= -1;
-          }
-          // spawn bursts at a moderate cadence (every ~140ms)
-          if (ts - autoRef.current.lastSpawn > (prefersReducedMotion ? 420 : 140)) {
-            spawnBurst(autoRef.current.x, autoRef.current.y);
-            autoRef.current.lastSpawn = ts;
-          }
-          // add to trail
-          autoTrailRef.current.push({ x: autoRef.current.x, y: autoRef.current.y, ts });
-          const trailMaxAge = 1800; // ms
-          // prune old
-          while (autoTrailRef.current.length && ts - (autoTrailRef.current[0]?.ts ?? 0) > trailMaxAge) {
-            autoTrailRef.current.shift();
-          }
-          // draw trail
-          if (autoTrailRef.current.length > 3 && !skipHeavy) {
-            drawCtx.lineWidth = 1.2;
+          // draw combined trail
+          if (trailRef.current.length > 5 && !skipHeavy) {
+            drawCtx.lineWidth = 1.1;
             drawCtx.lineCap = 'round';
             drawCtx.lineJoin = 'round';
-            for (let i = 1; i < autoTrailRef.current.length; i++) {
-              const a = autoTrailRef.current[i - 1];
-              const b = autoTrailRef.current[i];
+            for (let i = 1; i < trailRef.current.length; i++) {
+              const a = trailRef.current[i - 1];
+              const b = trailRef.current[i];
               if (!a || !b) continue;
               const age = ts - b.ts;
               const alpha = Math.max(0, 1 - age / trailMaxAge);
               if (alpha <= 0) continue;
-              drawCtx.strokeStyle = `rgba(255,255,255,${alpha * 0.25})`;
+              drawCtx.strokeStyle = `rgba(255,255,255,${alpha * 0.18})`;
               drawCtx.beginPath();
               drawCtx.moveTo(a.x, a.y);
               drawCtx.lineTo(b.x, b.y);
@@ -403,11 +405,11 @@ export default function ParticleField(): ReactElement {
   }, []);
 
   return (
-    <div className="relative w-full h-[380px] sm:h-[460px] md:h-[520px] rounded-xl overflow-hidden bg-gradient-to-br from-accent/5 via-transparent to-accent/10 border border-foreground/10">
+    <div
+      data-testid="particle-field"
+      className="relative w-full h-[380px] sm:h-[460px] md:h-[520px] rounded-xl overflow-hidden bg-gradient-to-br from-accent/5 via-transparent to-accent/10 border border-foreground/10"
+    >
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" aria-hidden="true" />
-      <div className="relative z-10 w-full h-full flex items-center justify-center pointer-events-none select-none">
-        <span className="text-xs uppercase tracking-[0.3em] text-foreground/40">Interactive field</span>
-      </div>
     </div>
   );
 }
