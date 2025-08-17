@@ -1,19 +1,10 @@
 "use client";
 import type { ReactElement } from 'react';
 import type { FounderInfo } from './founders-data';
-import Avatar from '../components/avatars/Avatar';
-import { presets } from '../components/avatars/presets';
 
 export function FounderCard({ f }: { f: FounderInfo }): ReactElement {
   // Map founder name to preset key when available
-  const presetKey = f.name.toLowerCase().startsWith('maxwell')
-    ? 'maxwell'
-    : f.name.toLowerCase().startsWith('petras')
-      ? 'petras'
-      : f.name.toLowerCase().startsWith('marek')
-        ? 'marek'
-        : undefined;
-  const preset = presetKey ? presets[presetKey] : undefined;
+  // Avatar generation removed; using empty placeholder until real images provided.
   return (
     <figure className="relative rounded-2xl border border-foreground/10 bg-gradient-to-br p-8 shadow-soft overflow-hidden group min-h-[22rem] flex flex-col">
       <div
@@ -22,15 +13,13 @@ export function FounderCard({ f }: { f: FounderInfo }): ReactElement {
       />
       <div className="relative flex flex-col gap-5 grow">
         <div className="flex items-center gap-5">
-          <Avatar
-            name={f.name}
-            {...(preset?.background ? { background: preset.background } : {})}
-            {...(preset?.hair ? { hair: { style: preset.hair.style } } : {})}
-            size={120}
-            className="w-28 h-28 rounded-xl shadow-xl ring-2 ring-white/40"
+          <div
+            role="img"
             aria-label={f.alt}
-            shadow={true}
-          />
+            className="w-28 h-28 rounded-xl shadow-xl ring-2 ring-white/40 bg-foreground/5 flex items-center justify-center text-[10px] font-medium tracking-wide uppercase text-foreground/40"
+          >
+            Pending Image
+          </div>
           <figcaption className="flex flex-col">
             <h3 className="font-semibold text-lg leading-tight tracking-tight">{f.name}</h3>
             <div className="text-xs uppercase tracking-wide text-foreground/60 mt-1">{f.role}</div>

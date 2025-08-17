@@ -8,19 +8,16 @@ const founders = [
     name: 'Maxwell Archer',
     title: 'Founder & Principal Engineer',
     bio: 'Drives product vision and leads strategic architecture decisions with a focus on reliability and maintainability.',
-    presetKey: 'maxwell',
   },
   {
     name: 'Petras Rolinskij',
     title: 'Co‑Founder & Engineering Lead',
     bio: 'Specializes in scalable systems, domain modeling, and enabling rapid iteration through strong foundations.',
-    presetKey: 'petras',
   },
   {
     name: 'Marek Wolosewicz',
     title: 'Co‑Founder & Platform Lead',
     bio: 'Owns platform quality, performance, and developer experience; champions testing and observability.',
-    presetKey: 'marek',
   },
 ] as const;
 

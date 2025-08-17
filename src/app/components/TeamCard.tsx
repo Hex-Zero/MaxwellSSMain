@@ -1,34 +1,28 @@
 import React from 'react';
-import Avatar, { type HairConfig } from './avatars/Avatar';
-import { presets, type PresetKey } from './avatars/presets';
+// Avatar generation removed; placeholder used instead.
+export type PresetKey = 'maxwell' | 'petras' | 'marek'; // retained type for existing props
 
 export interface TeamCardProps {
   name: string;
   title: string;
   bio: string;
-  presetKey: PresetKey;
   className?: string;
 }
 
-const TeamCard: React.FC<TeamCardProps> = ({ name, title, bio, presetKey, className = '' }) => {
-  const preset = presets[presetKey];
-  if (!preset) {
-    throw new Error(`Unknown presetKey: ${presetKey}`);
-  }
-  const hair: HairConfig | undefined = preset.hair ? { style: preset.hair.style } : undefined;
+const TeamCard: React.FC<TeamCardProps> = ({ name, title, bio, className = '' }) => {
+  // Placeholder avatar (empty) until real images provided.
   return (
     <div
       className={`rounded-3xl border border-foreground/10 shadow-soft bg-gradient-to-br from-background/60 to-background/30 p-6 flex gap-6 items-start ${className}`}
     >
       <div className="flex-shrink-0">
-        <Avatar
-          name={name}
-          {...(preset.background ? { background: preset.background } : {})}
-          {...(hair ? { hair } : {})}
-          size={96}
-          className="rounded-2xl shadow-lg"
+        <div
+          role="img"
           aria-label={`${name} — ${title}`}
-        />
+          className="w-24 h-24 rounded-2xl shadow-lg bg-foreground/5 flex items-center justify-center text-[10px] font-medium uppercase text-foreground/40"
+        >
+          Pending
+        </div>
       </div>
       <div className="flex flex-col gap-2">
         <div>
