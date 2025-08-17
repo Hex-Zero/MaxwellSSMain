@@ -17,7 +17,12 @@ export default function HeroFieldWrapper(): ReactElement {
     <div className="mt-12" data-parallax="0.1" data-reveal>
       <span className="sr-only">Interactive field</span>
       <DeferredClient
-        fallback={<div className="h-[380px] sm:h-[460px] md:h-[520px] rounded-xl bg-accent/5 animate-pulse" aria-hidden="true" />}
+        fallback={
+          <div
+            className="h-[380px] sm:h-[460px] md:h-[520px] rounded-xl bg-accent/5 animate-pulse"
+            aria-hidden="true"
+          />
+        }
         minHeight="380px"
       >
         <ParticleField />

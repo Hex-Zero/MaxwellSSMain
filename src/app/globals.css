@@ -90,7 +90,7 @@ body {
 }
 .btn-accent {
   background: var(--accent);
-  color: var(--background);
+  color: var(--btn-accent-fg, var(--background));
 }
 .btn-accent:hover { filter: brightness(1.05); }
 .btn-ghost {

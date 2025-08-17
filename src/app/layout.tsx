@@ -5,6 +5,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import ParallaxScrollEffects from '@/app/components/ParallaxScrollEffects';
 import AppFooter from '@/app/components/AppFooter';
+import AutoContrastButtons from '@/app/components/AutoContrastButtons';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -129,6 +130,7 @@ export default function RootLayout({
           <HeaderNav />
         </header>
         <main>{children}</main>
+        <AutoContrastButtons />
         <AppFooter />
       </body>
     </html>

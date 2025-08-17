@@ -1,5 +1,6 @@
 'use client';
 import { useRef, useEffect, type ReactElement } from 'react';
+// Use local shim instead of global declaration to avoid lib.dom conflicts.
 
 interface Particle {
   x: number;
@@ -30,294 +31,375 @@ export default function ParticleField(): ReactElement {
     initialized: boolean;
   }>({ x: 0, y: 0, vx: 0, vy: 0, nextDirAt: 0, lastSpawn: 0, initialized: false });
   // trail for autonomous cursor (last positions)
-  const autoTrailRef = useRef<Array<{x:number;y:number;ts:number}>>([]);
+  const autoTrailRef = useRef<Array<{ x: number; y: number; ts: number }>>([]);
   // pulse effect scheduler
-  const pulseRef = useRef<{ nextAt:number }>({ nextAt: 0 });
+  const pulseRef = useRef<{ nextAt: number }>({ nextAt: 0 });
+  // gating & timing refs
+  const startRef = useRef<number>(performance.now());
+  const featuresEnabledRef = useRef<{ pulses: boolean; auto: boolean }>({ pulses: false, auto: false });
+  const lastFrameRef = useRef<number>(startRef.current);
+  const frameSkipToggleRef = useRef<boolean>(false);
 
   useEffect(() => {
-    const canvas = canvasRef.current!;
-    let context: CanvasRenderingContext2D | null = null;
-    try {
-      context = canvas.getContext('2d', { alpha: true });
-    } catch {
-      context = null;
-    }
-    // Abort early in non-browser / test environments that return a stub context without expected APIs
-    // Narrow context by checking required methods without using 'any'
-    if (!context || typeof context.setTransform !== 'function' || typeof context.createLinearGradient !== 'function') {
-      return; // Provide a static placeholder only; keeps tests deterministic
-    }
+    // Defer heavy canvas + animation setup until main thread is idle (or after small timeout)
+    const schedule =
+      typeof window.requestIdleCallback === 'function'
+        ? window.requestIdleCallback
+        : (cb: () => void) => window.setTimeout(cb, 60);
 
-    const prefersReducedMotion = (() => {
-      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; }
-    })();
-
-    const MAX_PARTICLES = prefersReducedMotion ? 600 : 1400;
-
-    function resize(): void {
-      if (!context) return;
-      canvas.width = canvas.clientWidth * window.devicePixelRatio;
-      canvas.height = canvas.clientHeight * window.devicePixelRatio;
-      context.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
-      // initialize autonomous cursor after first real dimensions known
-      if (!autoRef.current.initialized) {
-        autoRef.current.x = (canvas.width / window.devicePixelRatio) * (0.2 + Math.random() * 0.6);
-        autoRef.current.y = (canvas.height / window.devicePixelRatio) * (0.2 + Math.random() * 0.6);
-        const ang = Math.random() * Math.PI * 2;
-        const spd = 0.35 + Math.random() * 0.55; // px per frame (@60fps ~ per tick)
-        autoRef.current.vx = Math.cos(ang) * spd;
-        autoRef.current.vy = Math.sin(ang) * spd;
-        autoRef.current.nextDirAt = performance.now() + 2200 + Math.random() * 3800; // 2.2s - 6s
-        autoRef.current.lastSpawn = 0;
-        autoRef.current.initialized = true;
+    schedule(() => {
+      const canvas = canvasRef.current!;
+      let context: CanvasRenderingContext2D | null = null;
+      try {
+        context = canvas.getContext('2d', { alpha: true });
+      } catch {
+        context = null;
       }
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    const PALETTE: [number, number, number][] = [
-      [255, 255, 255], // white (replaces prior light purple)
-      [179, 134, 0], // dark gold
-      [255, 215, 0], // bright gold
-      [102, 106, 112], // grey
-      [217, 220, 224], // light grey
-    ];
-
-    function spawnBurst(x: number, y: number): void {
-      for (let i = 0; i < 7; i++) {
-        const angle = Math.random() * Math.PI * 6;
-        const speed = 0.7 + Math.random() * 1.2;
-        const color = PALETTE[Math.floor(Math.random() * PALETTE.length)]!; // non-null assertion
-        particlesRef.current.push({
-          x,
-          y,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          life: 140 + Math.random() * 60,
-          color,
-        });
+      // Abort early in non-browser / test environments that return a stub context without expected APIs
+      // Narrow context by checking required methods without using 'any'
+      if (
+        !context ||
+        typeof context.setTransform !== 'function' ||
+        typeof context.createLinearGradient !== 'function'
+      ) {
+        return; // Provide a static placeholder only; keeps tests deterministic
       }
-    }
 
-    // initialize ambient schedule now that performance.now is available
-  ambientRef.current.nextAt = performance.now() + 1200;
-  pulseRef.current.nextAt = performance.now() + 3000 + Math.random()*4000; // first pulse 3s - 7s
-  function spawnAmbient(): void {
-      const logicalW = canvas.width / window.devicePixelRatio;
-      const logicalH = canvas.height / window.devicePixelRatio;
-      const count = 1 + Math.floor(Math.random() * 2); // 1-2 subtle particles
-      for (let i = 0; i < count; i++) {
-        const x = Math.random() * logicalW;
-        const y = Math.random() * logicalH;
-        const angle = Math.random() * Math.PI * 2;
-        const speed = 0.4 + Math.random() * 0.3;
-        const color = PALETTE[Math.floor(Math.random() * PALETTE.length)]!;
-        particlesRef.current.push({
-          x,
-          y,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed * 0.6,
-          life: 220 + Math.random() * 120,
-          color,
-        });
+      const prefersReducedMotion = (() => {
+        try {
+          return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        } catch {
+          return false;
+        }
+      })();
+
+      const TARGET_MAX_PARTICLES = prefersReducedMotion ? 400 : 1100; // further lowered
+      let dynamicMax = Math.min(140, TARGET_MAX_PARTICLES); // progressive ramp
+      const rampStart = performance.now();
+      // double buffer (offscreen) for heavier draws (lines + gradients)
+      const bufferCanvas = document.createElement('canvas');
+      let bctx: CanvasRenderingContext2D | null = null;
+      try {
+        bctx = bufferCanvas.getContext('2d', { alpha: true });
+      } catch {
+        bctx = null;
       }
-      // schedule next ambient burst with variability
-      ambientRef.current.nextAt = performance.now() + 1000 + Math.random() * 2500; // 1s - 3.5s
-    }
 
-    function spawnPulse(cx:number, cy:number): void {
-      const rings = 2 + Math.floor(Math.random()*2); // 2-3 rings
-      for(let r=0;r<rings;r++){
-        const radius = 14 + r*10;
-        const particles = 28 + r*6;
-        for(let i=0;i<particles;i++){
-          const angle = (i/particles)*Math.PI*2;
-          const speed = 0.8 + r*0.15;
+      function resize(): void {
+        if (!context) return;
+        canvas.width = canvas.clientWidth * window.devicePixelRatio;
+        canvas.height = canvas.clientHeight * window.devicePixelRatio;
+        bufferCanvas.width = canvas.width;
+        bufferCanvas.height = canvas.height;
+        context.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+        bctx?.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+        // initialize autonomous cursor after first real dimensions known
+        if (!autoRef.current.initialized) {
+          autoRef.current.x = (canvas.width / window.devicePixelRatio) * (0.2 + Math.random() * 0.6);
+          autoRef.current.y = (canvas.height / window.devicePixelRatio) * (0.2 + Math.random() * 0.6);
+          const ang = Math.random() * Math.PI * 2;
+          const spd = 0.35 + Math.random() * 0.55; // px per frame (@60fps ~ per tick)
+          autoRef.current.vx = Math.cos(ang) * spd;
+          autoRef.current.vy = Math.sin(ang) * spd;
+          autoRef.current.nextDirAt = performance.now() + 2200 + Math.random() * 3800; // 2.2s - 6s
+          autoRef.current.lastSpawn = 0;
+          autoRef.current.initialized = true;
+        }
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      const PALETTE: [number, number, number][] = [
+        [255, 255, 255], // white (replaces prior light purple)
+        [179, 134, 0], // dark gold
+        [255, 215, 0], // bright gold
+        [102, 106, 112], // grey
+        [217, 220, 224], // light grey
+      ];
+
+      function spawnBurst(x: number, y: number): void {
+        for (let i = 0; i < 7; i++) {
+          const angle = Math.random() * Math.PI * 6;
+          const speed = 0.7 + Math.random() * 1.2;
+          const color = PALETTE[Math.floor(Math.random() * PALETTE.length)]!; // non-null assertion
           particlesRef.current.push({
-            x: cx + Math.cos(angle)*radius*0.4,
-            y: cy + Math.sin(angle)*radius*0.4,
-            vx: Math.cos(angle)*speed,
-            vy: Math.sin(angle)*speed,
-            life: 110 + Math.random()*40,
-            color: [255,255,255]
+            x,
+            y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            life: 140 + Math.random() * 60,
+            color,
           });
         }
       }
-    }
 
-    function tick(ts: number): void {
-      rafRef.current = requestAnimationFrame(tick);
-      if (!context) return; // safety
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      const logicalW = canvas.width / window.devicePixelRatio;
-      const logicalH = canvas.height / window.devicePixelRatio;
-
-      // subtle gradient background fade
-      const grad = context.createLinearGradient(0, 0, logicalW, logicalH);
-      grad.addColorStop(0, 'rgba(255,255,255,0.02)');
-      grad.addColorStop(1, 'rgba(255,255,255,0.00)');
-      context.fillStyle = grad;
-      context.fillRect(0, 0, logicalW, logicalH);
-
-  if (pointerRef.current.active && ts - lastSpawnRef.current > (prefersReducedMotion ? 60 : 22)) {
-        spawnBurst(pointerRef.current.x, pointerRef.current.y);
-        lastSpawnRef.current = ts;
-      }
-
-      // ambient spawn check
-      if (ts >= ambientRef.current.nextAt && !prefersReducedMotion) {
-        spawnAmbient();
-      }
-
-      // pulses
-      if(ts >= pulseRef.current.nextAt && !prefersReducedMotion){
-        const logicalW2 = canvas.width / window.devicePixelRatio;
-        const logicalH2 = canvas.height / window.devicePixelRatio;
-        const px = pointerRef.current.active ? pointerRef.current.x : logicalW2*0.5 + (Math.random()*0.4-0.2)*logicalW2*0.6;
-        const py = pointerRef.current.active ? pointerRef.current.y : logicalH2*0.5 + (Math.random()*0.4-0.2)*logicalH2*0.6;
-        spawnPulse(px, py);
-        pulseRef.current.nextAt = ts + 4000 + Math.random()*6000; // 4s - 10s
-      }
-
-      // autonomous cursor logic (only when initialized)
-    if (autoRef.current.initialized && !prefersReducedMotion) {
+      // initialize ambient schedule now that performance.now is available
+      ambientRef.current.nextAt = performance.now() + 1200;
+      pulseRef.current.nextAt = performance.now() + 3200 + Math.random() * 3000; // first pulse 3.2s - 6.2s (delayed)
+      function spawnAmbient(): void {
         const logicalW = canvas.width / window.devicePixelRatio;
         const logicalH = canvas.height / window.devicePixelRatio;
-        // direction change schedule
-        if (ts >= autoRef.current.nextDirAt) {
-          const ang = Math.random() * Math.PI * 2;
-      const spd = 0.55 + Math.random() * 0.85; // reduce speed (previous accidental high value)
-          autoRef.current.vx = Math.cos(ang) * spd;
-          autoRef.current.vy = Math.sin(ang) * spd;
-          autoRef.current.nextDirAt = ts + 2000 + Math.random() * 4500; // 2s - 6.5s
+        const count = 1 + Math.floor(Math.random() * 2); // 1-2 subtle particles
+        for (let i = 0; i < count; i++) {
+          const x = Math.random() * logicalW;
+          const y = Math.random() * logicalH;
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 0.4 + Math.random() * 0.3;
+          const color = PALETTE[Math.floor(Math.random() * PALETTE.length)]!;
+          particlesRef.current.push({
+            x,
+            y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed * 0.6,
+            life: 220 + Math.random() * 120,
+            color,
+          });
         }
-        // move
-        autoRef.current.x += autoRef.current.vx;
-        autoRef.current.y += autoRef.current.vy;
-        // soft bounce at edges
-        if (autoRef.current.x < 20) {
-          autoRef.current.x = 20;
-          autoRef.current.vx *= -1;
-        } else if (autoRef.current.x > logicalW - 20) {
-          autoRef.current.x = logicalW - 20;
-          autoRef.current.vx *= -1;
-        }
-        if (autoRef.current.y < 20) {
-          autoRef.current.y = 20;
-          autoRef.current.vy *= -1;
-        } else if (autoRef.current.y > logicalH - 20) {
-          autoRef.current.y = logicalH - 20;
-          autoRef.current.vy *= -1;
-        }
-        // spawn bursts at a moderate cadence (every ~140ms)
-        if (ts - autoRef.current.lastSpawn > (prefersReducedMotion ? 420 : 140)) {
-          spawnBurst(autoRef.current.x, autoRef.current.y);
-          autoRef.current.lastSpawn = ts;
-        }
-        // add to trail
-        autoTrailRef.current.push({ x: autoRef.current.x, y: autoRef.current.y, ts });
-        const trailMaxAge = 1800; // ms
-        // prune old
-        while(autoTrailRef.current.length && ts - (autoTrailRef.current[0]?.ts ?? 0) > trailMaxAge){
-          autoTrailRef.current.shift();
-        }
-        // draw trail
-        if(autoTrailRef.current.length > 3){
-          context.lineWidth = 1.2;
-          context.lineCap = 'round';
-          context.lineJoin = 'round';
-          for(let i=1;i<autoTrailRef.current.length;i++){
-            const a = autoTrailRef.current[i-1];
-            const b = autoTrailRef.current[i];
-            if(!a || !b) continue;
-            const age = ts - b.ts;
-            const alpha = Math.max(0, 1 - age / trailMaxAge);
-            if(alpha <= 0) continue;
-            context.strokeStyle = `rgba(255,255,255,${alpha*0.25})`;
-            context.beginPath();
-            context.moveTo(a.x, a.y);
-            context.lineTo(b.x, b.y);
-            context.stroke();
+        // schedule next ambient burst with variability
+        ambientRef.current.nextAt = performance.now() + 1000 + Math.random() * 2500; // 1s - 3.5s
+      }
+
+      function spawnPulse(cx: number, cy: number): void {
+        const rings = 2 + Math.floor(Math.random() * 2); // 2-3 rings
+        for (let r = 0; r < rings; r++) {
+          const radius = 14 + r * 10;
+          const particles = 28 + r * 6;
+          for (let i = 0; i < particles; i++) {
+            const angle = (i / particles) * Math.PI * 2;
+            const speed = 0.8 + r * 0.15;
+            particlesRef.current.push({
+              x: cx + Math.cos(angle) * radius * 0.4,
+              y: cy + Math.sin(angle) * radius * 0.4,
+              vx: Math.cos(angle) * speed,
+              vy: Math.sin(angle) * speed,
+              life: 110 + Math.random() * 40,
+              color: [255, 255, 255],
+            });
           }
         }
       }
 
-      const next: Particle[] = [];
-      for (const p of particlesRef.current) {
-        p.x += p.vx;
-        p.y += p.vy;
-        p.life -= 1;
-        p.vy += 0.004; // gentle drift
-        // slight attraction toward pointer when active
-        if(pointerRef.current.active){
-          const dx = pointerRef.current.x - p.x;
-          const dy = pointerRef.current.y - p.y;
-          const dist2 = dx*dx + dy*dy;
-          if(dist2 < 40000){ // within ~200px
-            const f = 0.0006 * (1 - dist2/40000);
-            p.vx += dx * f;
-            p.vy += dy * f;
+      function tick(ts: number): void {
+        rafRef.current = requestAnimationFrame(tick);
+        if (!context) return; // safety
+        const delta = ts - lastFrameRef.current;
+        lastFrameRef.current = ts;
+        // cadence dampening: when tab hidden or frames are long, skip every other frame heavy work
+        const longFrame = delta > 34; // ~ <30fps region
+        const hidden = typeof document !== 'undefined' && document.visibilityState === 'hidden';
+        frameSkipToggleRef.current = !frameSkipToggleRef.current;
+        const skipHeavy = (longFrame && frameSkipToggleRef.current) || hidden;
+
+        const drawCtx = bctx ?? context;
+        drawCtx.clearRect(0, 0, canvas.width, canvas.height);
+        const logicalW = canvas.width / window.devicePixelRatio;
+        const logicalH = canvas.height / window.devicePixelRatio;
+
+        // subtle gradient background fade
+        const grad = drawCtx.createLinearGradient(0, 0, logicalW, logicalH);
+        grad.addColorStop(0, 'rgba(255,255,255,0.02)');
+        grad.addColorStop(1, 'rgba(255,255,255,0.00)');
+        drawCtx.fillStyle = grad;
+        drawCtx.fillRect(0, 0, logicalW, logicalH);
+
+        if (pointerRef.current.active && ts - lastSpawnRef.current > (prefersReducedMotion ? 60 : 22)) {
+          spawnBurst(pointerRef.current.x, pointerRef.current.y);
+          lastSpawnRef.current = ts;
+        }
+
+        // ambient spawn check
+        if (ts >= ambientRef.current.nextAt && !prefersReducedMotion) {
+          spawnAmbient();
+        }
+
+        // pulses
+        // enable pulses & auto cursor after small delay to reduce main-thread contention
+        if (!featuresEnabledRef.current.pulses && ts - rampStart > 2200) {
+          featuresEnabledRef.current.pulses = true;
+        }
+        if (!featuresEnabledRef.current.auto && ts - rampStart > 1600) {
+          featuresEnabledRef.current.auto = true;
+        }
+
+        if (featuresEnabledRef.current.pulses && ts >= pulseRef.current.nextAt && !prefersReducedMotion && !skipHeavy) {
+          const logicalW2 = canvas.width / window.devicePixelRatio;
+          const logicalH2 = canvas.height / window.devicePixelRatio;
+          const px = pointerRef.current.active
+            ? pointerRef.current.x
+            : logicalW2 * 0.5 + (Math.random() * 0.4 - 0.2) * logicalW2 * 0.6;
+          const py = pointerRef.current.active
+            ? pointerRef.current.y
+            : logicalH2 * 0.5 + (Math.random() * 0.4 - 0.2) * logicalH2 * 0.6;
+          spawnPulse(px, py);
+          pulseRef.current.nextAt = ts + 4000 + Math.random() * 6000; // 4s - 10s
+        }
+
+        // autonomous cursor logic (only when initialized)
+        if (featuresEnabledRef.current.auto && autoRef.current.initialized && !prefersReducedMotion) {
+          const logicalW = canvas.width / window.devicePixelRatio;
+          const logicalH = canvas.height / window.devicePixelRatio;
+          // direction change schedule
+          if (ts >= autoRef.current.nextDirAt) {
+            const ang = Math.random() * Math.PI * 2;
+            const spd = 0.55 + Math.random() * 0.85; // reduce speed (previous accidental high value)
+            autoRef.current.vx = Math.cos(ang) * spd;
+            autoRef.current.vy = Math.sin(ang) * spd;
+            autoRef.current.nextDirAt = ts + 2000 + Math.random() * 4500; // 2s - 6.5s
+          }
+          // move
+          autoRef.current.x += autoRef.current.vx;
+          autoRef.current.y += autoRef.current.vy;
+          // soft bounce at edges
+          if (autoRef.current.x < 20) {
+            autoRef.current.x = 20;
+            autoRef.current.vx *= -1;
+          } else if (autoRef.current.x > logicalW - 20) {
+            autoRef.current.x = logicalW - 20;
+            autoRef.current.vx *= -1;
+          }
+          if (autoRef.current.y < 20) {
+            autoRef.current.y = 20;
+            autoRef.current.vy *= -1;
+          } else if (autoRef.current.y > logicalH - 20) {
+            autoRef.current.y = logicalH - 20;
+            autoRef.current.vy *= -1;
+          }
+          // spawn bursts at a moderate cadence (every ~140ms)
+          if (ts - autoRef.current.lastSpawn > (prefersReducedMotion ? 420 : 140)) {
+            spawnBurst(autoRef.current.x, autoRef.current.y);
+            autoRef.current.lastSpawn = ts;
+          }
+          // add to trail
+          autoTrailRef.current.push({ x: autoRef.current.x, y: autoRef.current.y, ts });
+          const trailMaxAge = 1800; // ms
+          // prune old
+          while (autoTrailRef.current.length && ts - (autoTrailRef.current[0]?.ts ?? 0) > trailMaxAge) {
+            autoTrailRef.current.shift();
+          }
+          // draw trail
+          if (autoTrailRef.current.length > 3 && !skipHeavy) {
+            drawCtx.lineWidth = 1.2;
+            drawCtx.lineCap = 'round';
+            drawCtx.lineJoin = 'round';
+            for (let i = 1; i < autoTrailRef.current.length; i++) {
+              const a = autoTrailRef.current[i - 1];
+              const b = autoTrailRef.current[i];
+              if (!a || !b) continue;
+              const age = ts - b.ts;
+              const alpha = Math.max(0, 1 - age / trailMaxAge);
+              if (alpha <= 0) continue;
+              drawCtx.strokeStyle = `rgba(255,255,255,${alpha * 0.25})`;
+              drawCtx.beginPath();
+              drawCtx.moveTo(a.x, a.y);
+              drawCtx.lineTo(b.x, b.y);
+              drawCtx.stroke();
+            }
           }
         }
-        if (p.life <= 0) continue;
-        // wrap softly
-        if (p.x < -10 || p.x > logicalW + 10 || p.y < -10 || p.y > logicalH + 10) continue;
-        const alpha = Math.min(1, p.life / 160);
-        context.beginPath();
-        const [r, g, b] = p.color;
-        context.fillStyle = `rgba(${r},${g},${b},${alpha})`;
-        context.arc(p.x, p.y, 1.6 + (1 - alpha) * 1.2, 0, Math.PI * 2);
-        context.fill();
-        // connection lines
-        for (const q of next) {
-          const dx = p.x - q.x;
-          const dy = p.y - q.y;
-          const d2 = dx * dx + dy * dy;
-          if (d2 < 1200) {
-            const [qr, qg, qb] = q.color;
-            const mr = Math.round((r + qr) / 2);
-            const mg = Math.round((g + qg) / 2);
-            const mb = Math.round((b + qb) / 2);
-            context.strokeStyle = `rgba(${mr},${mg},${mb},${0.12 - (d2 / 1200) * 0.12})`;
-            context.lineWidth = 1;
-            context.beginPath();
-            context.moveTo(p.x, p.y);
-            context.lineTo(q.x, q.y);
-            context.stroke();
-          }
+
+        // progressive ramp of particle ceiling to avoid long tasks during initial load
+        const elapsed = ts - rampStart;
+        if (elapsed < 6000) {
+          // ramp over 6s
+          const progress = elapsed / 6000;
+          dynamicMax = Math.min(TARGET_MAX_PARTICLES, 140 + Math.floor(progress * (TARGET_MAX_PARTICLES - 140)));
+        } else {
+          dynamicMax = TARGET_MAX_PARTICLES;
         }
-        next.push(p);
-      }
-      // cap particle count to avoid runaway growth
-      if(next.length > MAX_PARTICLES){
-        next.splice(0, next.length - MAX_PARTICLES);
-      }
-      particlesRef.current = next;
-    }
-    rafRef.current = requestAnimationFrame(tick);
 
-    function onPointer(e: PointerEvent): void {
-      const rect = canvas.getBoundingClientRect();
-      pointerRef.current.x = e.clientX - rect.left;
-      pointerRef.current.y = e.clientY - rect.top;
-      pointerRef.current.active = true;
-    }
-    function onLeave(): void {
-      pointerRef.current.active = false;
-    }
-    canvas.addEventListener('pointermove', onPointer);
-    canvas.addEventListener('pointerdown', onPointer);
-    canvas.addEventListener('pointerup', onLeave);
-    canvas.addEventListener('pointerleave', onLeave);
+        const suppressConnections = elapsed < 1800 || skipHeavy; // delay & dampen
+        const next: Particle[] = [];
+        for (const p of particlesRef.current) {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life -= 1;
+          p.vy += 0.004; // gentle drift
+          // slight attraction toward pointer when active
+          if (pointerRef.current.active) {
+            const dx = pointerRef.current.x - p.x;
+            const dy = pointerRef.current.y - p.y;
+            const dist2 = dx * dx + dy * dy;
+            if (dist2 < 40000) {
+              // within ~200px
+              const f = 0.0006 * (1 - dist2 / 40000);
+              p.vx += dx * f;
+              p.vy += dy * f;
+            }
+          }
+          if (p.life <= 0) continue;
+          // wrap softly
+          if (p.x < -10 || p.x > logicalW + 10 || p.y < -10 || p.y > logicalH + 10) continue;
+          const alpha = Math.min(1, p.life / 160);
+          drawCtx.beginPath();
+          const [r, g, b] = p.color;
+          drawCtx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
+          drawCtx.arc(p.x, p.y, 1.6 + (1 - alpha) * 1.2, 0, Math.PI * 2);
+          drawCtx.fill();
+          // connection lines
+          if (!suppressConnections) {
+            // Throttle connection density: only attempt when particle index is even and limit neighbor checks
+            let checked = 0;
+            const MAX_CHECKS = 22; // cap comparisons per particle to bound cost
+            for (let qi = next.length - 1; qi >= 0 && checked < MAX_CHECKS; qi--) {
+              const q = next[qi];
+              if (!q) continue;
+              const dx = p.x - q.x;
+              const dy = p.y - q.y;
+              const d2 = dx * dx + dy * dy;
+              if (d2 < 1000) {
+                const [qr, qg, qb] = q.color;
+                const mr = Math.round((r + qr) / 2);
+                const mg = Math.round((g + qg) / 2);
+                const mb = Math.round((b + qb) / 2);
+                drawCtx.strokeStyle = `rgba(${mr},${mg},${mb},${0.1 - (d2 / 1000) * 0.1})`;
+                drawCtx.lineWidth = 1;
+                drawCtx.beginPath();
+                drawCtx.moveTo(p.x, p.y);
+                drawCtx.lineTo(q.x, q.y);
+                drawCtx.stroke();
+              }
+              checked++;
+            }
+          }
+          next.push(p);
+        }
+        // cap particle count to avoid runaway growth
+        if (next.length > dynamicMax) {
+          next.splice(0, next.length - dynamicMax);
+        }
+        particlesRef.current = next;
 
-    return () => {
-      window.removeEventListener('resize', resize);
-      canvas.removeEventListener('pointermove', onPointer);
-      canvas.removeEventListener('pointerdown', onPointer);
-      canvas.removeEventListener('pointerup', onLeave);
-      canvas.removeEventListener('pointerleave', onLeave);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
+        // composite buffer to visible canvas once per frame
+        if (bctx) {
+          context.clearRect(0, 0, canvas.width, canvas.height);
+          context.drawImage(bufferCanvas, 0, 0);
+        }
+      }
+      rafRef.current = requestAnimationFrame(tick);
+
+      function onPointer(e: PointerEvent): void {
+        const rect = canvas.getBoundingClientRect();
+        pointerRef.current.x = e.clientX - rect.left;
+        pointerRef.current.y = e.clientY - rect.top;
+        pointerRef.current.active = true;
+      }
+      function onLeave(): void {
+        pointerRef.current.active = false;
+      }
+      canvas.addEventListener('pointermove', onPointer);
+      canvas.addEventListener('pointerdown', onPointer);
+      canvas.addEventListener('pointerup', onLeave);
+      canvas.addEventListener('pointerleave', onLeave);
+
+      return () => {
+        window.removeEventListener('resize', resize);
+        canvas.removeEventListener('pointermove', onPointer);
+        canvas.removeEventListener('pointerdown', onPointer);
+        canvas.removeEventListener('pointerup', onLeave);
+        canvas.removeEventListener('pointerleave', onLeave);
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      };
+    }); // end scheduled initialization
   }, []);
 
   return (

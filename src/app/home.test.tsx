@@ -11,13 +11,17 @@ beforeAll(() => {
     readonly rootMargin = '';
     readonly thresholds: ReadonlyArray<number> = [];
     private _cb: IntersectionObserverCallback;
-    constructor(cb: IntersectionObserverCallback) { this._cb = cb; }
+    constructor(cb: IntersectionObserverCallback) {
+      this._cb = cb;
+    }
     observe(target: Element): void {
       this._cb([{ isIntersecting: true, target } as IntersectionObserverEntry], this);
     }
     unobserve(): void {}
     disconnect(): void {}
-    takeRecords(): IntersectionObserverEntry[] { return []; }
+    takeRecords(): IntersectionObserverEntry[] {
+      return [];
+    }
   }
   global.IntersectionObserver = IO as unknown as typeof IntersectionObserver;
 });
@@ -61,7 +65,9 @@ describe('Home page', () => {
   });
 
   it('renders the interactive particle field placeholder (loaded or fallback)', async () => {
-    await act(async () => { render(<Home />); });
+    await act(async () => {
+      render(<Home />);
+    });
     // Accept either the final placeholder or the loading fallback
     const el = await screen.findByText(/Interactive field|Loading field/i);
     expect(el).toBeInTheDocument();

@@ -5,6 +5,7 @@ import DeferredClient from './components/DeferredClient';
 import Link from 'next/link';
 // Use client wrapper for ParticleField (avoids ssr:false dynamic inside server component)
 import HeroFieldWrapper from './components/HeroFieldWrapper';
+import DeferredSections from './components/DeferredSections';
 
 // Dynamically import non-critical components
 const ClientLogos = dynamic(() => import('@/app/components/ClientLogos'), {
@@ -12,30 +13,6 @@ const ClientLogos = dynamic(() => import('@/app/components/ClientLogos'), {
   ssr: true,
 });
 // Code-split non-critical sections (improves initial bundle & TTI)
-const TestimonialsSection = dynamic(() => import('@/app/components/TestimonialsSection'), {
-  loading: () => (
-    <section className="px-6 sm:px-10 py-20 border-t border-foreground/10">
-      <p className="text-sm text-foreground/50">Loading testimonials…</p>
-    </section>
-  ),
-  ssr: true,
-});
-const DarkShowcaseSection = dynamic(() => import('@/app/components/DarkShowcaseSection'), {
-  loading: () => (
-    <section className="px-6 sm:px-10 py-24 border-t border-foreground/10">
-      <p className="text-sm text-foreground/50">Preparing showcase…</p>
-    </section>
-  ),
-  ssr: true,
-});
-const FinalCtaSection = dynamic(() => import('@/app/components/FinalCtaSection'), {
-  loading: () => (
-    <section className="px-6 sm:px-10 py-24 border-t border-foreground/10">
-      <p className="text-sm text-foreground/50">Loading call to action…</p>
-    </section>
-  ),
-  ssr: true,
-});
 
 export default function Home(): ReactElement {
   return (
@@ -112,7 +89,10 @@ export default function Home(): ReactElement {
           </div>
         </div>
       </section>
-      <DeferredClient fallback={<div className="h-20 bg-gray-100 animate-pulse rounded" aria-hidden="true" />} minHeight="5rem">
+      <DeferredClient
+        fallback={<div className="h-20 bg-gray-100 animate-pulse rounded" aria-hidden="true" />}
+        minHeight="5rem"
+      >
         <ClientLogos />
       </DeferredClient>
       {/* Full-bleed banner */}
@@ -350,8 +330,6 @@ export default function Home(): ReactElement {
         </div>
       </section>
 
-      <TestimonialsSection />
-
       <section id="contact" className="px-6 sm:px-10 py-16 border-t border-foreground/10">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl font-semibold">Contact</h2>
@@ -377,8 +355,7 @@ export default function Home(): ReactElement {
           </div>
         </div>
       </section>
-      <DarkShowcaseSection />
-      <FinalCtaSection />
+      <DeferredSections />
     </main>
   );
 }
